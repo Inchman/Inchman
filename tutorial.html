@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorials &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Analyzing the simulation output" href="analysis.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="analysis.html" title="Analyzing the simulation output"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-belousov-zhabotinsky-reaction">
+<span id="tutorial-bz-reaction"></span><h2>The Belousov-Zhabotinsky reaction<a class="headerlink" href="#the-belousov-zhabotinsky-reaction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>In this tutorial we will implement the <a class="reference external" href="http://www.scholarpedia.org/article/Oregonator">Oregonator</a> model of the famous <a class="reference external" href="http://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction">Belousov-Zhabotinsky</a> reaction, a nice example of a nonlinear reaction-diffusion system that displays complex patterns. Details of the Inchman implementation of this model, and the scientific background for it, can be found in our publication <a class="reference internal" href="#patterns">[Patterns]</a>.</p>
+<p>The Oregonator model consists of the reaction scheme:</p>
+<div class="math" id="equation-oregonator">
+<span class="eqno">(1)</span>\[\begin{split}Y   &amp; \xrightarrow{k_1}          &amp; X + R \\
+   X+Y &amp; \xrightarrow{k_2/\Omega} &amp; 2 R \\
+   X   &amp; \xrightarrow{k_3}          &amp; 2 X + 2 Z \\
+   2 X &amp; \xrightarrow{k_4/\Omega} &amp; R \\
+   Z   &amp;  \xrightarrow{k_5}         &amp; Y^\ast + Y^{\ast\ast}\\
+   2 Y^\ast &amp; \xrightarrow{k_6} &amp; Y \\
+   2 Y^{\ast\ast} &amp; \xrightarrow{k_7} &amp; Y^\ast\end{split}\]</div>
+<p>for the reactants <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, <span class="math">\(Z\)</span>, the helper species <span class="math">\(Y^\ast\)</span> and <span class="math">\(Y^{\ast\ast}\)</span> and the remainder species <span class="math">\(R\)</span>. The helper species are introduced to avoid fractional stoichiometries, which Inchman does not support currently. The parameter <span class="math">\(\Omega\)</span>, which mimics the expansion parameter in the <span class="math">\(\Omega\)</span>-expansion, will be used to scale the overall species number and hence demonstrate the transition between a stochastic and a pseudo-deterministic setting. Please refer to the original paper <a class="reference internal" href="#patterns">[Patterns]</a> for more details on the reaction system, our implementation, pattern formation and the <span class="math">\(\Omega\)</span>-expansion.</p>
+</div>
+<div class="section" id="setting-up-the-model">
+<h3>Setting up the model<a class="headerlink" href="#setting-up-the-model" title="Permalink to this headline">¶</a></h3>
+<div class="figure">
+<img alt="_images/oregonator_options.png" src="_images/oregonator_options.png" />
+<p class="caption"><em>Options for the Oregonator model</em></p>
+</div>
+<p>We start the project by pointing our browser to the Inchman editor, which is located at <a class="reference external" href="http://inchman-editor.appspot.com/">http://inchman-editor.appspot.com/</a>. We call the model &#8220;Oregonator&#8221;, set the grid width to 64 and the physical length to <span class="math">\(0.54\ \mu m\)</span>. We need the stochastic homogeneous solver. The maximum run time is 5 seconds and we only perform one run.</p>
+<p>The next step is to define the spatial compartments. We will set our initial conditions to create a spiral wave using a Python script so, for now, we only need the compulsory World compartment. We add it using the <img alt="plus" src="_images/plus_button.png" /> button in the compartment list.</p>
+<div class="figure">
+<img alt="_images/oregonator_compartments.png" src="_images/oregonator_compartments.png" />
+<p class="caption"><em>Compartments for the oregonator model</em></p>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Using model parameters in the diffusivity field</p>
+<p class="last">You can use any model parameter in the diffusivity field and you can even do maths with it. For example, to set the diffusivity of <span class="math">\(Z\)</span> to <span class="math">\(0.6 D\)</span>, just enter <tt class="docutils literal"><span class="pre">0.6*D</span></tt>.</p>
+</div>
+<p>We now add the required species. Remember that we need six species in total:  <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, <span class="math">\(Z\)</span>, the helper species <span class="math">\(Y^\ast\)</span> and <span class="math">\(Y^{\ast\ast}\)</span> and the remainder species <span class="math">\(R\)</span>. None of the species should be treated as individuals so we uncheck this box. We set the diffusivity for species <span class="math">\(X\)</span> to a parameter <span class="math">\(D\)</span> and the diffusivity for <span class="math">\(Z\)</span> to <span class="math">\(0.6 D\)</span>.</p>
+<p>The next step is to enter the reactions given by equations <a href="#equation-oregonator">(1)</a>. Keep in mind, that reactions of the form <span class="math">\(2 Y^\ast \rightarrow Y\)</span> will have a kinetic law of <span class="math">\(k Y^\ast (Y^\ast-1)\)</span>. Again, you can use parameters and maths in the kinetic law. For example, to enter the second equation, you would type <tt class="docutils literal"><span class="pre">k2/Omega*X*Y</span></tt>. Your complete reaction table should look like this.</p>
+<div class="figure">
+<img alt="_images/oregonator_reactions.png" src="_images/oregonator_reactions.png" />
+<p class="caption"><em>Reaction table for the Oregonator model</em></p>
+</div>
+<p>We set the parameters to the values of Table 6 from the research paper <a class="reference internal" href="#patterns">[Patterns]</a>.</p>
+<div class="figure">
+<img alt="_images/oregonator_parameters.png" src="_images/oregonator_parameters.png" />
+<p class="caption"><em>Parameter table for the Oregonator model</em></p>
+</div>
+<p>Finally, we need to trigger the formation of a spiral wave using the initial conditions. This is done by initializing a wedge-shaped perturbation in the field. Again, we ask you to consult the research paper for details on this. This tutorial only focuses on how to implement it in Inchman. The initial conditions are set in the &#8220;Initialization&#8221; tab of the editor. This tab accepts a Python script which looks as follows (you can copy and paste this part into the initialization tab of the editor window):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c"># extract some parameters we need</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nx&#39;</span><span class="p">]</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;ny&#39;</span><span class="p">]</span>
+<span class="n">nSpecies</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nspecies&#39;</span><span class="p">]</span>
+
+<span class="n">scale</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;Omega&#39;</span><span class="p">]</span>
+<span class="n">k1</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k1&#39;</span><span class="p">]</span>
+<span class="n">k2</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k2&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scale</span>
+<span class="n">k3</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k3&#39;</span><span class="p">]</span>
+<span class="n">k4</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k4&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scale</span>
+<span class="n">k5</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k5&#39;</span><span class="p">]</span>
+<span class="n">k6</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k6&#39;</span><span class="p">]</span>
+
+<span class="c"># make a numpy array out of it</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;solver&#39;</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;stochastic_homogeneous&#39;</span><span class="p">):</span>
+  <span class="c"># we have a stochastic simulation going</span>
+  <span class="k">print</span> <span class="s">&quot;Detected stochastic simulation!&quot;</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="c"># this is for the deterministic simulation</span>
+  <span class="k">print</span> <span class="s">&quot;Detected deterministic simulation!&quot;</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">deterministicState</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># reshape the array</span>
+<span class="n">np_state_new</span> <span class="o">=</span> <span class="n">numpy_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nSpecies</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+
+<span class="c"># zero the array</span>
+<span class="n">np_state_new</span><span class="p">[:,:,:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c">#Initialize the &quot;wedge&quot;</span>
+
+<span class="c"># create coordinate system</span>
+<span class="n">xc</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">yc</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">gxc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xc</span><span class="p">))</span>
+<span class="n">gyc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">yc</span><span class="p">),</span> <span class="n">yc</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">gyc</span><span class="p">,</span> <span class="n">gxc</span><span class="p">)</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span>
+
+<span class="c"># create float arrays (for stochastic sim)</span>
+<span class="n">nsf</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">np_state_new</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="mf">0.002</span><span class="p">;</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+<span class="n">uss</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="p">(</span><span class="n">f</span><span class="o">+</span><span class="n">q</span><span class="p">)</span><span class="o">+</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">f</span><span class="o">+</span><span class="n">q</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mf">4.</span><span class="o">*</span><span class="n">q</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">f</span><span class="p">)))</span>
+
+<span class="n">tindex</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">theta</span><span class="o">&lt;</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">=</span> <span class="n">uss</span>
+<span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="n">tindex</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tindex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+<span class="c"># v = vss + theta/(8 pi f)</span>
+<span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Z&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">=</span> <span class="n">uss</span> <span class="o">+</span> <span class="n">theta</span><span class="o">/</span><span class="p">(</span><span class="mf">8.</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c"># and for Y we take the dynamic equilibrium value</span>
+<span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Y&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Z&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">q</span> <span class="o">+</span> <span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">])</span>
+
+<span class="c"># and convert all to dimensional values</span>
+<span class="n">np_state_new</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">=</span> <span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">k4</span><span class="o">/</span><span class="n">k3</span><span class="p">)</span>
+<span class="n">np_state_new</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Y&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">=</span> <span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Y&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k3</span><span class="o">/</span><span class="n">k2</span><span class="p">)</span>
+<span class="n">np_state_new</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Z&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">=</span> <span class="n">nsf</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Z&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">k5</span><span class="o">*</span><span class="n">k4</span><span class="o">/</span><span class="n">k3</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We go through the code step by step. The first snippet loads some useful modules and extracts the simulation parameters from the global namespace. Note that simulation internal parameters (such as the grid parameters) are specified in the dictionary <tt class="docutils literal"><span class="pre">runtimeInformation</span></tt> while the user-defined parameters live in <tt class="docutils literal"><span class="pre">parameters</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c"># extract some parameters we need</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nx&#39;</span><span class="p">]</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;ny&#39;</span><span class="p">]</span>
+<span class="n">nSpecies</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nspecies&#39;</span><span class="p">]</span>
+
+<span class="n">scale</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;Omega&#39;</span><span class="p">]</span>
+<span class="n">k1</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k1&#39;</span><span class="p">]</span>
+<span class="n">k2</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k2&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scale</span>
+<span class="n">k3</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k3&#39;</span><span class="p">]</span>
+<span class="n">k4</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k4&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">scale</span>
+<span class="n">k5</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k5&#39;</span><span class="p">]</span>
+<span class="n">k6</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&#39;k6&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The next part converts the general memory pointer to a Numpy array (<a class="reference external" href="http://www.numpy.org/&quot;">Numpy</a> is a Python library to deal with arrays). The parameters <tt class="docutils literal"><span class="pre">nSpecies</span></tt>, <tt class="docutils literal"><span class="pre">nx</span></tt> and <tt class="docutils literal"><span class="pre">ny</span></tt> were previously extracted from the <tt class="docutils literal"><span class="pre">runtimeInformation</span></tt> array.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># make a numpy array out of it</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;solver&#39;</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;stochastic_homogeneous&#39;</span><span class="p">):</span>
+  <span class="c"># we have a stochastic simulation going</span>
+  <span class="k">print</span> <span class="s">&quot;Detected stochastic simulation!&quot;</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="c"># this is for the deterministic simulation</span>
+  <span class="k">print</span> <span class="s">&quot;Detected deterministic simulation!&quot;</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">deterministicState</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># reshape the array</span>
+<span class="n">np_state_new</span> <span class="o">=</span> <span class="n">numpy_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nSpecies</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+
+<span class="c"># zero the array</span>
+<span class="n">np_state_new</span><span class="p">[:,:,:]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>To set up a regular-grid coordinate system which originates in the center cell you can use this snippet:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># create coordinate system</span>
+<span class="n">xc</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">yc</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ny</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">gxc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xc</span><span class="p">))</span>
+<span class="n">gyc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">yc</span><span class="p">),</span> <span class="n">yc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The arrays <tt class="docutils literal"><span class="pre">gxc</span></tt> and <tt class="docutils literal"><span class="pre">gyc</span></tt> will now contain a regular grid, which you can use to set up your initial conditions.</p>
+<p>The last bit initializes the wedge by setting the arrays for the species individually. A detailed description of this code is outside the scope of this tutorial. Instead, we invite the reader to consult to the Python and Numpy documentation.</p>
+</div>
+<div class="section" id="running-the-simulation-and-analyzing-the-output">
+<h3>Running the simulation and analyzing the output<a class="headerlink" href="#running-the-simulation-and-analyzing-the-output" title="Permalink to this headline">¶</a></h3>
+<p>You can now save the model to your harddrive or directly simulate it by clicking on the <img alt="simulate" src="_images/simulate_button.png" /> button. Depending on your hardware, this might take some time, in particular if the scale parameter <span class="math">\(\Omega\)</span> is large.</p>
+<p>Once the simulation is finished we can analyze the results. The simulation output is stored in an <a class="reference external" href="http://www.hdfgroup.org/HDF5/">HDF5</a> file. HDF5 readers are available for Matlab, Mathematica and various programming languages. For interactive sessions, we use the Python modules which come with Inchman.</p>
+<p>After starting Python, we first load the Inchman input/output module along with Numpy and Matplotlib.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gpgmp.io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
+</pre></div>
+</div>
+<p>The io module reads out the results from the HDF5 file and converts it into Numpy arrays.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">nruns</span> <span class="o">=</span> <span class="n">gpgmp</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_gmp_hdf5</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output time stamps are stored lexically so we first need to sort them numerically:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span><span class="p">[</span><span class="n">tind</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>The species array tells us at which index a particular species is. We would like to plot species X:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">species</span>
+<span class="go">array([&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;, &#39;YS&#39;, &#39;YSS&#39;, &#39;R&#39;], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">tind</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">,:,:])</span>
+<span class="go">&lt;matplotlib.image.AxesImage object at 0x208ded0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If everything went correctly, your output should show a nice spiral similar to this one:&lt;br&gt;</p>
+<div class="figure">
+<img alt="_images/oregonator_spiral.png" src="_images/oregonator_spiral.png" />
+<p class="caption"><em>Spiral wave in the Oregonator model</em></p>
+</div>
+</div>
+</div>
+<div class="section" id="migration-of-neurons-in-the-brain">
+<span id="tutorial-slit"></span><h2>Migration of neurons in the brain<a class="headerlink" href="#migration-of-neurons-in-the-brain" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3>Introduction<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>his tutorial is build around an application from mathematical biology. The question we are addressing here is how a signalling molecule, Slit, affects migrating neurons in the brain. Details about the biological background and the reasoning behind our implementation can be found in our paper <a class="reference internal" href="#vigelius2012a">[Vigelius2012a]</a>.</p>
+<p>The main ingredient of our model are the migrating cells which move according to the stochastic differential equation</p>
+<div class="math">
+\[\mathrm{d} \mathbf{X}_t= - \mathbf{\nabla} d(\mathbf{X}_t) \, \mathrm{d}t +\left[2 d(\mathbf{X}_t)\right]^{1/2} \mathbf{I} \, \mathrm{d} \mathbf{W}_t,\]</div>
+<p>i.e. the drift and diffusivity can be derived from a single scalar function</p>
+<div class="math">
+\[d(s,u) = d_\mathrm{cc}(u) d_\mathrm{cs}(s) = D_0 \frac{A}{A+u} \exp(-\beta s),\]</div>
+<p>which combines the cell-cell interaction <span class="math">\(d_\mathrm{cc}(u)\)</span> and the cell-Slit interaction <span class="math">\(d_\mathrm{cs}(s)\)</span>. <span class="math">\(u\)</span> denotes the local concentration of the cells while <span class="math">\(s\)</span> refers to the Slit concentration. We assume that, in the experiment, the Slit concentration attained a steady state and can be described by</p>
+<div class="math">
+\[\begin{split}s(x) = \left\{
+    \begin{array}{rl}
+      0, &amp; 0 \le t &lt; t_a, \\
+      s_0\ \mathrm{exp}(-\lambda |x-L|), &amp; t \ge t_a,
+    \end{array}
+\right.\end{split}\]</div>
+<p>where <span class="math">\(t_a\)</span> denotes the time when slit is applied to the experiment.</p>
+</div>
+<div class="section" id="id6">
+<h3>Setting up the model<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>We start by setting up the experiment parameters, the World compartment and the species (Slit):</p>
+<img alt="_images/Slit.png" src="_images/Slit.png" style="width: 100%;" />
+<p>Note that we have two field parameters here: <tt class="docutils literal"><span class="pre">slitConcentration</span></tt> and <tt class="docutils literal"><span class="pre">slitConcentrationD</span></tt> which describe the concentration of Slit and its derivative in the x-direction. Parameters can be marked as field parameters by selecting the according button in the domain window:</p>
+<img alt="_images/slit_field.png" src="_images/slit_field.png" />
+<p>We initialize the species array by setting up a circular explant in the center of the domain:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># This python code snippet serves to initialize the species array</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="c"># extract some parameters we need</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nx&#39;</span><span class="p">]</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;ny&#39;</span><span class="p">]</span>
+<span class="n">length</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;le ngth&#39;</span><span class="p">]</span>
+<span class="n">nSpecies</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nspecies&#39;</span><span class="p">]</span>
+
+<span class="c"># make a numpy array out of it</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;solver&#39;</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;stochastic_inhomogeneous&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;solver&#39;</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;stochastic_homogeneous&#39;</span><span class="p">):</span>
+  <span class="c"># we have a stochastic simulation going</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="c"># this is for the deterministic simulation</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">deterministicState</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># reshape the array</span>
+<span class="n">np_state_new</span> <span class="o">=</span> <span class="n">numpy_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nSpecies</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+
+<span class="c"># set background</span>
+<span class="n">ntemp</span> <span class="o">=</span> <span class="n">np_state_new</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;Cells&#39;</span><span class="p">],:,:]</span>
+<span class="n">ntemp</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c"># concentration (from Cai)</span>
+<span class="n">hcai</span> <span class="o">=</span> <span class="mf">5.</span> <span class="c"># 5 mum is the cell size</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span>
+<span class="n">u0</span> <span class="o">=</span> <span class="mf">14.</span><span class="o">/</span><span class="n">hcai</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c"># compute coordinate system</span>
+<span class="n">xc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span><span class="o">*</span><span class="n">length</span>
+<span class="n">yc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">nx</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span><span class="o">*</span><span class="n">length</span>
+<span class="n">gxc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xc</span><span class="p">),</span> <span class="n">xc</span><span class="p">)</span>
+<span class="n">gyc</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">yc</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">yc</span><span class="p">))</span>
+<span class="n">rs</span> <span class="o">=</span> <span class="n">gxc</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">gyc</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c"># and set explant value in the middle</span>
+<span class="n">r0</span> <span class="o">=</span> <span class="mf">100.</span>
+<span class="n">ntemp</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rs</span><span class="o">&lt;=</span><span class="n">r0</span><span class="o">**</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">u0</span><span class="o">*</span><span class="n">h</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c"># finally we need to set the field variables</span>
+<span class="n">lambd</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s">&quot;lambda&quot;</span><span class="p">]</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="mf">2.</span>
+<span class="n">slitConcentration</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s">&quot;slitConcentration&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+<span class="n">slitConcentration</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lambd</span><span class="o">*</span><span class="p">(</span><span class="n">L</span><span class="o">-</span><span class="n">gxc</span><span class="p">))</span>
+<span class="n">slitConcentrationD</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s">&quot;slitConcentrationD&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+<span class="n">slitConcentrationD</span><span class="p">[:,:]</span> <span class="o">=</span> <span class="n">lambd</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lambd</span><span class="o">*</span><span class="p">(</span><span class="n">L</span><span class="o">-</span><span class="n">gxc</span><span class="p">))</span>
+</pre></div>
+</td></tr></table></div>
+<p>The field variables are set in lines 41-47. They are extracted from the parameters array (note the <tt class="docutils literal"><span class="pre">copy=False</span></tt> keyword which prevents numpy from allocating new memory for the array) and reshaped according to the grid specifications.</p>
+<blockquote>
+<div>The interesting part is now to compute the drift and diffusivity, as it involves taking the gradient of the interaction term <span class="math">\(d(s,u)\)</span>, which in turn depends on the Slit concentration and the Cell count. The code to achieve this needs to go into the Drift/Diffusivity-method tab and we go through it step by step.</div></blockquote>
+<p>We first define some parameters that we will need later. Note that <tt class="docutils literal"><span class="pre">lambda</span></tt>, <tt class="docutils literal"><span class="pre">beta</span></tt> and <tt class="docutils literal"><span class="pre">D</span></tt> were defined in the interface already so they are available here.</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="c1">// Compute sub-volume size</span>
+<span class="n">Real</span> <span class="n">subVolume</span> <span class="o">=</span> <span class="n">PhysicalCellWidth</span><span class="o">*</span><span class="n">PhysicalCellHeight</span><span class="p">;</span>
+
+<span class="c1">// Compute parameters</span>
+<span class="n">Real</span> <span class="n">L</span>  <span class="o">=</span> <span class="n">PhysicalModelWidth</span><span class="o">/</span><span class="mf">2.</span><span class="p">;</span>
+<span class="n">Real</span> <span class="n">a</span>  <span class="o">=</span> <span class="mf">0.02</span><span class="o">*</span><span class="n">subVolume</span><span class="p">;</span>
+<span class="n">Real</span> <span class="n">ta</span> <span class="o">=</span> <span class="mf">24.</span><span class="o">*</span><span class="mf">3600.</span><span class="p">;</span>
+<span class="n">Real</span> <span class="n">xi</span> <span class="o">=</span> <span class="mf">1e4</span><span class="o">/</span><span class="mf">3600.</span><span class="p">;</span>
+
+<span class="c1">// lambda, beta, and D are available from the interface</span>
+</pre></div>
+</div>
+<p>We then test if Slit has been applied to the experiment already. We can do that by checking the current simulation time, which is given in <tt class="docutils literal"><span class="pre">PhysicalSimTime</span></tt> against the interface parameter <tt class="docutils literal"><span class="pre">ta</span></tt>:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="c1">// Is slit switched on already? We test against the variable</span>
+<span class="c1">// PhysicalSimTime which gives the current simulation time</span>
+<span class="n">Real</span> <span class="n">s0</span> <span class="o">=</span> <span class="p">(</span><span class="n">PhysicalSimTime</span> <span class="o">&gt;</span> <span class="n">ta</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>We now compute the diffusivity and drift in the x direction. The drift is given by <span class="math">\(\partial_x d[u(x), s(x)]\)</span> so we need to compute the local derivatives <span class="math">\(\partial_x u(x,t)\)</span> and <span class="math">\(s'(x)\)</span>. The derivative of the Slit concentration is time-independent and we can use the pre-computed value found in the field variable <tt class="docutils literal"><span class="pre">slitConcentrationD</span></tt>. However, the local cell concentration obviously changes with time. In order to compute it, we use the built-in function <tt class="docutils literal"><span class="pre">getCentralDifferenceX(&lt;species&gt;)</span></tt>. Note that, in order to get the partial derivative, we still need to divide by twice the cell width (you can look at the <a class="reference external" href="http://en.wikipedia.org/wiki/Finite_difference#Relation_with_derivatives">wikipedia article about central differences</a> for an explanation).</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="c1">// the slit concentration and its derivative is also</span>
+<span class="c1">// available as the field variables slitConcentration and slitConcentrationD</span>
+<span class="c1">// (we set them in the initialization method)</span>
+
+<span class="c1">// Compute a+u (where u is the current cell count in the subvolume)</span>
+<span class="n">Real</span> <span class="n">apu</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">Cells</span><span class="o">-&gt;</span><span class="n">State</span><span class="p">;</span>
+<span class="n">Real</span> <span class="n">a0</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="o">*</span><span class="n">s0</span><span class="o">*</span><span class="n">slitConcentration</span><span class="p">);</span>
+
+<span class="c1">// We use the provided helper function to compute the central difference</span>
+<span class="n">Real</span> <span class="n">up</span> <span class="o">=</span> <span class="n">getCentralDifferenceX</span><span class="p">(</span><span class="n">Cells</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">PhysicalCellWidth</span><span class="p">);</span>
+<span class="n">Real</span> <span class="n">sp</span> <span class="o">=</span> <span class="n">s0</span><span class="o">*</span><span class="n">slitConcentrationD</span><span class="p">;</span>
+
+<span class="c1">// set diffusivity/drift in X direction</span>
+<span class="n">Cells</span><span class="o">-&gt;</span><span class="n">DriftX</span> <span class="o">=</span> <span class="o">-</span><span class="n">a0</span><span class="o">/</span><span class="p">(</span><span class="n">apu</span><span class="o">*</span><span class="n">apu</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">apu</span> <span class="o">*</span> <span class="n">sp</span> <span class="o">+</span> <span class="n">up</span><span class="p">);</span>
+<span class="n">Cells</span><span class="o">-&gt;</span><span class="n">DiffusivityX</span> <span class="o">=</span> <span class="n">a0</span><span class="o">/</span><span class="n">apu</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Finally, we need to set it up for the y-direction. This is easier since there is no gradient of the Slit concentration in this direction and we only have to consider cell-cell interaction.</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="c1">// for the y-direction we don&#39;t use the slit field, only population pressure</span>
+<span class="n">Real</span> <span class="n">uprimey</span> <span class="o">=</span> <span class="n">getCentralDifferenceY</span><span class="p">(</span><span class="n">Cells</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">PhysicalCellHeight</span><span class="p">);</span>
+<span class="n">Cells</span><span class="o">-&gt;</span><span class="n">DriftY</span> <span class="o">=</span> <span class="o">-</span><span class="n">D</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">uprimey</span><span class="o">/</span><span class="p">(</span><span class="n">apu</span><span class="o">*</span><span class="n">apu</span><span class="p">);</span>
+<span class="n">Cells</span><span class="o">-&gt;</span><span class="n">DiffusivityY</span> <span class="o">=</span> <span class="n">D</span><span class="o">*</span><span class="n">a</span><span class="o">/</span><span class="n">apu</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The model specification is now complete and we can go ahead and simulate it. Depending on your computer, it should not take too long for the simulation to finish.</p>
+<p>After the simulation finished, we can plot the results as in the previous tutorials.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Python</span> <span class="mf">3.3</span><span class="o">.</span><span class="mi">2</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">May</span> <span class="mi">21</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">45</span><span class="p">)</span>
+<span class="p">[</span><span class="n">GCC</span> <span class="mf">4.8</span><span class="o">.</span><span class="mi">0</span> <span class="mi">20130502</span> <span class="p">(</span><span class="n">prerelease</span><span class="p">)]</span> <span class="n">on</span> <span class="n">linux</span>
+<span class="n">Type</span> <span class="s">&quot;help&quot;</span><span class="p">,</span> <span class="s">&quot;copyright&quot;</span><span class="p">,</span> <span class="s">&quot;credits&quot;</span> <span class="ow">or</span> <span class="s">&quot;license&quot;</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span><span class="o">.</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">gpgmp.io</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">nspecies</span> <span class="o">=</span> <span class="n">gpgmp</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_gmp_hdf5</span><span class="p">(</span><span class="s">&#39;/home/matthias/xibalba/temp/results/output&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">tind</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mi">0</span><span class="p">,:,:])</span>
+<span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">AxesImage</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f89d49d1190</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>You should get a picture similar to Figure six in the research paper <a class="reference internal" href="#vigelius2012a">[Vigelius2012a]</a>:</p>
+<img alt="_images/slit_results.png" src="_images/slit_results.png" />
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="vigelius2012a" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Vigelius2012a]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id7">2</a>)</em> Vigelius M, Meyer B (2012a) <a class="reference external" href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0033384">Multi-Dimensional, Mesoscopic Monte Carlo Simulations of Inhomogeneous Reaction-Drift-Diffusion Systems on Graphics-Processing Units.</a> PLoS ONE 7(4): e33384. doi:10.1371/journal.pone.0033384</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="patterns" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Patterns]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id3">3</a>)</em> Vigelius M, Meyer B (2012): <a class="reference external" href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0042508">Stochastic Simulations of Pattern Formation in Excitable Media.</a> PLoS ONE 7(8): e42508. doi:10.1371/journal.pone.0042508</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tutorials</a><ul>
+<li><a class="reference internal" href="#the-belousov-zhabotinsky-reaction">The Belousov-Zhabotinsky reaction</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#setting-up-the-model">Setting up the model</a></li>
+<li><a class="reference internal" href="#running-the-simulation-and-analyzing-the-output">Running the simulation and analyzing the output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#migration-of-neurons-in-the-brain">Migration of neurons in the brain</a><ul>
+<li><a class="reference internal" href="#id4">Introduction</a></li>
+<li><a class="reference internal" href="#id6">Setting up the model</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="analysis.html"
+                        title="previous chapter">Analyzing the simulation output</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="analysis.html" title="Analyzing the simulation output"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

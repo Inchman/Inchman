@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Structure of the HDF5 File &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Individual Solver" href="individual.html" />
+    <link rel="prev" title="Inchman SBML Annotations" href="sbml.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="individual.html" title="Individual Solver"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sbml.html" title="Inchman SBML Annotations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="structure-of-the-hdf5-file">
+<span id="section-hdf5"></span><h1>Structure of the HDF5 File<a class="headerlink" href="#structure-of-the-hdf5-file" title="Permalink to this headline">¶</a></h1>
+<p>This section describes the structure of the HDF5 output file. HDF5 files are structured hierarchically in groups, datasets and attributes.</p>
+<div class="section" id="model-group">
+<h2>Model Group<a class="headerlink" href="#model-group" title="Permalink to this headline">¶</a></h2>
+<p>This group has the following attributes:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/Model/numRuns</span></tt> The number of runs.</li>
+<li><tt class="docutils literal"><span class="pre">/Model/numSpecies</span></tt> The number of species in the model.</li>
+</ul>
+<p>The datasets are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/Model/InchmanFile</span> <span class="pre">(H5T_STRING)</span></tt> The model <a class="reference internal" href="sbml.html#section-sbml"><em>SBML file</em></a>.</li>
+<li><tt class="docutils literal"><span class="pre">/Model/Species</span> <span class="pre">(H5T_STRING[..])</span></tt> List of species in the model.</li>
+</ul>
+<div class="section" id="compartments-group">
+<h3>Compartments Group<a class="headerlink" href="#compartments-group" title="Permalink to this headline">¶</a></h3>
+<p>This group consists of one or more dataspaces which list the compartments in the model:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/Model/Compartments/World</span> <span class="pre">(H5T_STD_I32LE[4])</span></tt> Array listing the position and size of the obligatory <tt class="docutils literal"><span class="pre">World</span></tt> compartment.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="parameters-group">
+<h2>Parameters Group<a class="headerlink" href="#parameters-group" title="Permalink to this headline">¶</a></h2>
+<p>This group lists all parameters if any, as attributes. For example:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/Model/Parameters/k2</span> <span class="pre">(H5T_IEEE_F32LE[1])</span></tt> Contains the value of the model parameter <tt class="docutils literal"><span class="pre">k2</span></tt>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you set up <a class="reference internal" href="editor.html#parameters"><em>parameter sweeping</em></a> experiments, each parameter set will correspond to exactly one HDF5 output file. That means that the parameter values are always scalars and do not contain any information about the loop range.</p>
+</div>
+</div>
+<div class="section" id="runs-group">
+<h2>Runs Group<a class="headerlink" href="#runs-group" title="Permalink to this headline">¶</a></h2>
+<p>This group lists all runs, starting from run &#8220;0&#8221;.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The runs are sorted lexically, i.e. run number &#8220;10&#8221; will be listed before run number &#8220;2&#8221;.</p>
+</div>
+<div class="section" id="dumps-group">
+<h3>Dumps Group<a class="headerlink" href="#dumps-group" title="Permalink to this headline">¶</a></h3>
+<p>Each run contains a number of output dumps, which are again sorted lexically.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/Runs/&lt;run-no&gt;/Dump_&lt;dump-no&gt;/time</span> <span class="pre">(H5T_IEEE_F32LE[1])</span></tt> This attribute gives the simulation time corresponding to this dump.</li>
+<li><tt class="docutils literal"><span class="pre">/Runs/&lt;run-no&gt;/Dump_&lt;dump-no&gt;/&lt;species-name&gt;</span> <span class="pre">(H5T_STD_I32LE[&lt;width&gt;,&lt;height&gt;])</span></tt> Eeach species is represented by a dataset with dimensions <tt class="docutils literal"><span class="pre">GridWidth</span> <span class="pre">x</span> <span class="pre">GridWidth</span></tt>. The integers in this dataset are the number of particles in the corresponding grid cell.</li>
+</ul>
+<div class="section" id="individuals-group">
+<h4>Individuals Group<a class="headerlink" href="#individuals-group" title="Permalink to this headline">¶</a></h4>
+<p>If the model contains any individuals, they are listed in this group. The individuals are stored as 64 bit unsigned integers representing the individual ID and the cell positon (see <a class="reference internal" href="analysis.html#analysis-individuals"><em>Simulations involving Individuals</em></a>).</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Structure of the HDF5 File</a><ul>
+<li><a class="reference internal" href="#model-group">Model Group</a><ul>
+<li><a class="reference internal" href="#compartments-group">Compartments Group</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parameters-group">Parameters Group</a></li>
+<li><a class="reference internal" href="#runs-group">Runs Group</a><ul>
+<li><a class="reference internal" href="#dumps-group">Dumps Group</a><ul>
+<li><a class="reference internal" href="#individuals-group">Individuals Group</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sbml.html"
+                        title="previous chapter">Inchman SBML Annotations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="individual.html"
+                        title="next chapter">Individual Solver</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/hdf5.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="individual.html" title="Individual Solver"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sbml.html" title="Inchman SBML Annotations"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

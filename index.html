@@ -1,0 +1,211 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Inchman User Guide &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="#" />
+    <link rel="next" title="Introduction" href="intro.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="inchman-user-guide">
+<h1>Inchman User Guide<a class="headerlink" href="#inchman-user-guide" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#reaction-drift-diffusion-systems">Reaction-Drift-Diffusion Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#gillespie-multiparticle-algorithm">Gillespie-Multiparticle Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#gpu-implementation">GPU Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#linux">Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="editor.html">Editor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#running-the-editor">Running the editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#file-panel">File Panel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#compartments">Compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#species">Species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#reactions">Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#drift-diffusivity-method">Drift-Diffusivity Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#update-fields">Update Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editor.html#new-individuals">New Individuals</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inchman.html">Running Inchman</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="inchman.html#invoke-inchman-from-the-editor">Invoke Inchman from the Editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inchman.html#invoke-inchman-from-the-command-line">Invoke Inchman from the Command Line</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analyzing the simulation output</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#inchman-output-files">Inchman output files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#the-hdf5-file">The HDF5 File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#the-belousov-zhabotinsky-reaction">The Belousov-Zhabotinsky reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#migration-of-neurons-in-the-brain">Migration of neurons in the brain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="inchman-reference">
+<h1>Inchman Reference<a class="headerlink" href="#inchman-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#simple-reaction-network">Simple Reaction Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#simple-reaction-network-with-individuals">Simple Reaction Network with Individuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#simple-reaction-network-with-individuals-using-new-individuals-method">Simple Reaction Network with Individuals (using New Individuals Method)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#fisher-problem">Fisher Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#fisher-problem-with-individuals">Fisher Problem with Individuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#homogeneous-diffusion">Homogeneous Diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#homogeneous-diffusivity-and-drift">Homogeneous Diffusivity and Drift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#homogeneous-diffusivity-and-drift-with-field-parameter">Homogeneous Diffusivity and Drift with Field Parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#homogeneous-diffusivity-and-drift-individuals">Homogeneous Diffusivity and Drift (Individuals)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#multiplicative-noise-geometric-brownian-motion">Multiplicative Noise (Geometric Brownian Motion)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#non-linear-drift-field">Non-linear Drift Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#ornstein-uhlenbeck-process">Ornstein-Uhlenbeck Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#a-b-annihilation">A+B Annihilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#a-b-annihilation-with-drift">A+B Annihilation with Drift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#random-drift-field">Random Drift Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#intracellular-calcium-distribution">Intracellular Calcium Distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#oregonator-model-of-the-belousov-zhabotinsky-reaction">Oregonator Model of the Belousov-Zhabotinsky Reaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#chemotaxis-of-neurons-in-the-brain">Chemotaxis of Neurons in the Brain</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sbml.html">Inchman SBML Annotations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html#sbml-container">SBML Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html#compartment">Compartment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html#species">Species</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sbml.html#reactions">Reactions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hdf5.html">Structure of the HDF5 File</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hdf5.html#model-group">Model Group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hdf5.html#parameters-group">Parameters Group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hdf5.html#runs-group">Runs Group</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="individual.html">Individual Solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="individual.html#particle-creation-and-annihilation">Particle creation and annihilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="individual.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Inchman User Guide</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#inchman-reference">Inchman Reference</a><ul>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="next chapter">Introduction</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >next</a> |</li>
+        <li><a href="#">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

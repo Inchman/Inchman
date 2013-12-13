@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Inchman SBML Annotations &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Structure of the HDF5 File" href="hdf5.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="hdf5.html" title="Structure of the HDF5 File"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="inchman-sbml-annotations">
+<span id="section-sbml"></span><h1>Inchman SBML Annotations<a class="headerlink" href="#inchman-sbml-annotations" title="Permalink to this headline">¶</a></h1>
+<p>The current version of SBML does not yet support spatial information. For this reason, Inchman uses an annotated SBML model to convey any spatial and simulation-specific information needed to run the full model. This document lists the available annotations for the various <a class="reference external" href="http://sbml.org/Documents/Specifications#SBML_Level_2">SBML components</a>. All parameters which are given as <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expressions can make use of the model <a class="reference internal" href="editor.html#parameters"><em>parameters</em></a>.</p>
+<div class="section" id="sbml-container">
+<h2>SBML Container<a class="headerlink" href="#sbml-container" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">im:sbml</span></tt><ul>
+<li><tt class="docutils literal"><span class="pre">im:solver</span></tt> The solver type. Available types are <tt class="docutils literal"><span class="pre">stochastic_homogeneous</span></tt>, <tt class="docutils literal"><span class="pre">stochastic_inhomogeneous</span></tt>, <tt class="docutils literal"><span class="pre">deterministic_homogeneous</span></tt> and <tt class="docutils literal"><span class="pre">deterministic_inhomogeneous</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">im:runs</span></tt> The number of runs as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:time</span></tt> The simulation run time as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:outputInterval</span></tt> The output interval as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:init</span></tt> The <a class="reference internal" href="editor.html#initialization"><em>initialization method</em></a>.<ul>
+<li><tt class="docutils literal"><span class="pre">im:script</span></tt>  The actual script as a <a class="reference external" href="http://www.w3schools.com/xml/xml_cdata.asp">XML CDATA array</a>.</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">im:events</span></tt> The <a class="reference internal" href="editor.html#events"><em>events method</em></a>.<ul>
+<li><tt class="docutils literal"><span class="pre">im:script</span></tt> The actual script as a <a class="reference external" href="http://www.w3schools.com/xml/xml_cdata.asp">XML CDATA array</a>.</li>
+<li><tt class="docutils literal"><span class="pre">im:listOfTimeStamps</span></tt> A list of the time stamps for which the events script is called.</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">im:driftDiffusivity</span></tt> The <a class="reference internal" href="editor.html#id6"><em>inhomogeneous drift-diffusivity method</em></a>. Attributes are <tt class="docutils literal"><span class="pre">nonLinear</span></tt> and <tt class="docutils literal"><span class="pre">computeMoments</span></tt> which can be set to <tt class="docutils literal"><span class="pre">true</span></tt> or <tt class="docutils literal"><span class="pre">false</span></tt>.<ul>
+<li><tt class="docutils literal"><span class="pre">im:method</span></tt> The actual method as a <a class="reference external" href="http://www.w3schools.com/xml/xml_cdata.asp">XML CDATA array</a>.</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">im:setField</span></tt> The <a class="reference internal" href="editor.html#update-fields"><em>update fields</em></a> method.<ul>
+<li><tt class="docutils literal"><span class="pre">im:method</span></tt> The actual method as a <a class="reference external" href="http://www.w3schools.com/xml/xml_cdata.asp">XML CDATA array</a>.</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">im:newIndividualsMethod</span></tt> The <a class="reference internal" href="editor.html#new-individuals"><em>New Individuals Method</em></a>.<ul>
+<li><tt class="docutils literal"><span class="pre">im:method</span></tt> The actual method as a <a class="reference external" href="http://www.w3schools.com/xml/xml_cdata.asp">XML CDATA array</a>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">im:model</span></tt> The Inchman model annotations.<ul>
+<li><tt class="docutils literal"><span class="pre">im:gridWidth</span></tt> The grid width as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:gridHeight</span></tt> The grid height as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:physicalWidth</span></tt> The physical width as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:physicalHeight</span></tt> The physical height as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="compartment">
+<h2>Compartment<a class="headerlink" href="#compartment" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">im:compartment</span></tt> The Inchman compartment annotations.<ul>
+<li><tt class="docutils literal"><span class="pre">im:x</span></tt> The compartment position (x) as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:y</span></tt> The compartment position (y) as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:width</span></tt> The compartment width as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:height</span></tt> The compartment height as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="species">
+<h2>Species<a class="headerlink" href="#species" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Inchman does not support constraining species to particular compartments. All species have the obligatory <tt class="docutils literal"><span class="pre">World</span></tt> compartment as the associated compartment.</p>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">im:species</span></tt> The Inchman species annotations.<ul>
+<li><tt class="docutils literal"><span class="pre">im:diffusionConstant</span></tt> The diffusivity of the species as a <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression.</li>
+<li><tt class="docutils literal"><span class="pre">im:individual</span></tt> If this tag is present, the species is an individual species.</li>
+<li><tt class="docutils literal"><span class="pre">im:listOfCompartmentParameters</span></tt> Can be used to specify the initial amount of this species in the compartment<ul>
+<li><tt class="docutils literal"><span class="pre">im:initialAmount</span></tt> The initial amount of this species in this compartment.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Parameters are defined using the SBML <tt class="docutils literal"><span class="pre">parameter</span></tt> tag with the corresponding <tt class="docutils literal"><span class="pre">id</span></tt>. The <tt class="docutils literal"><span class="pre">value</span></tt> tag is ignored and instead the parameter value is set from the information specified in the annotation. The value of <a class="reference internal" href="editor.html#field-parameter"><em>field parameters</em></a> is set in the <a class="reference internal" href="editor.html#initialization"><em>initialization method</em></a>.</p>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">im:parameter</span></tt> The Inchman parameter annotations.<ul>
+<li><tt class="docutils literal"><span class="pre">type</span></tt> This attribute can be set to either <tt class="docutils literal"><span class="pre">int</span></tt> or <tt class="docutils literal"><span class="pre">float</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">domain</span></tt> This attribute can be set to <tt class="docutils literal"><span class="pre">single</span></tt>, <tt class="docutils literal"><span class="pre">range</span></tt>, <tt class="docutils literal"><span class="pre">random</span></tt> or <tt class="docutils literal"><span class="pre">field</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">from</span></tt> The bottom end of the sweeping range. If the parameter domain is <tt class="docutils literal"><span class="pre">single</span></tt>, this is the value of the parameter.</li>
+<li><tt class="docutils literal"><span class="pre">to</span></tt> The top end of the sweeping range.</li>
+<li><tt class="docutils literal"><span class="pre">step</span></tt> The step size for the sweeping.</li>
+<li><tt class="docutils literal"><span class="pre">points</span></tt> The number of sample points for the sweeping.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="reactions">
+<h2>Reactions<a class="headerlink" href="#reactions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">im:reaction</span></tt> The Inchman reaction annotations.<ul>
+<li><tt class="docutils literal"><span class="pre">im:listOfCompartmentParameters</span></tt> Can be used to constrain the reaction to particular compartments.<ul>
+<li><tt class="docutils literal"><span class="pre">im:compartmentParameters</span></tt> The compartments this reaction is constrained to are given in the attribute <tt class="docutils literal"><span class="pre">compartment</span></tt><ul>
+<li><tt class="docutils literal"><span class="pre">im:isAllowed</span></tt> A <a class="reference external" href="http://www.w3.org/Math/">MathML</a> expression evaluating to either <tt class="docutils literal"><span class="pre">true</span></tt> or <tt class="docutils literal"><span class="pre">false</span></tt> to allow or disallow this reaction in the compartment.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Inchman SBML Annotations</a><ul>
+<li><a class="reference internal" href="#sbml-container">SBML Container</a></li>
+<li><a class="reference internal" href="#model">Model</a></li>
+<li><a class="reference internal" href="#compartment">Compartment</a></li>
+<li><a class="reference internal" href="#species">Species</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#reactions">Reactions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="previous chapter">Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="hdf5.html"
+                        title="next chapter">Structure of the HDF5 File</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/sbml.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="hdf5.html" title="Structure of the HDF5 File"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

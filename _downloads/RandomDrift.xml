@@ -1,0 +1,858 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_inhomogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>1</math:cn>
+</math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>2.</math:cn>
+</math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>1.</math:cn>
+</math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[# This python code snippet serves to initialize the species array
+import numpy
+import sys
+import traceback
+import numpy.random
+
+try:
+    sys.stdout.flush()
+
+    # extract some parameters we need
+    nx = runtimeInformation['nx']
+    ny = runtimeInformation['ny']
+    length = runtimeInformation['length']
+    nSpecies = runtimeInformation['nspecies']
+
+    # convert to numpy array
+    numpy_arx = numpy.array(individualProperties["A"]["rx"], copy=False)
+    numpy_ary = numpy.array(individualProperties["A"]["ry"], copy=False)
+    numpy_adx = numpy.array(individualProperties["A"]["diffx"], copy=False)
+    numpy_ady = numpy.array(individualProperties["A"]["diffy"], copy=False)
+    nindi = (numpy.shape(numpy_arx))[0]
+
+    # and set to random values
+    numpy_adx[:] = parameters["diffX"]
+    numpy_ady[:] = parameters["diffY"]
+    numpy_arx[:] = numpy.random.normal(loc = parameters["mux"], scale = parameters["sigmax"], size=(nindi))
+    numpy_ary[:] = numpy.random.normal(loc = parameters["muy"], scale = parameters["sigmay"], size=(nindi))
+
+except:
+    print("Unexpected error!")
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="" computeMoments="">
+    <im:method><![CDATA[
+A->DiffusivityX = A->DiffusivityX;
+A->DiffusivityY = A->DiffusivityY;
+A->DriftX = A->DriftX;
+A->DriftY = A->DriftY;
+
+B00->DiffusivityX = 1;
+B00->DiffusivityY = 0.5;
+B00->DriftX = -8;
+B00->DriftY = -8;
+
+
+B01->DiffusivityX = 1;
+B01->DiffusivityY = 0.5;
+B01->DriftX = -8;
+B01->DriftY = -4;
+
+
+B02->DiffusivityX = 1;
+B02->DiffusivityY = 0.5;
+B02->DriftX = -8;
+B02->DriftY = 0;
+
+
+B03->DiffusivityX = 1;
+B03->DiffusivityY = 0.5;
+B03->DriftX = -8;
+B03->DriftY = 4;
+
+
+B04->DiffusivityX = 1;
+B04->DiffusivityY = 0.5;
+B04->DriftX = -8;
+B04->DriftY = 8;
+
+
+B10->DiffusivityX = 1;
+B10->DiffusivityY = 0.5;
+B10->DriftX = -4;
+B10->DriftY = -8;
+
+
+B11->DiffusivityX = 1;
+B11->DiffusivityY = 0.5;
+B11->DriftX = -4;
+B11->DriftY = -4;
+
+
+B12->DiffusivityX = 1;
+B12->DiffusivityY = 0.5;
+B12->DriftX = -4;
+B12->DriftY = 0;
+
+
+B13->DiffusivityX = 1;
+B13->DiffusivityY = 0.5;
+B13->DriftX = -4;
+B13->DriftY = 4;
+
+
+B14->DiffusivityX = 1;
+B14->DiffusivityY = 0.5;
+B14->DriftX = -4;
+B14->DriftY = 8;
+
+
+B20->DiffusivityX = 1;
+B20->DiffusivityY = 0.5;
+B20->DriftX = 0;
+B20->DriftY = -8;
+
+
+B21->DiffusivityX = 1;
+B21->DiffusivityY = 0.5;
+B21->DriftX = 0;
+B21->DriftY = -4;
+
+
+B22->DiffusivityX = 1;
+B22->DiffusivityY = 0.5;
+B22->DriftX = 0;
+B22->DriftY = 0;
+
+
+B23->DiffusivityX = 1;
+B23->DiffusivityY = 0.5;
+B23->DriftX = 0;
+B23->DriftY = 4;
+
+
+B24->DiffusivityX = 1;
+B24->DiffusivityY = 0.5;
+B24->DriftX = 0;
+B24->DriftY = 8;
+
+
+B30->DiffusivityX = 1;
+B30->DiffusivityY = 0.5;
+B30->DriftX = 4;
+B30->DriftY = -8;
+
+
+B31->DiffusivityX = 1;
+B31->DiffusivityY = 0.5;
+B31->DriftX = 4;
+B31->DriftY = -4;
+
+
+B32->DiffusivityX = 1;
+B32->DiffusivityY = 0.5;
+B32->DriftX = 4;
+B32->DriftY = 0;
+
+
+B33->DiffusivityX = 1;
+B33->DiffusivityY = 0.5;
+B33->DriftX = 4;
+B33->DriftY = 4;
+
+
+B34->DiffusivityX = 1;
+B34->DiffusivityY = 0.5;
+B34->DriftX = 4;
+B34->DriftY = 8;
+
+
+B40->DiffusivityX = 1;
+B40->DiffusivityY = 0.5;
+B40->DriftX = 8;
+B40->DriftY = -8;
+
+
+B41->DiffusivityX = 1;
+B41->DiffusivityY = 0.5;
+B41->DriftX = 8;
+B41->DriftY = -4;
+
+
+B42->DiffusivityX = 1;
+B42->DiffusivityY = 0.5;
+B42->DriftX = 8;
+B42->DriftY = 0;
+
+
+B43->DiffusivityX = 1;
+B43->DiffusivityY = 0.5;
+B43->DriftX = 8;
+B43->DriftY = 4;
+
+
+B44->DiffusivityX = 1;
+B44->DiffusivityY = 0.5;
+B44->DriftX = 8;
+B44->DriftY = 8;
+
+]]></im:method>
+  </im:driftDiffusivity>
+</im:sbml>
+</annotation>
+  <model name="Homogeneous Drift">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>512</math:cn>
+</math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>512</math:cn>
+</math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>40</math:cn>
+</math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>40</math:cn>
+</math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>0</math:cn>
+</math:math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>512</math:cn>
+</math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>512</math:cn>
+</math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+      <compartment id="Source" name="Source">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:x>
+  <im:y><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:y>
+  <im:width><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>1</cn></math></im:width>
+  <im:height><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>1</cn></math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="A" name="A"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    <im:individual/>
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>10000.0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+      <species id="B00" name="B00"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B01" name="B01"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B02" name="B02"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>12</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B03" name="B03"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B04" name="B04"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B10" name="B10"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B11" name="B11"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>35</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B12" name="B12"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>1501</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B13" name="B13"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>35</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B14" name="B14"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B20" name="B20"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B21" name="B21"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>155</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B22" name="B22"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>6516</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B23" name="B23"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>155</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B24" name="B24"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B30" name="B30"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B31" name="B31"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>35</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B32" name="B32"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>1501</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B33" name="B33"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>35</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B34" name="B34"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B40" name="B40"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B41" name="B41"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B42" name="B42"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>12</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B43" name="B43"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+
+
+      <species id="B44" name="B44"  compartment="World">
+	<annotation>
+	  <im:species
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+	    
+	    <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+	      <math:cn>1</math:cn>
+	    </math:math></im:diffusionConstant>
+	    <im:listOfCompartmentParameters>
+	      <im:compartmentParameters compartment="Source">
+		<im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+		  <math:cn>0</math:cn>
+		</math:math></im:initialAmount>
+	      </im:compartmentParameters>
+	    </im:listOfCompartmentParameters>
+	  </im:species>
+	</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="diffX" value="1.">
+	<annotation>
+	  <im:parameter
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+	      type="float"
+	      domain="single"
+	      from="1."
+	      to=""
+	      step=""
+	      points=""/>
+	</annotation>
+      </parameter>
+      <parameter id="diffY" value="0.5">
+	<annotation>
+	  <im:parameter
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+	      type="float"
+	      domain="single"
+	      from="0.5"
+	      to=""
+	      step=""
+	      points=""/>
+	</annotation>
+      </parameter>
+      <parameter id="mux" value="0.">
+	<annotation>
+	  <im:parameter
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+	      type="float"
+	      domain="single"
+	      from="0."
+	      to=""
+	      step=""
+	      points=""/>
+	</annotation>
+      </parameter>
+      <parameter id="sigmax" value="2.">
+	<annotation>
+	  <im:parameter
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+	      type="float"
+	      domain="single"
+	      from="2."
+	      to=""
+	      step=""
+	      points=""/>
+	</annotation>
+      </parameter>
+      <parameter id="muy" value="0.">
+	<annotation>
+	  <im:parameter
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+	      type="float"
+	      domain="single"
+	      from="0."
+	      to=""
+	      step=""
+	      points=""/>
+	</annotation>
+      </parameter>
+      <parameter id="sigmay" value="1.">
+	<annotation>
+	  <im:parameter
+	      xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+	      type="float"
+	      domain="single"
+	      from="2."
+	      to=""
+	      step=""
+	      points=""/>
+	</annotation>
+      </parameter>
+    </listOfParameters>
+  </model>
+</sbml>

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_homogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>50</math:cn>
+</math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[# This python code snippet serves to initialize the species array
+import numpy
+import sys
+import math
+
+# extract some parameters we need
+nx = runtimeInformation['nx']
+ny = runtimeInformation['ny']
+nSpecies = runtimeInformation['nspecies']
+
+scale = parameters['Omega']
+k1 = parameters['k1']
+k2 = parameters['k2']/scale
+k3 = parameters['k3']
+k4 = parameters['k4']/scale
+k5 = parameters['k5']
+k6 = parameters['k6']
+
+# make a numpy array out of it
+if (runtimeInformation['solver']=='stochastic_homogeneous'):
+    # we have a stochastic simulation going
+    print "Detected stochastic simulation!"
+    numpy_state = numpy.array(state, copy=False)
+else:
+    # this is for the deterministic simulation
+    print "Detected deterministic simulation!"
+    numpy_state = numpy.array(deterministicState, copy=False)
+
+# reshape the array
+np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+# zero the array
+np_state_new[:,:,:] = 0
+
+#Initialize the "wedge"
+
+# create coordinate system
+xc=range(-nx/2, ny/2)
+yc=range(-nx/2, ny/2)
+gxc=numpy.outer(xc, numpy.ones_like(xc))
+gyc=numpy.outer(numpy.ones_like(yc), yc)
+theta = numpy.arctan2(gyc, gxc) + numpy.pi
+
+# create float arrays (for stochastic sim)
+nsf = numpy.zeros(numpy.shape(np_state_new), dtype=float)
+
+# u = {0.8 (0<theta<0.5), uss (else)}
+q = 0.002;
+f = 1.5;
+uss = 0.5*(1.-(f+q)+numpy.sqrt((f+q-1.)**2+4.*q*(1.+f)))
+
+tindex = numpy.where(theta<0.5)
+nsf[species['X'], :, : ] = uss
+nsf[species['X'], tindex[0], tindex[1] ] = 0.8
+
+# v = vss + theta/(8 pi f)
+nsf[species['Z'], :, : ] = uss + theta/(8.*numpy.pi*f)
+
+# and for Y we take the dynamic equilibrium value
+nsf[species['Y'], :, :] = f * nsf[species['Z'], :, : ]/(q + nsf[species['X'], :, : ])
+
+# and convert all to dimensional values
+np_state_new[species['X'], :, : ] = nsf[species['X'], :, : ] / (2.*k4/k3)
+np_state_new[species['Y'], :, : ] = nsf[species['Y'], :, : ] * (k3/k2)
+np_state_new[species['Z'], :, : ] = nsf[species['Z'], :, : ] / (k5*k4/k3**2)
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="false" computeMoments="">
+    <im:method><![CDATA[]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="Oregonator">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>0.54</math:cn></math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>0.54</math:cn></math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>0</math:cn></math:math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="X" name="X" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:ci>D</math:ci></math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="Y" name="Y" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="Z" name="Z" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:apply><math:times/><math:cn>0.6</math:cn><math:ci>D</math:ci></math:apply></math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="YS" name="YS" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="YSS" name="YSS" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="R" name="R" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="D" value="1.5E-5">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1.5e-5"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k1" value="843.2">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="843.2"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k2" value="1.045E-9">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1.045e-9"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k3" value="4.216">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="4.216"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k4" value="5.22E-15">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="5.22e-15"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k5" value="0.048">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.048"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k6" value="100.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="100"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k7" value="100.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="100"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="Omega" value="8.0E-12">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="8e-12"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="Reaction1" name="Reaction1">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="Y" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="X" />
+          <speciesReference species="R" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<ci>k1</ci>
+<ci>Y</ci>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction2" name="Reaction2">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="X" />
+          <speciesReference species="Y" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R" stoichiometry="2.0" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<apply>
+<divide/>
+<ci>k2</ci>
+<ci>Omega</ci>
+</apply>
+<ci>X</ci>
+</apply>
+<ci>Y</ci>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction3" name="Reaction3">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="X" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="X" stoichiometry="2.0" />
+          <speciesReference species="Z" stoichiometry="2.0" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<ci>k3</ci>
+<ci>X</ci>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction4" name="Reaction4">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="X" stoichiometry="2.0" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<apply>
+<divide/>
+<ci>k4</ci>
+<ci>Omega</ci>
+</apply>
+<ci>X</ci>
+</apply>
+<apply>
+<minus/>
+<ci>X</ci>
+<cn>1</cn>
+</apply>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction5" name="Reaction5">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="Z" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="YS" />
+          <speciesReference species="YSS" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<ci>k5</ci>
+<ci>Z</ci>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction6" name="Reaction6">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="YS" stoichiometry="2.0" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Y" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<ci>YS</ci>
+<apply>
+<minus/>
+<ci>YS</ci>
+<cn>1</cn>
+</apply>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Reaction7" name="Reaction7">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="YSS" stoichiometry="2.0" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="YS" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<ci>YSS</ci>
+<apply>
+<minus/>
+<ci>YSS</ci>
+<cn>1</cn>
+</apply>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

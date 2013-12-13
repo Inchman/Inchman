@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_homogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>1</math:cn>
+</math:math></im:runs>
+  <im:time><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>100</cn></math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>10</math:cn>
+</math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[# This python code snippet serves to initialize the species array
+import numpy
+
+# extract some parameters we need
+length = runtimeInformation['length']
+nx = runtimeInformation['nx']
+ny = runtimeInformation['ny']
+nSpecies = runtimeInformation['nspecies']
+
+scale = parameters['omega']
+nmax = parameters['nmax']
+muM = 0.001*6.02214e23*(scale*length/float(nx))**3
+
+# make a numpy array out of it
+if (runtimeInformation['solver']=='stochastic_homogeneous'):
+    # we have a stochastic simulation going
+    numpy_state = numpy.array(state, copy=False)
+else:
+    # this is for the deterministic simulation
+    numpy_state = numpy.array(deterministicState, copy=False)
+
+# reshape the array
+np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+# convert to number counts per subvolume and set it
+nM = 1e-3*muM
+
+# this one works for spirals
+# set background
+np_state_new[species['Ca'],:,:] = 0.129*muM
+np_state_new[species['n'],:,:] = 0.96627*nmax
+np_state_new[species['p'],:,:] = 0.095*muM
+
+# now set initial region to start wave
+np_state_new[species['Ca'], nx/2-5:nx/2, 0:nx/4]=0.920*muM
+np_state_new[species['Ca'], nx/2:, :] = 0.19*muM
+np_state_new[species['n'], nx/2:, :] = 0.71*nmax]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="true" computeMoments="false">
+    <im:method><![CDATA[]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="Calcium">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>128</math:cn>
+</math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>128</math:cn>
+</math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>250</math:cn>
+</math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>250</math:cn>
+</math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>0</cn></math></im:x>
+  <im:y><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>0</math:cn>
+</math:math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>128</math:cn>
+</math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>128</math:cn>
+</math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="Ca" name="Ca" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:ci>diffc</math:ci>
+</math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="n" name="n" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+      <species id="p" name="p" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:ci>diffp</math:ci>
+</math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="diffc" value="20.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="20."
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="diffp" value="0.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="nmax" value="1000.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1000"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="beta" value="0.02">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.02"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="kp" value="0.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.0"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="omega" value="5.0E-7">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="5e-7"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="na" value="6.02214E23">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="6.02214e23"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="gamma" value="2.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="2"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="kgamma" value="0.1">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="kflux" value="8.1">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="8.1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="b" value="0.111">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.111"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="v1" value="0.889">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.889"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k1" value="0.7">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.7"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="mu0" value="0.567">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.567"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="mu1" value="0.433">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.433"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="kmu" value="4.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="4"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="taun" value="2.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="2."
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k2" value="0.7">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.7"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="LeakCurrent" name="LeakCurrent">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="Ca" />
+        </listOfProducts>
+        <kineticLaw>
+<math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:apply>
+    <math:times />
+    <math:apply>
+      <math:times />
+      <math:apply>
+        <math:times />
+        <math:ci>beta</math:ci>
+        <math:cn>0.001</math:cn>
+      </math:apply>
+      <math:ci>na</math:ci>
+    </math:apply>
+    <math:apply>
+      <math:power />
+      <math:apply>
+        <math:times />
+        <math:ci>PhysicalCellWidth</math:ci>
+        <math:ci>omega</math:ci>
+      </math:apply>
+      <math:cn>3</math:cn>
+    </math:apply>
+  </math:apply>
+</math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="SercaPump" name="SercaPump">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="Ca" />
+        </listOfReactants>
+        <kineticLaw>
+<math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:apply>
+    <math:divide />
+    <math:apply>
+      <math:times />
+      <math:apply>
+        <math:times />
+        <math:apply>
+          <math:times />
+          <math:apply>
+            <math:times />
+            <math:ci>gamma</math:ci>
+            <math:cn>0.001</math:cn>
+          </math:apply>
+          <math:ci>na</math:ci>
+        </math:apply>
+        <math:apply>
+          <math:power />
+          <math:apply>
+            <math:times />
+            <math:ci>PhysicalCellWidth</math:ci>
+            <math:ci>omega</math:ci>
+          </math:apply>
+          <math:cn>3</math:cn>
+        </math:apply>
+      </math:apply>
+      <math:ci>Ca</math:ci>
+    </math:apply>
+    <math:apply>
+      <math:plus />
+      <math:apply>
+        <math:times />
+        <math:apply>
+          <math:times />
+          <math:apply>
+            <math:times />
+            <math:ci>kgamma</math:ci>
+            <math:cn>0.001</math:cn>
+          </math:apply>
+          <math:ci>na</math:ci>
+        </math:apply>
+        <math:apply>
+          <math:power />
+          <math:apply>
+            <math:times />
+            <math:ci>PhysicalCellWidth</math:ci>
+            <math:ci>omega</math:ci>
+          </math:apply>
+          <math:cn>3</math:cn>
+        </math:apply>
+      </math:apply>
+      <math:ci>Ca</math:ci>
+    </math:apply>
+  </math:apply>
+</math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="IPRFlux" name="IPRFlux">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="Ca" />
+        </listOfProducts>
+        <kineticLaw>
+<math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:apply>
+    <math:times />
+    <math:apply>
+      <math:times />
+      <math:apply>
+        <math:times />
+        <math:apply>
+          <math:times />
+          <math:apply>
+            <math:times />
+            <math:apply>
+              <math:times />
+              <math:apply>
+                <math:divide />
+                <math:ci>kflux</math:ci>
+                <math:ci>nmax</math:ci>
+              </math:apply>
+              <math:cn>0.001</math:cn>
+            </math:apply>
+            <math:ci>na</math:ci>
+          </math:apply>
+          <math:apply>
+            <math:power />
+            <math:apply>
+              <math:times />
+              <math:ci>PhysicalCellWidth</math:ci>
+              <math:ci>omega</math:ci>
+            </math:apply>
+            <math:cn>3</math:cn>
+          </math:apply>
+        </math:apply>
+        <math:apply>
+          <math:plus />
+          <math:ci>b</math:ci>
+          <math:apply>
+            <math:divide />
+            <math:apply>
+              <math:times />
+              <math:ci>v1</math:ci>
+              <math:ci>Ca</math:ci>
+            </math:apply>
+            <math:apply>
+              <math:plus />
+              <math:apply>
+                <math:times />
+                <math:apply>
+                  <math:times />
+                  <math:apply>
+                    <math:times />
+                    <math:apply>
+                      <math:times />
+                      <math:ci>k1</math:ci>
+                    </math:apply>
+                    <math:cn>0.001</math:cn>
+                  </math:apply>
+                  <math:ci>na</math:ci>
+                </math:apply>
+                <math:apply>
+                  <math:power />
+                  <math:apply>
+                    <math:times />
+                    <math:ci>PhysicalCellWidth</math:ci>
+                    <math:ci>omega</math:ci>
+                  </math:apply>
+                  <math:cn>3</math:cn>
+                </math:apply>
+              </math:apply>
+              <math:ci>Ca</math:ci>
+            </math:apply>
+          </math:apply>
+        </math:apply>
+      </math:apply>
+      <math:ci>n</math:ci>
+    </math:apply>
+    <math:apply>
+      <math:plus />
+      <math:ci>mu0</math:ci>
+      <math:apply>
+        <math:divide />
+        <math:apply>
+          <math:times />
+          <math:ci>mu1</math:ci>
+          <math:ci>p</math:ci>
+        </math:apply>
+        <math:apply>
+          <math:plus />
+          <math:apply>
+            <math:times />
+            <math:apply>
+              <math:times />
+              <math:apply>
+                <math:times />
+                <math:apply>
+                  <math:times />
+                  <math:ci>kmu</math:ci>
+                </math:apply>
+                <math:cn>0.001</math:cn>
+              </math:apply>
+              <math:ci>na</math:ci>
+            </math:apply>
+            <math:apply>
+              <math:power />
+              <math:apply>
+                <math:times />
+                <math:ci>PhysicalCellWidth</math:ci>
+                <math:ci>omega</math:ci>
+              </math:apply>
+              <math:cn>3</math:cn>
+            </math:apply>
+          </math:apply>
+          <math:ci>p</math:ci>
+        </math:apply>
+      </math:apply>
+    </math:apply>
+  </math:apply>
+</math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ChannelCreation" name="ChannelCreation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="n" />
+        </listOfProducts>
+        <kineticLaw>
+<math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:apply>
+    <math:times />
+    <math:apply>
+      <math:divide />
+      <math:ci>nmax</math:ci>
+      <math:ci>taun</math:ci>
+    </math:apply>
+    <math:apply>
+      <math:minus />
+      <math:cn>1</math:cn>
+      <math:apply>
+        <math:divide />
+        <math:apply>
+          <math:times />
+          <math:ci>Ca</math:ci>
+          <math:apply>
+            <math:minus />
+            <math:ci>Ca</math:ci>
+            <math:cn>1</math:cn>
+          </math:apply>
+        </math:apply>
+        <math:apply>
+          <math:plus />
+          <math:apply>
+            <math:times />
+            <math:apply>
+              <math:times />
+              <math:apply>
+                <math:times />
+                <math:apply>
+                  <math:times />
+                  <math:apply>
+                    <math:times />
+                    <math:apply>
+                      <math:times />
+                      <math:apply>
+                        <math:times />
+                        <math:ci>k2</math:ci>
+                        <math:cn>0.001</math:cn>
+                      </math:apply>
+                      <math:ci>na</math:ci>
+                    </math:apply>
+                    <math:apply>
+                      <math:power />
+                      <math:apply>
+                        <math:times />
+                        <math:ci>PhysicalCellWidth</math:ci>
+                        <math:ci>omega</math:ci>
+                      </math:apply>
+                      <math:cn>3</math:cn>
+                    </math:apply>
+                  </math:apply>
+                  <math:ci>k2</math:ci>
+                </math:apply>
+                <math:cn>0.001</math:cn>
+              </math:apply>
+              <math:ci>na</math:ci>
+            </math:apply>
+            <math:apply>
+              <math:power />
+              <math:apply>
+                <math:times />
+                <math:ci>PhysicalCellWidth</math:ci>
+                <math:ci>omega</math:ci>
+              </math:apply>
+              <math:cn>3</math:cn>
+            </math:apply>
+          </math:apply>
+          <math:apply>
+            <math:times />
+            <math:ci>Ca</math:ci>
+            <math:apply>
+              <math:minus />
+              <math:ci>Ca</math:ci>
+              <math:cn>1</math:cn>
+            </math:apply>
+          </math:apply>
+        </math:apply>
+      </math:apply>
+    </math:apply>
+  </math:apply>
+</math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ChannelAnnihilation" name="ChannelAnnihilation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="n" />
+        </listOfReactants>
+        <kineticLaw>
+<math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:apply>
+    <math:divide />
+    <math:ci>n</math:ci>
+    <math:ci>taun</math:ci>
+  </math:apply>
+</math:math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="IP3Decay" name="IP3Decay">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="p" />
+        </listOfReactants>
+        <kineticLaw>
+<math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:apply>
+    <math:times />
+    <math:ci>kp</math:ci>
+    <math:ci>p</math:ci>
+  </math:apply>
+</math:math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

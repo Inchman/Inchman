@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Analyzing the simulation output &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Tutorials" href="tutorial.html" />
+    <link rel="prev" title="Running Inchman" href="inchman.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorials"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="inchman.html" title="Running Inchman"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="analyzing-the-simulation-output">
+<h1>Analyzing the simulation output<a class="headerlink" href="#analyzing-the-simulation-output" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="inchman-output-files">
+<span id="section-output-files"></span><h2>Inchman output files<a class="headerlink" href="#inchman-output-files" title="Permalink to this headline">¶</a></h2>
+<p>All output files are stored in the current working directory (see <a class="reference internal" href="inchman.html#section-inchman"><em>Running Inchman</em></a>). If Inchman is invoked from the <a class="reference internal" href="editor.html#section-editor"><em>Editor</em></a> or using the <a class="reference internal" href="inchman.html#inchman-wrapper"><em>wrapper script</em></a>, the following files will be created in the working directory:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">stdout.txt.&lt;job-id&gt;</span></tt> The standard log file for the given job. The first place to look for errors.</li>
+<li><tt class="docutils literal"><span class="pre">stderr.txt.&lt;job-id&gt;</span></tt> The standard error file for the given job.</li>
+<li><tt class="docutils literal"><span class="pre">job_&lt;job-id&gt;.h5</span></tt>     The <a class="reference internal" href="hdf5.html#section-hdf5"><em>HDF5 File</em></a>.</li>
+<li><tt class="docutils literal"><span class="pre">final_code_Gillespie.cl</span></tt> The Open-CL code for the kernels used by the Gillespie solver (only present if the model contains reactions).</li>
+<li><tt class="docutils literal"><span class="pre">final_code_StochasticInhomogeneousDriftDiffusion.cl</span></tt> The Open-CL code for the inhomogeneous diffusion kernels (only present if the inhomogeneous solver is selected)</li>
+<li><tt class="docutils literal"><span class="pre">final_code_StochasticHomogeneousDiffusion.cl</span></tt> The Open-CL code for the homogeneous diffusion kernels (only present if the homogeneous solver is selected)</li>
+<li><tt class="docutils literal"><span class="pre">final_code_Deterministic.cl</span></tt> The Open-CL code for the kernels used by the deterministic solver (only present if the deterministic solver is selected)</li>
+</ul>
+</div>
+<div class="section" id="the-hdf5-file">
+<h2>The HDF5 File<a class="headerlink" href="#the-hdf5-file" title="Permalink to this headline">¶</a></h2>
+<p>The simulation output is stored in the corresponding HDF5 file (see <a class="reference internal" href="hdf5.html#section-hdf5"><em>Structure of the HDF5 File</em></a>). The files can be read out by the standard HDF5 tools. Inchman also comes with a variety of Python helpers that can be used to extract all information from the Inchman output file and analyse it using Numpy.</p>
+<div class="section" id="using-python-for-analysis">
+<h3>Using Python for Analysis<a class="headerlink" href="#using-python-for-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Python in combination with Numpy is the recommended way to analyse Inchman output. All input-output functionality is provided by the model <tt class="docutils literal"><span class="pre">gpgmp.io</span></tt> which can be loaded by</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">gpgmp.io</span>
+</pre></div>
+</div>
+<div class="section" id="reading-in-the-state-arrays">
+<h4>Reading in the state arrays<a class="headerlink" href="#reading-in-the-state-arrays" title="Permalink to this headline">¶</a></h4>
+<p>The state array can be read in using the function <tt class="docutils literal"><span class="pre">gpgmp.io.read_gmp_hdf5(file,</span> <span class="pre">deterministic=False)</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">species</span><span class="p">,</span> <span class="n">nruns</span> <span class="o">=</span> <span class="n">gpgmp</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_gmp_hdf5</span><span class="p">(</span><span class="s">&#39;job_0&#39;</span><span class="p">,</span> <span class="n">deterministic</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the deterministic solver was used, you have to set the <tt class="docutils literal"><span class="pre">deterministic</span></tt> keyword to <tt class="docutils literal"><span class="pre">True</span></tt>. In this case, the state array will be of type <tt class="docutils literal"><span class="pre">FLOAT</span></tt> instead of <tt class="docutils literal"><span class="pre">INT</span></tt>. The variable <tt class="docutils literal"><span class="pre">nruns</span></tt> now contains the number of runs. The array <tt class="docutils literal"><span class="pre">species</span></tt> gives the species that were defined in the model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">species</span>
+<span class="go">array([&#39;A&#39;],</span>
+<span class="go">      dtype=&#39;&lt;U1&#39;)</span>
+</pre></div>
+</div>
+<p>The array <tt class="docutils literal"><span class="pre">times</span></tt> gives the time stamps of the different output dumps:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">times</span>
+<span class="go">array([ 0.,  1.,  2.,  3.,  4.,  5.])</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Note that the output dumps are sorted lexically, i.e. the output at time <tt class="docutils literal"><span class="pre">10</span></tt> comes before the dump at time <tt class="docutils literal"><span class="pre">2</span></tt>. That means that you might have to order the time stamps numerically first, for example through</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, the five-dimensional state array <tt class="docutils literal"><span class="pre">n</span></tt> gives the number count for each run (first index), each output number (second index), each species (third index) at each subvolume (fourth and fifth indices):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="go">(10, 6, 1, 512, 512)</span>
+</pre></div>
+</div>
+<p>For example, to display species &#8216;A&#8217; for run number &#8216;3&#8217; at time &#8216;4&#8217; you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,:])</span>
+<span class="go">&lt;matplotlib.image.AxesImage object at 0x7fde0e424590&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-in-the-field-arrays">
+<h4>Reading in the field arrays<a class="headerlink" href="#reading-in-the-field-arrays" title="Permalink to this headline">¶</a></h4>
+<p>If the model contains <a class="reference internal" href="editor.html#field-parameter"><em>field parameters</em></a>, the fields can be read using <tt class="docutils literal"><span class="pre">read_field(filename,</span> <span class="pre">fieldname)</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tracefield</span> <span class="o">=</span> <span class="n">gpgmp</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_field</span><span class="p">(</span><span class="s">&#39;/home/matthias/xibalba/temp/results/job_0.h5&#39;</span><span class="p">,</span> <span class="s">&#39;traceField&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tracefield</span><span class="p">)</span>
+<span class="go">(10, 6, 512, 512)</span>
+</pre></div>
+</div>
+<p>The first index denotes the run, the second index denotes the time stamp and the last two indices give the subvolume.</p>
+</div>
+<div class="section" id="simulations-involving-individuals">
+<span id="analysis-individuals"></span><h4>Simulations involving Individuals<a class="headerlink" href="#simulations-involving-individuals" title="Permalink to this headline">¶</a></h4>
+<p>If the simulations involves <a class="reference internal" href="editor.html#individuals"><em>Individual species</em></a>, the position and ID of every individual can be read out using the function <tt class="docutils literal"><span class="pre">gpgmp.io.read_gmp_individuals_all(filename,</span> <span class="pre">species)</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="n">gpgmp</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_gmp_individuals_all</span><span class="p">(</span><span class="s">&#39;/home/matthias/xibalba/temp/results/job_0&#39;</span><span class="p">,</span> <span class="s">&#39;A&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is a dictionary, where the keys denote the output dump number:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;Dump_1&#39;, &#39;Dump_0&#39;, &#39;Dump_3&#39;, &#39;Dump_2&#39;, &#39;Dump_5&#39;, &#39;Dump_4&#39;])</span>
+</pre></div>
+</div>
+<p>The elements are 64 bit unsigned integers which contain the cell position in the lower 32 bits and the individual id in the higher 32 bits:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">[</span><span class="s">&#39;Dump_1&#39;</span><span class="p">]</span>
+<span class="go">array([108512348822306, 245749438833965, 413115724425990, ...,</span>
+<span class="go">       346741299916537, 179899000336154, 231030586001694], dtype=uint64)</span>
+</pre></div>
+</div>
+<p>The module <tt class="docutils literal"><span class="pre">gpgmp.individuals</span></tt> provides a function to separate the position/id pairs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gpgmp.individuals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos</span><span class="p">,</span> <span class="n">ids</span> <span class="o">=</span> <span class="n">gpgmp</span><span class="o">.</span><span class="n">individuals</span><span class="o">.</span><span class="n">split_keys</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="s">&#39;Dump_1&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos</span>
+<span class="go">array([ 88866,  91437,  92934, ..., 175865, 175898, 182558], dtype=uint64)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the user is only interested in the number of individuals per subvolume, she can read in the state array just normally as described above.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Analyzing the simulation output</a><ul>
+<li><a class="reference internal" href="#inchman-output-files">Inchman output files</a></li>
+<li><a class="reference internal" href="#the-hdf5-file">The HDF5 File</a><ul>
+<li><a class="reference internal" href="#using-python-for-analysis">Using Python for Analysis</a><ul>
+<li><a class="reference internal" href="#reading-in-the-state-arrays">Reading in the state arrays</a></li>
+<li><a class="reference internal" href="#reading-in-the-field-arrays">Reading in the field arrays</a></li>
+<li><a class="reference internal" href="#simulations-involving-individuals">Simulations involving Individuals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="inchman.html"
+                        title="previous chapter">Running Inchman</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="next chapter">Tutorials</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/analysis.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorials"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="inchman.html" title="Running Inchman"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

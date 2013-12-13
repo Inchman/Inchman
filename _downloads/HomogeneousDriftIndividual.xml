@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_inhomogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>10</math:cn></math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>5.</math:cn></math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1.</math:cn></math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[# This python code snippet serves to initialize the species array
+import numpy
+import sys
+import traceback
+import numpy.random
+
+try:
+    sys.stdout.flush()
+
+    # extract some parameters we need
+    nx = runtimeInformation['nx']
+    ny = runtimeInformation['ny']
+    length = runtimeInformation['length']
+    nSpecies = runtimeInformation['nspecies']
+
+    # convert to numpy array
+    numpy_arx = numpy.array(individualProperties["A"]["rx"], copy=False)
+    numpy_ary = numpy.array(individualProperties["A"]["ry"], copy=False)
+    numpy_adx = numpy.array(individualProperties["A"]["diffx"], copy=False)
+    numpy_ady = numpy.array(individualProperties["A"]["diffy"], copy=False)
+    nindi = (numpy.shape(numpy_arx))[0]
+
+    # and set to random values
+    numpy_adx[:] = parameters["diffX"]
+    numpy_ady[:] = parameters["diffY"]
+    numpy_arx[:] = parameters["mux"]
+    numpy_ary[:] = parameters["muy"]
+
+except:
+    print("Unexpected error!")
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="false" computeMoments="">
+    <im:method><![CDATA[
+A->DiffusivityX = A->DiffusivityX;
+A->DiffusivityY = A->DiffusivityY;
+A->DriftX = A->DriftX;
+A->DriftY = A->DriftY;
+]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="Homogeneous Drift Individual">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>32</math:cn></math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>32</math:cn></math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>0</math:cn></math:math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+      <compartment id="Source" name="Source">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:x>
+  <im:y><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:y>
+  <im:width><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>1</cn></math></im:width>
+  <im:height><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>1</cn></math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="A" name="A" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:diffusionConstant>
+  <im:individual/>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="Source">
+      <im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>100000.0</math:cn></math:math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="diffX" value="0.6">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.6"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="diffY" value="0.8">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.8"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="mux" value="0.8">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.8"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="muy" value="0.4">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.4"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+  </model>
+</sbml>

@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Editor" href="editor.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="editor.html" title="Editor"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<span id="section-installation"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>Inchman for linux is provided as a source-code distribution which requires the user to build and install the package. The following prerequisites need to be met:</p>
+<ul>
+<li><p class="first"><a class="reference external" href="http://www.cmake.org/">CMake</a> (Version 2.8.0+). CMake is required to create the platform-specific build script and is available as a package for all major distributions. On Ubuntu, type</p>
+<div class="highlight-python"><pre>sudo apt-get install cmake</pre>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.khronos.org/opencl/">Open-CL</a> developer drivers and headers for your hardware. Unfortunately, the exact procedure to install these drivers still strongly depends on your hardware and your linux distribution. For NVIDIA cards on Ubuntu, installing the package &#8220;nvidia-opencl-dev&#8221;</p>
+<div class="highlight-python"><pre>sudo apt-get install nvidia-opencl-dev</pre>
+</div>
+<p>should do the trick. More general information about setting up Open-CL for Intel cards on Ubuntu 13.04. can be found <a class="reference external" href="http://mhr3.blogspot.com.au/2013/06/opencl-on-ubuntu-1304.html">here</a>.</p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.python.org/">Python</a> (Version 2.7+ or Version 3.3+). We need the interpreter and the developer headers. For Ubuntu users</p>
+<div class="highlight-python"><pre>sudo apt-get install python-dev</pre>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.numpy.org/">Numpy</a> (Version 1.7.1+)</p>
+<div class="highlight-python"><pre>sudo apt-get install python-numpy</pre>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.hdfgroup.org/HDF5/">HDF5</a> (Version 1.8.10+). Again, we need the library and the headers.</p>
+<div class="highlight-python"><pre>sudo apt-get install libhdf5-dev</pre>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.h5py.org/">H5PY</a> (Version 2.1.3+). You only need H5PY if you would like to use Python for analyzing the Inchman output (recommended). Make sure that you H5PY version matches your HDF5 version - the latest H5PY version (2.2 at the time of writing) requires HDF5 1.8.4+</p>
+<div class="highlight-python"><pre>sudo apt-get install python-h5py</pre>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://sbml.org/Software/libSBML">libSBML5</a> library and headers (Version 5.8.0+)</p>
+<div class="highlight-python"><pre>sudo apt-get install libsbml5-dev</pre>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.boost.org/">Boost</a> (Version 1.54+) library and headers. We need the libraries &#8220;log&#8221;, &#8220;chrono&#8221;, &#8220;date_time&#8221;, &#8220;filesystem&#8221;, &#8220;log_setup&#8221;, &#8220;system&#8221;, &#8220;thread&#8221;, &#8220;program_options&#8221;, &#8220;python&#8221;.</p>
+<div class="highlight-python"><pre>sudo apt-get install libboost-all-dev</pre>
+</div>
+<p>Note that the default boost library in Ubuntu Saucy Salamander is still 1.53, which does not contain the program_options library. Until this has been updated, you will need to install it by hand.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="build-and-install">
+<h3>Build and install<a class="headerlink" href="#build-and-install" title="Permalink to this headline">¶</a></h3>
+<p>Once all pre-requisites are met, you can build and install Inchman.</p>
+<ol class="arabic">
+<li><p class="first">Download the latest version from <a class="reference external" href="http://code.google.com/p/gpgmp/downloads/list">http://code.google.com/p/gpgmp/downloads/list</a></p>
+</li>
+<li><p class="first">Open a shell and unpack it (assuming that the package is in the current directory):</p>
+<div class="highlight-python"><pre>$tar xzf inchman-2.0.0.tar.gz</pre>
+</div>
+</li>
+<li><p class="first">Change into the new directory, create a build directory and run CMake in it:</p>
+<div class="highlight-python"><pre>$cd inchman-2.0.0/inchman
+$mkdir build
+$cd build
+$cmake ..</pre>
+</div>
+</li>
+<li><p class="first">Build the code and install it::</p>
+<div class="highlight-python"><pre>$make
+$sudo make install</pre>
+</div>
+</li>
+<li><p class="first">You finally need to install the Python libraries. <strong>The :ref:`Inchman wrapper script &lt;inchman-wrapper&gt;` will not work without access to the Python libraries!</strong>. If you have root access to your machine:</p>
+<div class="highlight-python"><pre>$cd ../python
+$sudo python setup.py install</pre>
+</div>
+<p>If you do not have root access to your machine, you can copy the <tt class="docutils literal"><span class="pre">python</span></tt> directory to any location and set the <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> environment variable (see the <a class="reference external" href="http://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH">python documentation</a>).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="mac-os-x">
+<h2>Mac OS X<a class="headerlink" href="#mac-os-x" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Download the disk image from <a class="reference external" href="http://code.google.com/p/gpgmp/downloads/detail?name=Inchman.app.dmg">http://code.google.com/p/gpgmp/downloads/detail?name=Inchman.app.dmg</a>.</p>
+</li>
+<li><p class="first">Open the image in Finder. You can then drag Inchman to your Application folder or start it by double-clicking.</p>
+</li>
+<li><p class="first">The Inchman application will then listen to incoming simulation requests from the <a class="reference internal" href="editor.html#section-editor"><em>editor</em></a>.</p>
+</li>
+<li><p class="first">You might want to install the Python libraries. These are not required for the Mac version but might be helpful for analysis. The Python modules are available at <a class="reference external" href="http://code.google.com/p/gpgmp/downloads/detail?name=python.tar.gz">http://code.google.com/p/gpgmp/downloads/detail?name=python.tar.gz</a>. Download them, open a terminal window and unpack them. If you have root access to your machine:</p>
+<div class="highlight-python"><pre>$cd python
+$sudo python setup.py install</pre>
+</div>
+<p>If you do not have root access to your machine, you can copy the <tt class="docutils literal"><span class="pre">python</span></tt> directory to any location and set the <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> environment variable (see the <a class="reference external" href="http://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH">python documentation</a>).</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#build-and-install">Build and install</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="editor.html"
+                        title="next chapter">Editor</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/installation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="editor.html" title="Editor"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

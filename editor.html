@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Editor &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Running Inchman" href="inchman.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="inchman.html" title="Running Inchman"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="editor">
+<span id="section-editor"></span><h1>Editor<a class="headerlink" href="#editor" title="Permalink to this headline">¶</a></h1>
+<p>The Inchman editor is, for most user groups, the main point of entry to the Inchman system. Users can build complete spatial reaction-drift-diffusion networks from scratch and save the models to a <a class="reference internal" href="sbml.html#section-sbml"><em>spatially-annotated SBML file</em></a>. The editor strives to keep the original SBML intact as much as possible to allow users to build non-spatial models using third-party software and use the Inchman editor to amend the SBML file with spatial and Inchman-specific information.</p>
+<div class="section" id="running-the-editor">
+<h2>Running the editor<a class="headerlink" href="#running-the-editor" title="Permalink to this headline">¶</a></h2>
+<p>The editor is completely web-based and as such no installation is required. The only prerequisites are a modern browser (the interface has been tested with Firefox and Chrome) with Javascript enabled. The editor is based on Google App Engine and lives at <a class="reference external" href="http://inchman-editor.appspot.com">http://inchman-editor.appspot.com</a></p>
+<img alt="_images/inchman_editor.png" src="_images/inchman_editor.png" style="width: 100%;" />
+<p>The main window consists of seven different regions which we will explain in detail now.</p>
+</div>
+<div class="section" id="file-panel">
+<h2>File Panel<a class="headerlink" href="#file-panel" title="Permalink to this headline">¶</a></h2>
+<p>The user can create new files, upload existing SBML files (with or without spatial and Inchman-specific information) or download an <a class="reference internal" href="sbml.html#section-sbml"><em>amended SBML file</em></a>. The downloaded file can be archived, it can be used as a template for scripted simulations or it can be run using the <a class="reference internal" href="inchman.html#section-inchman"><em>command line client</em></a>. The current experiment can be submitted directly using the <img alt="simulate" src="_images/simulate_button.png" /> button.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When the user submits the experiment by pressing the simulate button, the editor internally creates an SBML file and sends a link to this file back to the browser. The link is of the form</p>
+<div class="highlight-python"><pre>inchman://simulate/&lt;global id&gt;</pre>
+</div>
+<p class="last">and uses the specific protocol <tt class="docutils literal"><span class="pre">inchman://</span></tt> for communication between the browser and the editor. If you are using Inchman for the first time, or if you are using a different browser, you will get a message which asks you to specify the program for this protocol. You will then have to point the browser to the location of the <a class="reference internal" href="inchman.html#inchman-wrapper"><em>Inchman Python wrapper script</em></a> (for example <tt class="docutils literal"><span class="pre">/usr/local/bin/inchman</span></tt>). This choice can be changed at any time by going to Preferences-&gt;Applications in your browser and look for the Inchman protocol.</p>
+</div>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<p id="id1">The options panel serves to assign a model name, the number of subvolumes per dimension (<tt class="docutils literal"><span class="pre">GridWidth</span></tt>) and the size of the integration domain in physical units (<span class="math">\(\mu\mathrm{m}\)</span>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently only square integration domains are supported. Although the size is by default given in <span class="math">\(\mu\mathrm{m}\)</span>, the user can choose any base units. The only time when this information is used, is when Inchman computes the cell transition probabilites from the <a class="reference internal" href="#id6"><em>diffusivity-drift method</em></a> or from the diffusivity given in the <a class="reference internal" href="#species"><em>species panel</em></a>. Hence, if the base unit here is assumed to be, say, <span class="math">\(\mathrm{cm}\)</span>, the diffusivity would be given in <span class="math">\(\mathrm{cm}^2\mathrm{s}^{-1}\)</span> and the drift coefficient would have dimensions <span class="math">\(\mathrm{cm}\ \mathrm{s}^{-1}\)</span>. The user does not have to change the base units explicitly, she only needs to consistently define the diffusivity and drift.</p>
+</div>
+<p>Inchman supports stochastic and deterministic simulations. The deterministic solver computes a solution to the <a class="reference internal" href="intro.html#section-reaction-drift-diffusion-systems"><em>Fokker-Planck Equation</em></a> which can be used to check the output of the stochastic simulation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The deterministic solver is neither optimized for speed nor numerical stability. It serves only as a quick-and-dirty tool to check if the results of the stochastic simulation make sense. A lot of specialized tools exist to compute solutions to the multivariate Fokker-Planck equation which will usually be quicker and more reliable.</p>
+</div>
+<p>The user an also choose between a solver optimized for <em>homogeneous systems without drift</em> and the more versatile inhomogeneous solver. The inhomogeneous solver supports drift, a <a class="reference internal" href="#id6"><em>custom diffusivity-drift method</em></a> and anisotropic diffusivity.</p>
+<p>Finally, the user can provide the number of runs per experiment (the random number generated is re-seeded for each run such that in a stochastic simulation, all runs will yield different outputs), the physical runtime and the time interval for output dumps.</p>
+</div>
+<div class="section" id="parameters">
+<span id="id2"></span><h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>The parameters panel allows the user to define custom parameters which can the be used in the simulation. In particular, parameters are available in the <a class="reference internal" href="#species"><em>homogeneous diffusion field</em></a>, the rate law in the <a class="reference internal" href="#reactions"><em>reactions panel</em></a>, the <a class="reference internal" href="#id6"><em>inhomogeneous drift-diffusivity method</em></a>, the <a class="reference internal" href="#initialization"><em>initialization method</em></a>, the <a class="reference internal" href="#events"><em>events method</em></a> and the <a class="reference internal" href="#update-fields"><em>update fields</em></a> method. Moreover, the user can loop over parameters and thus set up parameter-sweep experiments.</p>
+<img alt="_images/inchman_editor_parameter_popup.png" class="align-left" src="_images/inchman_editor_parameter_popup.png" />
+<p>To define a new parameter, the user can click the <img alt="plus" src="_images/plus_button.png" /> button. A standard parameter is then added to the parameter list. The user can change the name of the new parameter by clicking on the current name and its value by clicking on the currently assigned value. In this case, a little window pops up where the user can define if the parameter is an integer or a real value. He can also select the domain of the parameter to be either a single parameter, a parameter range (over which Inchman will loop regularly), a parameter range from which a number of random points is selected or a field parameter.</p>
+<p id="field-parameter">A field parameter denotes a field of real values with the same dimensions as the simulation domain, i.e. <tt class="docutils literal"><span class="pre">gridWidth</span> <span class="pre">x</span> <span class="pre">gridWidth</span></tt>. The field values are initialized in the <a class="reference internal" href="#initialization"><em>initialization method</em></a> and can be periodically updated in the <a class="reference internal" href="#update-fields"><em>update fields method</em></a>. An example of how field parameters can be used is given in the <a class="reference internal" href="tutorial.html#tutorial-slit"><em>SLIT tutorial</em></a>.</p>
+</div>
+<div class="section" id="compartments">
+<h2>Compartments<a class="headerlink" href="#compartments" title="Permalink to this headline">¶</a></h2>
+<p>The user can define compartments in this panel. New compartments can be added and existing compartments can be removed by using the plus and minus buttons. Each compartment has an SBML ID (by which it will be identified) and a human-readable name. The position in the grid is defined by its x and y position and the width and height accordingly. Note that the position and size of the compartment is given in grid units, i.e. subvolumes. The position and size can also depend on any parameters defined in the <a class="reference internal" href="#parameters"><em>parameter panel</em></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Compartments in the SBML standard differ markedly from our use of compartments. In particular, SBML compartments are topological and do not contain any spatial information. Moreover, the SBML standard requires each species to reside in a particular compartment. Inchman does not support species which are confined to a compartment. Insted, Inchman assumes that all species live in a compartment &#8220;World&#8221;. This compartment needs to be defined here. Usually, one would set the World compartment at position <tt class="docutils literal"><span class="pre">(0,0)</span></tt> and assign a size that covers the whole grid. If the &#8220;World&#8221; compartment is not present, the command-line client fails to read in the model file.</p>
+</div>
+</div>
+<div class="section" id="species">
+<span id="id3"></span><h2>Species<a class="headerlink" href="#species" title="Permalink to this headline">¶</a></h2>
+<p>Species are added and removed using this panel. Each species has an SBML ID, by which it is referred to in the rate law etc., and a user-readable name. The diffusivity of the species for the <em>homogeneous solver</em> can be set here. The user can also specify how many entities of the species are initially in a particular compartment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The diffusivity set here is only used in connection with the homogeneous solver. For inhomogeneous models, or those involving drift, the diffusivity and drift needs to be set in the <a class="reference internal" href="#id6"><em>inhomogeneous drift-diffusivity method</em></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can use any <a class="reference internal" href="#parameters"><em>model parameter</em></a> in the diffusivity field and you can even do maths with it. For example, to set the diffusivity of a particular species to <span class="math">\(0.6 D\)</span>, just enter <tt class="docutils literal"><span class="pre">0.6*D</span></tt> in the equation line. You can check if the equation was interpreted correctly by looking at the generated Math-ML code in the lower box. You can also enter your equation using Math-ML here.</p>
+</div>
+<div class="section" id="individual-species">
+<span id="individuals"></span><h3>Individual species<a class="headerlink" href="#individual-species" title="Permalink to this headline">¶</a></h3>
+<p>Individual species are an experimental feature that allow the user to track individual entities. Any species can be marked as &#8220;individual&#8221; by ticking the according box in the species list. For each individual species, Inchman holds a list of individual parameters, namely the diffusivity and drift in each direction. Inchman keeps track of the subvolume location each individual resides in and the individual parameters can be changed in the <a class="reference internal" href="#id6"><em>inhomogeneous drift-diffusivity method</em></a>. Individuals can also partake in reactions. If a reaction results in a new individual to be created, the method <a class="reference internal" href="#new-individuals"><em>New Individuals Method</em></a> is called. Examples of how to use the individual interface are the <a class="reference internal" href="examples.html#example-ab-reaction-individual"><em>individual reaction example</em></a>, the <a class="reference internal" href="examples.html#example-fisher-individual"><em>individual Fisher problem example</em></a>, the <a class="reference internal" href="examples.html#example-drift-individual"><em>Homogeneous Drift - Individual example</em></a> and the <a class="reference internal" href="examples.html#example-ab-reaction-individual-new"><em>New individual test exampe</em></a>. Some technical details of how the individual solver was implemented can be found in <a class="reference internal" href="individual.html#section-individuals"><em>Individual Solver</em></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although the individual solver has been subjected to a number of tests it is still to be considered an experimental feature. Moreover, since Inchman needs to keep track of the position of each individual, including individual species will considerably slow down the simulation. Finally, the number of individuals of each species is bound to a hard limit (currently 262144 individuals per species).</p>
+</div>
+</div>
+</div>
+<div class="section" id="reactions">
+<span id="id4"></span><h2>Reactions<a class="headerlink" href="#reactions" title="Permalink to this headline">¶</a></h2>
+<p>All reactions between species are defined in this panel. Reactions have an SBML ID, a user-readable name and can be restricted to particular compartments if needed. The stoichiometry of the reaction, i.e. the reactants and the products are set by clicking on the corresponding fields. The kinetic law has to be set by the user and can involve parameters and any number of mathematical operations (an example for complicated kinetic laws such as Michaelis-Menten-type reactions can be found in the <a class="reference internal" href="examples.html#example-calcium"><em>Intracellular Calcium Waves model</em></a>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Inchman does not automatically generated a mass-action kinetic law and you have to explicitly indicate the species involved in the kinetic law. The dimension of the whole expression in the kinetic law box needs to be <span class="math">\([\mathrm{s}^{-1}]\)</span>. If, as common in the chemical and biological literature, the reaction coefficient is given in units of molar concentration <span class="math">\(\mu\mathrm{M}=10^{-6} \mathrm{mol}\ \mathrm{l}^{-3}\)</span>, you will need to convert it using the subvolume size and the Avogadro number. The following table should give some hints as how to enter common mass-action kinetic laws (provided we set a parameter <tt class="docutils literal"><span class="pre">Na</span></tt> to the Avogadro constant).</p>
+<table border="1" class="last docutils">
+<colgroup>
+<col width="9%" />
+<col width="13%" />
+<col width="44%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Order</th>
+<th class="head">Formula</th>
+<th class="head">dimension of coefficient</th>
+<th class="head">Inchman expression</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td><span class="math">\(\emptyset \xrightarrow{k} \cdots\)</span></td>
+<td><span class="math">\([k]=\mu\mathrm{M}\ \mathrm{s}^{-1}\)</span></td>
+<td><tt class="docutils literal"><span class="pre">Na*1e-3*PhysicalCellWidth^3</span></tt></td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td><span class="math">\(A \xrightarrow{k} \cdots\)</span></td>
+<td><span class="math">\([k]=\mathrm{s}^{-1}\)</span></td>
+<td><tt class="docutils literal"><span class="pre">A</span></tt></td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td><span class="math">\(A + B \xrightarrow{k} \cdots\)</span></td>
+<td><span class="math">\([k]=\mu\mathrm{M}^{-1}\ \mathrm{s}^{-1}\)</span></td>
+<td><tt class="docutils literal"><span class="pre">A*B/(Na*1e-3*PhysicalCellWidth^3)</span></tt></td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td><span class="math">\(A + A \xrightarrow{k} \cdots\)</span></td>
+<td><span class="math">\([k]=\mu\mathrm{M}^{-1}\ \mathrm{s}^{-1}\)</span></td>
+<td><tt class="docutils literal"><span class="pre">A*(A-1)/(2*Na*1e-3*PhysicalCellWidth^3)</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>You can confine reactions to particular compartments by clicking the &#8220;compartments allowed in&#8221; column and adding the corresponding compartment. If no compartment is selected, the reaction is allowed in the whole domain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Localization of reactions, i.e. constricting reactions to compartments, is achieved internally by using textures. This functionality is not available for old graphics card, like older iMacs, and you will get an Open-CL error. In this case, you will have to set up your simulation without localization.</p>
+</div>
+</div>
+<div class="section" id="initialization">
+<span id="id5"></span><h2>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<p>This tab allows the user to provide highly sophisticated initial conditions. The user provides in this tab a <a class="reference external" href="http://www.python.org/">Python</a> script which sets the initial conditions accordingly. Examples that use this method to initialize the simulations are the <a class="reference internal" href="examples.html#example-fisher"><em>Fisher problem</em></a>, the <a class="reference internal" href="tutorial.html#tutorial-bz-reaction"><em>BZ reaction</em></a> and the <a class="reference internal" href="examples.html#example-calcium"><em>Intracellular Calcium Waves model</em></a>.</p>
+<p>The following code block can be used as a template for own models:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="c"># extract some parameters we need</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nx&#39;</span><span class="p">]</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;ny&#39;</span><span class="p">]</span>
+<span class="n">nSpecies</span> <span class="o">=</span> <span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;nspecies&#39;</span><span class="p">]</span>
+
+<span class="c"># make a numpy array out of it</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">runtimeInformation</span><span class="p">[</span><span class="s">&#39;solver&#39;</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;stochastic_homogeneous&#39;</span><span class="p">):</span>
+  <span class="c"># we have a stochastic simulation going</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="c"># this is for the deterministic simulation</span>
+  <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">deterministicState</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># reshape the array</span>
+<span class="n">np_state_new</span> <span class="o">=</span> <span class="n">numpy_state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nSpecies</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+
+<span class="c"># zero the array</span>
+<span class="n">np_state_new</span><span class="p">[:,:,:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c"># set species &#39;A&#39; to value &#39;1&#39; in each subvolume</span>
+<span class="n">np_state_new</span><span class="p">[</span><span class="n">species</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>We strongly urge the reader to become familiar with Python and <a class="reference external" href="http://www.numpy.org/">Numpy</a> if he is not so already as an exact explanation of how this snippet works is out of the scope of this manual. Please also have a look at the <a class="reference internal" href="tutorial.html#tutorial-bz-reaction"><em>BZ reaction tutorial</em></a> and the examples.</p>
+</div>
+<div class="section" id="drift-diffusivity-method">
+<h2>Drift-Diffusivity Method<a class="headerlink" href="#drift-diffusivity-method" title="Permalink to this headline">¶</a></h2>
+<p id="id6">This tab is only available if the inhomogeneous solver was selected. Here, the user can provide the diffusivity and drift for each species. In the most simple case, all species have the same diffusivity and drift (compare the <a class="reference internal" href="examples.html#example-drift"><em>homogeneous diffusivity and drift example</em></a>). This can be achieved by entering</p>
+<div class="highlight-python"><pre>All-&gt;DiffusivityX = 0.6;
+All-&gt;DiffusivityY = 0.8;
+All-&gt;DriftX = 0.8;
+All-&gt;DriftY = 0.4;</pre>
+</div>
+<p>The keyword <tt class="docutils literal"><span class="pre">All</span></tt> stands for all species, <tt class="docutils literal"><span class="pre">-&gt;</span></tt> is the assignment operator and <tt class="docutils literal"><span class="pre">DiffusivityX</span></tt> denotes the diffusivity in x direction. <strong>Note the compulsory semicolon at the end of each line!</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The astute reader might notice that this looks a lot like C code - and in fact it is. Internally, this method will be copied into a template file and compiled by the Open-CL runtime compiler. Users familiar with C programming can benefit from the full functionality provided by a high level language to perform sophisticated calculations here. A more complicated example of how to make use of this capability is given in the <a class="reference internal" href="tutorial.html#tutorial-slit"><em>SLIT tutorial</em></a>. Inchman also stores the complete Open-CL code for the different solvers in the current working directory (filenames start with <tt class="docutils literal"><span class="pre">_final_code_</span></tt>). This is very useful for debugging purposes. Also, if the Open-CL compiler fails, the line numbers refer to these files.</p>
+</div>
+<p>Species can be assigned individual diffusivity and drift values by simple replacing the <tt class="docutils literal"><span class="pre">All</span></tt> keyword with the species name, as in</p>
+<div class="highlight-python"><pre>A-&gt;DiffusivityX = 0.6;</pre>
+</div>
+<p>for species A.</p>
+<p>Users have also full access to all parameters defined in the <a class="reference internal" href="#parameters"><em>parameter panel</em></a> and the following system parameters and helper functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">GridModelWidth</span></tt></td>
+<td>Width of the computation grid</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GridModelHeight</span></tt></td>
+<td>Height of the computation grid</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PhysicalModelWidth</span></tt></td>
+<td>Domain width in physical units</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PhysicalModelHeight</span></tt></td>
+<td>Domain height in physical units</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PhysicalCellWidth</span></tt></td>
+<td>Cell width in physical units</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PhysicalCellHeight</span></tt></td>
+<td>Cell height in physical units</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PhysicalSimTime</span></tt></td>
+<td>The current simulation time</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">NumReactions</span></tt></td>
+<td>Number of reactions</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">NumSpecies</span></tt></td>
+<td>Number of species</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">GridX</span></tt></td>
+<td>x position on the computation grid</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">GridY</span></tt></td>
+<td>y position on the computation grid</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PhysicalX</span></tt></td>
+<td>x position on the domain in physical units (see <a class="reference internal" href="#coordinate-system"><em>Setting up a coordinate system</em></a>)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PhysicalY</span></tt></td>
+<td>y position on the domain in physical units (see <a class="reference internal" href="#coordinate-system"><em>Setting up a coordinate system</em></a>)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">&lt;species&gt;-&gt;State</span></tt></td>
+<td>Species count for species <tt class="docutils literal"><span class="pre">&lt;species&gt;</span></tt> at current grid position</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&lt;species&gt;-&gt;MeanX</span></tt></td>
+<td>Global mean x position of species <tt class="docutils literal"><span class="pre">&lt;species&gt;</span></tt> in physical units (only available if the &#8220;Compute Moments&#8221; box is checked)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">getCentralDifferenceX(&lt;species&gt;)</span></tt></td>
+<td>Computes the central difference of the species count in X direction (see <a class="reference internal" href="tutorial.html#tutorial-slit"><em>SLIT tutorial</em></a>)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getCentralDifferenceY(&lt;species&gt;)</span></tt></td>
+<td>Computes the central difference of the species count in X direction (see <a class="reference internal" href="tutorial.html#tutorial-slit"><em>SLIT tutorial</em></a>)</td>
+</tr>
+</tbody>
+</table>
+<p>The user can access advanced functionality by unfolding the &#8220;advanced&#8221; tab at the top of the window. The available functionality is:</p>
+<ul class="simple">
+<li>Re-Compute Drift Diffusivity after each time-step. If the values for the drift and the diffusivity stay constant over time, the simulation can be sped up considerably by unchecking this box.</li>
+<li>Compute moments. The <a class="reference internal" href="examples.html#example-nonlinear"><em>non-linear diffusivity and drift example</em></a> requires the mean value of the species in x direction. This can be computed by checking this box.</li>
+</ul>
+<div class="section" id="setting-up-a-coordinate-system">
+<span id="coordinate-system"></span><h3>Setting up a coordinate system<a class="headerlink" href="#setting-up-a-coordinate-system" title="Permalink to this headline">¶</a></h3>
+<p>So far, all examples set the diffusivity and drift homogeneously over the whole domain. Inchman unfolds its full strength, however, when dealing with inhomogeneous diffusivity and drift fields. For this purpose, users can set up a coordinate system on which the diffusivity and drift fields can depend on.</p>
+<p>Internally, the drift and diffusivity is computed for each species and each grid cell (subvolume) separately. That means that the expression <tt class="docutils literal"><span class="pre">A-&gt;DiffusivityX</span></tt> implicitly refers to the diffusivity in X direction at the current grid cell. Likewise, the expression <tt class="docutils literal"><span class="pre">A-&gt;State</span></tt> denotes the number of particles of species A at the current grid cell. The current position on the grid can be accessed using the variables <tt class="docutils literal"><span class="pre">GridX</span></tt> and <tt class="docutils literal"><span class="pre">GridY</span></tt>. A standard coordinate system, where the origin is centered on the grid, is also available through the variables <tt class="docutils literal"><span class="pre">PhysicalX</span></tt> and <tt class="docutils literal"><span class="pre">PhysicalY</span></tt>.</p>
+<p>We have a look at how the <a class="reference internal" href="examples.html#example-nonlinear"><em>non-linear diffusivity and drift example</em></a> computes the diffusivity and drift. First, the diffusivity is constant over the whole grid:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="c1">// diffusivity is constant</span>
+<span class="n">All</span><span class="o">-&gt;</span><span class="n">DiffusivityX</span> <span class="o">=</span> <span class="n">diffx</span><span class="p">;</span>
+<span class="n">All</span><span class="o">-&gt;</span><span class="n">DiffusivityY</span> <span class="o">=</span> <span class="n">diffy</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>We then use the physical coordinate system provided by Inchman to set up a coordinate system where the origin is shifted by the user-defined parameter <tt class="docutils literal"><span class="pre">origin</span></tt>:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="n">Real</span> <span class="n">shiftedX</span> <span class="o">=</span> <span class="n">PhysicalX</span> <span class="o">+</span> <span class="n">origin</span><span class="p">;</span>
+<span class="n">Real</span> <span class="n">shiftedMeanX</span> <span class="o">=</span> <span class="n">All</span><span class="o">-&gt;</span><span class="n">MeanX</span> <span class="o">+</span> <span class="n">origin</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This coordinate system can then be used to compute the non-linear drift:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="n">All</span><span class="o">-&gt;</span><span class="n">DriftX</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">omega</span> <span class="o">*</span> <span class="n">shiftedX</span> <span class="o">+</span> <span class="n">theta</span><span class="o">*</span><span class="n">shiftedMeanX</span><span class="p">);</span>
+<span class="n">All</span><span class="o">-&gt;</span><span class="n">DriftY</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="events">
+<span id="id7"></span><h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<p>This panel allows the user to define a number of events. Events can be added and removed on the left side of the split window. At each event, the corresponding python script, which is assigned on the right side, is executed. Here, the user can change the state field and field variable. <strong>Note that parameters are fixed over the whole simulation and cannot be changed here</strong>. The syntax of the event scripts is exactly the same as in the section <a class="reference internal" href="#initialization"><em>Initialization</em></a>.</p>
+</div>
+<div class="section" id="update-fields">
+<span id="id8"></span><h2>Update Fields<a class="headerlink" href="#update-fields" title="Permalink to this headline">¶</a></h2>
+<p>This panel is useful if the model contains <a class="reference internal" href="#field-parameter"><em>field parameters</em></a>. Here, the user can provide a method to periodically update the fields. The routine is called after each diffusion step and the time that has passed since the last update is available in the variable <tt class="docutils literal"><span class="pre">dt</span></tt>. An example of how to use this method is found in the example <a class="reference internal" href="examples.html#example-drift-field"><em>Homogeneous Diffusivity and Drift with Field Parameter</em></a>:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="n">traceField</span> <span class="o">=</span> <span class="n">A</span><span class="o">/</span><span class="n">dt</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The field parameter <tt class="docutils literal"><span class="pre">traceField</span></tt> is updated by the local count of species A in each time period.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Note that several diffusion steps might occur at the same time. In this case, the time step <tt class="docutils literal"><span class="pre">dt</span></tt> might be zero. The user should explicitly take care of this possibility.</p>
+</div>
+</div>
+<div class="section" id="new-individuals">
+<span id="id9"></span><h2>New Individuals<a class="headerlink" href="#new-individuals" title="Permalink to this headline">¶</a></h2>
+<p>If the model contains <a class="reference internal" href="#individuals"><em>individual species</em></a>, this method is called each time a new individual is created by a reaction. Here, the user can set the properties of the newly created individual. An example of how to do this can be found in <a class="reference internal" href="examples.html#example-ab-reaction-individual-new"><em>Simple Reaction Network with Individuals (using New Individuals Method)</em></a>. The code used to set the diffusivity and drift for the new individual is</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="n">All</span><span class="o">-&gt;</span><span class="n">DiffusivityX</span> <span class="o">=</span> <span class="n">RANDOM</span><span class="p">;</span>
+<span class="n">All</span><span class="o">-&gt;</span><span class="n">DiffusivityY</span> <span class="o">=</span> <span class="n">RANDOM</span><span class="p">;</span>
+<span class="n">All</span><span class="o">-&gt;</span><span class="n">DriftX</span> <span class="o">=</span> <span class="n">RANDOM</span><span class="p">;</span>
+<span class="n">All</span><span class="o">-&gt;</span><span class="n">DriftY</span> <span class="o">=</span> <span class="n">RANDOM</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The keyword <tt class="docutils literal"><span class="pre">RANDOM</span></tt> yields a uniformly distributed random number in the interval <span class="math">\([0,1]\)</span>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Editor</a><ul>
+<li><a class="reference internal" href="#running-the-editor">Running the editor</a></li>
+<li><a class="reference internal" href="#file-panel">File Panel</a></li>
+<li><a class="reference internal" href="#options">Options</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#compartments">Compartments</a></li>
+<li><a class="reference internal" href="#species">Species</a><ul>
+<li><a class="reference internal" href="#individual-species">Individual species</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reactions">Reactions</a></li>
+<li><a class="reference internal" href="#initialization">Initialization</a></li>
+<li><a class="reference internal" href="#drift-diffusivity-method">Drift-Diffusivity Method</a><ul>
+<li><a class="reference internal" href="#setting-up-a-coordinate-system">Setting up a coordinate system</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a></li>
+<li><a class="reference internal" href="#update-fields">Update Fields</a></li>
+<li><a class="reference internal" href="#new-individuals">New Individuals</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="inchman.html"
+                        title="next chapter">Running Inchman</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/editor.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="inchman.html" title="Running Inchman"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

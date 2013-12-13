@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Examples &mdash; Inchman 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Inchman 2.0 documentation" href="index.html" />
+    <link rel="next" title="Inchman SBML Annotations" href="sbml.html" />
+    <link rel="prev" title="Tutorials" href="tutorial.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="sbml.html" title="Inchman SBML Annotations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorials"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="simple-reaction-network">
+<span id="example-ab-reaction"></span><h2>Simple Reaction Network<a class="headerlink" href="#simple-reaction-network" title="Permalink to this headline">¶</a></h2>
+<p>A simple network consisting of two species and four reactions. Details can be found in <a class="reference internal" href="intro.html#vigelius2010">[Vigelius2010]</a>. The source code is available in <a class="reference download internal" href="_downloads/ABReaction.xml"><tt class="xref download docutils literal"><span class="pre">ABReaction.xml</span></tt></a>. A standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.abreaction &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="simple-reaction-network-with-individuals">
+<span id="example-ab-reaction-individual"></span><h2>Simple Reaction Network with Individuals<a class="headerlink" href="#simple-reaction-network-with-individuals" title="Permalink to this headline">¶</a></h2>
+<p>The same reaction network as in <a class="reference internal" href="#example-ab-reaction"><em>Simple Reaction Network</em></a> is modelled with individual species. The source code is available in <a class="reference download internal" href="_downloads/ABReaction.xml"><tt class="xref download docutils literal"><span class="pre">ABReactionIndividual.xml</span></tt></a>. A standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.abreaction &lt;output-file&gt; individual</pre>
+</div>
+</div>
+<div class="section" id="simple-reaction-network-with-individuals-using-new-individuals-method">
+<span id="example-ab-reaction-individual-new"></span><h2>Simple Reaction Network with Individuals (using New Individuals Method)<a class="headerlink" href="#simple-reaction-network-with-individuals-using-new-individuals-method" title="Permalink to this headline">¶</a></h2>
+<p>The same reaction network as in <a class="reference internal" href="#example-ab-reaction"><em>Simple Reaction Network</em></a> is modelled with individual species, where all newly created individuals are initialized with a random diffusivity and drift. The source code is available in <a class="reference download internal" href="_downloads/ABReaction.xml"><tt class="xref download docutils literal"><span class="pre">ABReactionIndividualNew.xml</span></tt></a>. A standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.abreaction &lt;output-file&gt; individual</pre>
+</div>
+<p>In addition, you can use any HDF5 viewer to check, if the individual properties were set correctly, i.e. uniformly-random distributed.</p>
+</div>
+<div class="section" id="fisher-problem">
+<span id="example-fisher"></span><h2>Fisher Problem<a class="headerlink" href="#fisher-problem" title="Permalink to this headline">¶</a></h2>
+<p>The famous Fisher problem, a non-linear reaction-diffusion problem  <a class="reference internal" href="intro.html#vigelius2010">[Vigelius2010]</a>. The source code is in <a class="reference download internal" href="_downloads/FisherProblem.xml"><tt class="xref download docutils literal"><span class="pre">FisherProblem.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.fisher_problem &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="fisher-problem-with-individuals">
+<span id="example-fisher-individual"></span><h2>Fisher Problem with Individuals<a class="headerlink" href="#fisher-problem-with-individuals" title="Permalink to this headline">¶</a></h2>
+<p>The same as <a class="reference internal" href="#example-fisher"><em>Fisher Problem</em></a> except that the species are individuals. The source code is in <a class="reference download internal" href="_downloads/FisherProblemIndividual.xml"><tt class="xref download docutils literal"><span class="pre">FisherProblemIndividual.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.fisher_problem &lt;output-file&gt; individual</pre>
+</div>
+</div>
+<div class="section" id="homogeneous-diffusion">
+<span id="example-diffusion"></span><h2>Homogeneous Diffusion<a class="headerlink" href="#homogeneous-diffusion" title="Permalink to this headline">¶</a></h2>
+<p>A simple example to test the homogeneous solver involving one diffusing species (no drift) and no reactions <a class="reference internal" href="tutorial.html#vigelius2012a">[Vigelius2012a]</a>. The source code is in <a class="reference download internal" href="_downloads/HomogeneousDiffusion.xml"><tt class="xref download docutils literal"><span class="pre">HomogeneousDiffusion.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.homogeneous_diffusion &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="homogeneous-diffusivity-and-drift">
+<span id="example-drift"></span><h2>Homogeneous Diffusivity and Drift<a class="headerlink" href="#homogeneous-diffusivity-and-drift" title="Permalink to this headline">¶</a></h2>
+<p>The same example as <a class="reference internal" href="#example-diffusion"><em>Homogeneous Diffusion</em></a> with a drift field <a class="reference internal" href="tutorial.html#vigelius2012a">[Vigelius2012a]</a>. The source code is in <a class="reference download internal" href="_downloads/HomogeneousDrift.xml"><tt class="xref download docutils literal"><span class="pre">HomogeneousDrift.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.homogeneous_drift_diffusion &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="homogeneous-diffusivity-and-drift-with-field-parameter">
+<span id="example-drift-field"></span><h2>Homogeneous Diffusivity and Drift with Field Parameter<a class="headerlink" href="#homogeneous-diffusivity-and-drift-with-field-parameter" title="Permalink to this headline">¶</a></h2>
+<p>Exactly the same as <a class="reference internal" href="#example-drift"><em>Homogeneous Diffusivity and Drift</em></a> only that the diffusivity and drift field is now set using a field parameter. The source code is in <a class="reference download internal" href="_downloads/HomogeneousDriftField.xml"><tt class="xref download docutils literal"><span class="pre">HomogeneousDriftField.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.homogeneous_drift_diffusion &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="homogeneous-diffusivity-and-drift-individuals">
+<span id="example-drift-individual"></span><h2>Homogeneous Diffusivity and Drift (Individuals)<a class="headerlink" href="#homogeneous-diffusivity-and-drift-individuals" title="Permalink to this headline">¶</a></h2>
+<p>Exactly the same as <a class="reference internal" href="#example-drift"><em>Homogeneous Diffusivity and Drift</em></a> only that the diffusing species are individuals. The source code is in <a class="reference download internal" href="_downloads/HomogeneousDriftIndividual.xml"><tt class="xref download docutils literal"><span class="pre">HomogeneousDriftIndividual.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.homogeneous_drift_diffusion &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="multiplicative-noise-geometric-brownian-motion">
+<span id="example-multiplicative-noise"></span><h2>Multiplicative Noise (Geometric Brownian Motion)<a class="headerlink" href="#multiplicative-noise-geometric-brownian-motion" title="Permalink to this headline">¶</a></h2>
+<p>An example to test the inhomogeneous solver. It contains one species and position-dependent diffusivity and drift <a class="reference internal" href="tutorial.html#vigelius2012a">[Vigelius2012a]</a>. The source code is in <a class="reference download internal" href="_downloads/MultiplicativeNoise.xml"><tt class="xref download docutils literal"><span class="pre">MultiplicativeNoise.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.multiplicative_noise &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="non-linear-drift-field">
+<span id="example-nonlinear"></span><h2>Non-linear Drift Field<a class="headerlink" href="#non-linear-drift-field" title="Permalink to this headline">¶</a></h2>
+<p>A test problem involving a non-linear drift field <a class="reference internal" href="tutorial.html#vigelius2012a">[Vigelius2012a]</a>. The source code is in <a class="reference download internal" href="_downloads/Nonlinear.xml"><tt class="xref download docutils literal"><span class="pre">Nonlinear.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.nonlinear &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="ornstein-uhlenbeck-process">
+<span id="example-ornstein-uhlenbeck"></span><h2>Ornstein-Uhlenbeck Process<a class="headerlink" href="#ornstein-uhlenbeck-process" title="Permalink to this headline">¶</a></h2>
+<p>An implementation of an Ornstein-Uhlenbeck process <a class="reference internal" href="tutorial.html#vigelius2012a">[Vigelius2012a]</a>. The source code is in <a class="reference download internal" href="_downloads/OrnsteinUhlenbeck.xml"><tt class="xref download docutils literal"><span class="pre">OrnsteinUhlenbeck.xml</span></tt></a> and standard analysis can be done by:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.ornstein_uhlenbeck &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="a-b-annihilation">
+<span id="example-ab"></span><h2>A+B Annihilation<a class="headerlink" href="#a-b-annihilation" title="Permalink to this headline">¶</a></h2>
+<p>This is a simple system with two species <span class="math">\(A\)</span> and <span class="math">\(B\)</span> and a corresponding reaction <span class="math">\(A+B\xrightarrow{k_1}\emptyset\)</span>. Details can be found in <a class="reference internal" href="intro.html#vigelius2010">[Vigelius2010]</a>. You can analyze it using:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.annihilation_2d &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="a-b-annihilation-with-drift">
+<span id="example-ab-drift"></span><h2>A+B Annihilation with Drift<a class="headerlink" href="#a-b-annihilation-with-drift" title="Permalink to this headline">¶</a></h2>
+<p>This example is the same as example <a class="reference internal" href="#example-ab"><em>A+B Annihilation</em></a> except that a constant drift field is present. The source code is found in <a class="reference download internal" href="_downloads/ABAnnihilationDrift.xml"><tt class="xref download docutils literal"><span class="pre">ABAnnihilationDrift.xml</span></tt></a>. Analysis can be done using:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.annihilation_2d_drift &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="random-drift-field">
+<span id="example-random-drift"></span><h2>Random Drift Field<a class="headerlink" href="#random-drift-field" title="Permalink to this headline">¶</a></h2>
+<p>In this example, a number of individuals is initialized with random diffusivity and drift, where each individual has a different diffusivity and drift. The source code is found in <a class="reference download internal" href="_downloads/RandomDrift.xml"><tt class="xref download docutils literal"><span class="pre">RandomDrift.xml</span></tt></a>. Analysis can be done using:</p>
+<div class="highlight-python"><pre>$python -m gpgmp.test.random_drift &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="intracellular-calcium-distribution">
+<span id="example-calcium"></span><h2>Intracellular Calcium Distribution<a class="headerlink" href="#intracellular-calcium-distribution" title="Permalink to this headline">¶</a></h2>
+<p>This example implements an actual biological model used to describe the intracellular distribution of Calcium ions (cf. <a class="reference internal" href="intro.html#vigelius2012b">[Vigelius2012b]</a> for details). The model is found in <a class="reference download internal" href="_downloads/Calcium.xml"><tt class="xref download docutils literal"><span class="pre">Calcium.xml</span></tt></a> and can be analysed using:</p>
+<div class="highlight-python"><pre>$python -m python -m gpgmp.models.calcium &lt;output-file&gt;</pre>
+</div>
+</div>
+<div class="section" id="oregonator-model-of-the-belousov-zhabotinsky-reaction">
+<span id="example-oregonator"></span><h2>Oregonator Model of the Belousov-Zhabotinsky Reaction<a class="headerlink" href="#oregonator-model-of-the-belousov-zhabotinsky-reaction" title="Permalink to this headline">¶</a></h2>
+<p>This is the Oregonator model of the Belousov-Zhabotinsky reaction which is covered in the <a class="reference internal" href="tutorial.html#tutorial-bz-reaction"><em>tutorial</em></a>. The model is found in <a class="reference download internal" href="_downloads/Oregonator.xml"><tt class="xref download docutils literal"><span class="pre">Oregonator.xml</span></tt></a>. Analysis is covered in the tutorial.</p>
+</div>
+<div class="section" id="chemotaxis-of-neurons-in-the-brain">
+<span id="example-slit"></span><h2>Chemotaxis of Neurons in the Brain<a class="headerlink" href="#chemotaxis-of-neurons-in-the-brain" title="Permalink to this headline">¶</a></h2>
+<p>The model of migrating neurons in the brain which is also covered in the <a class="reference internal" href="tutorial.html#tutorial-slit"><em>tutorial</em></a>. The model is found in <a class="reference download internal" href="_downloads/Slit.xml"><tt class="xref download docutils literal"><span class="pre">Slit.xml</span></tt></a>. Analysis is covered in the tutorial.</p>
+<table class="docutils citation" frame="void" id="vigelius2010" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Vigelius2010]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id8">3</a>)</em> Vigelius M, Lane A, Meyer B (2010):  <a class="reference external" href="http://bioinformatics.oxfordjournals.org/content/27/2/288">Accelerating reaction–diffusion simulations with general-purpose graphics processing units</a>  Bioinformatics (2011) 27 (2): 288-290.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vigelius2012a" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Vigelius2012a]</td><td><em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id4">2</a>, <a class="fn-backref" href="#id5">3</a>, <a class="fn-backref" href="#id6">4</a>, <a class="fn-backref" href="#id7">5</a>)</em> Vigelius M, Meyer B (2012a) <a class="reference external" href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0033384">Multi-Dimensional, Mesoscopic Monte Carlo Simulations of Inhomogeneous Reaction-Drift-Diffusion Systems on Graphics-Processing Units.</a> PLoS ONE 7(4): e33384. doi:10.1371/journal.pone.0033384</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vigelius2012b" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[Vigelius2012b]</a></td><td>Vigelius M, Meyer B (2012b): <a class="reference external" href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0042508">Stochastic Simulations of Pattern Formation in Excitable Media.</a> PLoS ONE 7(8): e42508. doi:10.1371/journal.pone.0042508</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#simple-reaction-network">Simple Reaction Network</a></li>
+<li><a class="reference internal" href="#simple-reaction-network-with-individuals">Simple Reaction Network with Individuals</a></li>
+<li><a class="reference internal" href="#simple-reaction-network-with-individuals-using-new-individuals-method">Simple Reaction Network with Individuals (using New Individuals Method)</a></li>
+<li><a class="reference internal" href="#fisher-problem">Fisher Problem</a></li>
+<li><a class="reference internal" href="#fisher-problem-with-individuals">Fisher Problem with Individuals</a></li>
+<li><a class="reference internal" href="#homogeneous-diffusion">Homogeneous Diffusion</a></li>
+<li><a class="reference internal" href="#homogeneous-diffusivity-and-drift">Homogeneous Diffusivity and Drift</a></li>
+<li><a class="reference internal" href="#homogeneous-diffusivity-and-drift-with-field-parameter">Homogeneous Diffusivity and Drift with Field Parameter</a></li>
+<li><a class="reference internal" href="#homogeneous-diffusivity-and-drift-individuals">Homogeneous Diffusivity and Drift (Individuals)</a></li>
+<li><a class="reference internal" href="#multiplicative-noise-geometric-brownian-motion">Multiplicative Noise (Geometric Brownian Motion)</a></li>
+<li><a class="reference internal" href="#non-linear-drift-field">Non-linear Drift Field</a></li>
+<li><a class="reference internal" href="#ornstein-uhlenbeck-process">Ornstein-Uhlenbeck Process</a></li>
+<li><a class="reference internal" href="#a-b-annihilation">A+B Annihilation</a></li>
+<li><a class="reference internal" href="#a-b-annihilation-with-drift">A+B Annihilation with Drift</a></li>
+<li><a class="reference internal" href="#random-drift-field">Random Drift Field</a></li>
+<li><a class="reference internal" href="#intracellular-calcium-distribution">Intracellular Calcium Distribution</a></li>
+<li><a class="reference internal" href="#oregonator-model-of-the-belousov-zhabotinsky-reaction">Oregonator Model of the Belousov-Zhabotinsky Reaction</a></li>
+<li><a class="reference internal" href="#chemotaxis-of-neurons-in-the-brain">Chemotaxis of Neurons in the Brain</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="previous chapter">Tutorials</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sbml.html"
+                        title="next chapter">Inchman SBML Annotations</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/examples.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="sbml.html" title="Inchman SBML Annotations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorials"
+             >previous</a> |</li>
+        <li><a href="index.html">Inchman 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Matthias Vigelius, Aidan Lane, Bernd Meyer.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
