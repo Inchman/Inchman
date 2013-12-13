@@ -1,0 +1,183 @@
+#!/usr/bin/python
+
+# this is how to register the handler in ubuntu
+# http://code.google.com/p/cosmographia/issues/detail?id=22
+#/usr/share/applications/<app>.desktop 
+#entry MimeType=x-scheme-handler/<app-sch>
+#entry Exec=exef %U
+#postscript update-desktop-database
+
+# also look into
+# http://www.freedesktop.org/wiki/Specifications/AddingMIMETutor/?action=show&redirect=Standards%2FAddingMIMETutor
+import sys
+
+import sys, re, urllib2
+
+import gpgmp.common.options
+import gpgmp.common.jobs
+import gpgmp.inchman.inchman_gui
+import gpgmp.inchman.paramsweeper
+
+import os
+import traceback
+
+from optparse import OptionParser
+
+def id_is_valid(id):
+    uuid4hex = re.compile('[0-9a-f]{32}\Z', re.I)
+    return uuid4hex.match(id) != None
+
+def get_file(workdir, host, id):
+    url = 'http://' + host + '/api/modelSaveDownload?id=' + id
+    response = urllib2.urlopen(url)
+    filename = workdir+ id + '.xml'
+    f = open(filename, 'w')
+    f.write(response.read())
+    f.close()
+    response.close()
+    return filename
+
+def fetch_xml_file(ops, complete_url):
+    handler, fullPath = complete_url.split(':', 1)
+
+    # Validate handler
+    if handler != 'inchman':
+        raise Exception("Invalid handler: {0:s}".format(handler))
+
+    action, id = fullPath.strip('/').split('/')
+
+    # Validate action
+    if action != 'simulate':
+        raise Exception("Unknown action: {0:s}".format(action))
+
+    # Validate id - ensure that the id doesn't contain any malicious characters
+    if not id_is_valid(id):
+        raise Exception("Invalid experiment ID: {0:s}".format(id))
+
+    filename = None
+    try:
+        filename = get_file(ops['datadir'], 'localhost:8888', id)
+    except urllib2.URLError, urllib2.HTTPError:
+        try:
+            # Now try remote server
+            # IMPORTANT use hard-coded host so that the 'inchman://' handler isn't exploited to load files from other locations
+            filename = get_file(ops['datadir'], 'inchman-editor.appspot.com', id)
+        except urllib2.URLError, urllib2.HTTPError:
+            raise Exception("Failed to find the experiment on any server")
+        
+    return filename
+
+# writes text either to the console or to the GUI window
+def writeText(text, app, tag=None):
+    if app==None:
+        print(text)
+    else:
+        app.insert_text(text, tag)
+
+def main(argv):
+    # check if X is available
+    display = os.environ.get('DISPLAY')
+
+    # check options
+    parser = OptionParser()
+    parser.add_option("--no-display", action="store_true", dest="nodisplay")    
+    systemoptions, options, args = gpgmp.common.options.getSystemOptions(argv, parser)
+
+    #(options, args) = parser.parse_args(argv)
+
+    if display==None or options.nodisplay:
+        app = None
+    else:
+        # init GUI
+        app = gpgmp.inchman.inchman_gui.InchmanGUI()
+
+    # we try to catch any errors..
+    try:
+        # print out calling commnad
+        call = ""
+        for argument in args:
+            call = call + " " + argument
+        writeText("Handler called with arguments {0:s}\n".format(call), app)
+
+        # choose working directory and inject into system options
+        if app!=None:
+            # check if datadir was given in options
+            if options.datadir==None:
+                wd = app.getWorkingDirectory()
+                if wd=='/':
+                    raise Exception("You need to specify a valid data directory.")
+                else:
+                    systemoptions['datadir'] = wd
+                    print("Data directory is {0:s}".format(wd))
+        else:
+            # check if workdir was given .. if not exit with error since we don't know where to work in!
+            if options.datadir==None:
+                raise Exception('No data directory was specified. Try option --datadir=<DIR>')
+
+        # check if we have the right number of arguments
+        if (len(args)!=2):
+            raise Exception("Wrong number of arguments: {0:d}".format(len(args)))
+
+        # now we check if Inchman was invoked from the editor (i.e. an inchman://simulate/...)
+        # or from the command line with an xml-file as argument
+        if args[1][:8]=='inchman:':
+            # fetch protocol
+            writeText("Fetching SBML file from editor..     ", app)
+            sourcename = fetch_xml_file(systemoptions, args[1])
+            writeText("done.\n", app, tag="success")
+        else:
+            sourcename = args[1]
+        writeText("Using source file {0:s}.\n".format(sourcename), app)
+
+        # get the sweep parameters
+        sweepparams = gpgmp.inchman.paramsweeper.find_params(sourcename)
+        sweepjobs = gpgmp.inchman.paramsweeper.sweep_params(sweepparams)
+
+        # template for the log files
+        outlogtemplate = systemoptions['outlog']
+        errlogtemplate = systemoptions['errlog']
+
+        # and run all jobs
+        for idx, job in enumerate(sweepjobs):
+            params = '"{0:s}" --output {1:s}/job_{2:d}.h5 --cl-source="{3:s}" '.format(sourcename,  systemoptions['datadir'], idx, systemoptions['inchmancldir'])
+            for k, v in job.iteritems():
+                params += '--p {0:s}={1:s} '.format(k, str(v))
+                #print "Executing Inchman job %d with: %s" % (idx, str(params))
+
+            # print current job
+            writeText("Running Job {0:d} with {1:s}  ...   ".format(idx, str(params)), app)
+            if app!=None:
+                app.update()
+                
+            # and set the output parameters
+            systemoptions['outlog'] = outlogtemplate + '.{0:d}'.format(idx)
+            systemoptions['errlog'] = errlogtemplate + '.{0:d}'.format(idx)
+
+            # and run it
+            gpgmp.common.jobs.run(systemoptions, systemoptions['inchmanexec'], systemoptions['datadir'], params)
+            writeText("done.\n", app, tag="success")
+
+        #params = '"{0:s}"'.format(sourcename, systemoptions['inchmancldir'])
+        #
+        #writeText("done.\n", app, tag="success")
+
+        # and wait for close
+        if app!=None:
+            app.info("Inchman process finished. Press OK to exit.")
+        else:
+            print("Inchman finished")
+
+    except:
+        error = "An error occured:\n\n[{0:s}] {1:s}".format(sys.exc_info()[0], sys.exc_info()[1])
+        if app!=None:
+            writeText(traceback.format_exc(), app)
+            app.update()
+            app.error(error)
+        else:
+            print(error)
+        traceback.print_exc()
+    #dummy = input("Press key.")
+
+if __name__ == '__main__':
+    main(sys.argv)
+    #dummy(sys.argv)

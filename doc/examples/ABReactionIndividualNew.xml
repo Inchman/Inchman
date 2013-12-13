@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_inhomogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>500</math:cn></math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>10</math:cn></math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[
+import numpy
+import sys
+import traceback
+import numpy.random
+
+try:
+    sys.stdout.flush()
+
+    # extract some parameters we need
+    nx = runtimeInformation['nx']
+    ny = runtimeInformation['ny']
+    length = runtimeInformation['length']
+    nSpecies = runtimeInformation['nspecies']
+
+    # convert to numpy array
+    numpy_arx = numpy.array(individualProperties["SpeciesA"]["rx"], copy=False)
+    numpy_ary = numpy.array(individualProperties["SpeciesA"]["ry"], copy=False)
+    numpy_adx = numpy.array(individualProperties["SpeciesA"]["diffx"], copy=False)
+    numpy_ady = numpy.array(individualProperties["SpeciesA"]["diffy"], copy=False)
+    numpy_brx = numpy.array(individualProperties["SpeciesB"]["rx"], copy=False)
+    numpy_bry = numpy.array(individualProperties["SpeciesB"]["ry"], copy=False)
+    numpy_bdx = numpy.array(individualProperties["SpeciesB"]["diffx"], copy=False)
+    numpy_bdy = numpy.array(individualProperties["SpeciesB"]["diffy"], copy=False)
+
+    # and set to one
+    numpy_adx[:] = 1.;
+    numpy_ady[:] = 1.;
+    numpy_arx[:] = 1.;
+    numpy_ary[:] = 1.;
+    numpy_bdx[:] = 1.;
+    numpy_bdy[:] = 1.;
+    numpy_brx[:] = 1.;
+    numpy_bry[:] = 1.;
+
+except:
+    print("Unexpected error!")
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="false" computeMoments="">
+    <im:method><![CDATA[
+SpeciesA->DiffusivityX = SpeciesA->DiffusivityX;
+SpeciesA->DiffusivityY = SpeciesA->DiffusivityY;
+SpeciesA->DriftX = SpeciesA->DriftX;
+SpeciesA->DriftY = SpeciesA->DriftY;
+
+SpeciesB->DiffusivityX = SpeciesB->DiffusivityX;
+SpeciesB->DiffusivityY = SpeciesB->DiffusivityY;
+SpeciesB->DriftX = SpeciesB->DriftX;
+SpeciesB->DriftY = SpeciesB->DriftY;
+
+SpeciesAC->DiffusivityX = 0.;
+SpeciesAC->DiffusivityY = 0.;
+SpeciesAC->DriftX = 0.;
+SpeciesAC->DriftY = 0.;
+
+SpeciesBC->DiffusivityX = 0.;
+SpeciesBC->DiffusivityY = 0.;
+SpeciesBC->DriftX = 0.;
+SpeciesBC->DriftY = 0.;
+]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[
+      All->DiffusivityX = RANDOM;
+      All->DiffusivityY = RANDOM;
+      All->DriftX = RANDOM;
+      All->DriftY = RANDOM;
+      ]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="New Individuals">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>128</math:cn></math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>128</math:cn></math:math></im:gridHeight>
+  <im:physicalWidth><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>100</cn></math></im:physicalWidth>
+  <im:physicalHeight><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>100</cn></math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>128</math:cn></math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>128</math:cn></math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="SpeciesA" name="A" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:individual/>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:initialAmount><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+      <species id="SpeciesB" name="B" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:individual/>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:initialAmount><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+      <species id="SpeciesAC" name="AC" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:initialAmount><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+      <species id="SpeciesBC" name="BC" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:diffusionConstant>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:initialAmount><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="k1" value="0.001">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1e-3"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k2" value="0.01">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1e-2"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k3" value="1.2">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1.2"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="k4" value="1.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="AAAnnihilation" name="AA Annihilation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="SpeciesA" stoichiometry="2.0" />
+        </listOfReactants>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<ci>k1</ci>
+<ci>SpeciesA</ci>
+</apply>
+<apply>
+<minus/>
+<ci>SpeciesA</ci>
+<cn>1.0</cn>
+</apply>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ABAnnihilation" name="AB Annihilation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="SpeciesA" />
+          <speciesReference species="SpeciesB" />
+        </listOfReactants>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<ci>k2</ci>
+<ci>SpeciesA</ci>
+</apply>
+<ci>SpeciesB</ci>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ACreation" name="A Creation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="SpeciesA" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>k3</ci>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="BCreation" name="B Creation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="SpeciesB" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>k4</ci>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ACAACnnihilation" name="ACAC Annihilation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="SpeciesAC" stoichiometry="2.0" />
+        </listOfReactants>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<ci>k1</ci>
+<ci>SpeciesAC</ci>
+</apply>
+<apply>
+<minus/>
+<ci>SpeciesAC</ci>
+<cn>1.0</cn>
+</apply>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ACBCAnnihilation" name="ACBC Annihilation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="SpeciesAC" />
+          <speciesReference species="SpeciesBC" />
+        </listOfReactants>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<ci>k2</ci>
+<ci>SpeciesAC</ci>
+</apply>
+<ci>SpeciesBC</ci>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ACCreation" name="AC Creation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="SpeciesAC" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>k3</ci>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="BCCreation" name="BC Creation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:isAllowed><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><ci>true</ci></math></im:isAllowed>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:reaction>
+</annotation>
+        <listOfProducts>
+          <speciesReference species="SpeciesBC" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>k4</ci>
+</math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

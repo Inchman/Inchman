@@ -1,0 +1,78 @@
+img {
+border-style: solid;
+border-width: 1px;
+}
+
+/* These are for cropping an Inchman-editor screenshot to show the various parts. */
+.options{
+    position: relative;
+    width: 249px;
+    height: 480px;
+    overflow: hidden;
+    border: 1px black solid;
+}
+
+img.options-crop {
+    position: absolute;
+    left:-1px;
+    top:-130px;
+}
+
+.compartments{
+    position: relative;
+    width: 1670px;
+    height: 210px;
+    overflow: hidden;
+    border: 1px black solid;
+}
+
+img.compartments-crop {
+    position: absolute;
+    left:-250px;
+    top:-190px;
+}
+
+.species{
+    position: relative;
+    width: 1670px;
+    height: 210px;
+    overflow: hidden;
+    border: 1px black solid;
+}
+
+img.species-crop {
+    position: absolute;
+    left:-250px;
+    top:-400px;
+}
+
+.reactions {
+    position: relative;
+    width: 1670px;
+    height: 318px;
+    overflow: hidden;
+    border: 1px black solid;
+}
+
+img.reactions-crop {
+    position: absolute;
+    left:-250px;
+    top:-610px;
+
+}
+
+.parameters {
+    position: relative;
+    width: 249px;
+    height: 318px;
+    overflow: hidden;
+    border: 1px black solid;
+}
+
+img.parameters-crop {
+    position: absolute;
+    left:-0;
+    top:-610px;
+
+}
+

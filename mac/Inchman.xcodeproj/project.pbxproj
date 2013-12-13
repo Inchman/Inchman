@@ -1,0 +1,1052 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		DD446097145917B2002002E1 /* InchmanDMG */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = DD446098145917B2002002E1 /* Build configuration list for PBXAggregateTarget "InchmanDMG" */;
+			buildPhases = (
+				DD44609D145917CB002002E1 /* ShellScript */,
+			);
+			dependencies = (
+				DD44609C145917BA002002E1 /* PBXTargetDependency */,
+			);
+			name = InchmanDMG;
+			productName = InchmanDMG;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		D7124DF217D561FD00C39E22 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DE717D561FD00C39E22 /* Base.cpp */; };
+		D7124DF317D561FD00C39E22 /* Compartment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DE917D561FD00C39E22 /* Compartment.cpp */; };
+		D7124DF417D561FD00C39E22 /* DiffusionModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DEA17D561FD00C39E22 /* DiffusionModel.cpp */; };
+		D7124DF517D561FD00C39E22 /* HomogeneousSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DEB17D561FD00C39E22 /* HomogeneousSolver.cpp */; };
+		D7124DF617D561FD00C39E22 /* IndividualSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DEC17D561FD00C39E22 /* IndividualSolver.cpp */; };
+		D7124DF717D561FD00C39E22 /* InhomogeneousSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DED17D561FD00C39E22 /* InhomogeneousSolver.cpp */; };
+		D7124DF817D561FD00C39E22 /* Kernel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DEE17D561FD00C39E22 /* Kernel.cpp */; };
+		D7124DF917D561FD00C39E22 /* Reaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DEF17D561FD00C39E22 /* Reaction.cpp */; };
+		D7124DFA17D561FD00C39E22 /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DF017D561FD00C39E22 /* Solver.cpp */; };
+		D7124DFB17D561FD00C39E22 /* Species.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7124DF117D561FD00C39E22 /* Species.cpp */; };
+		D7124E0217D5688C00C39E22 /* libboost_date_time.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7124DFC17D5688B00C39E22 /* libboost_date_time.dylib */; };
+		D7124E0317D5688C00C39E22 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7124DFD17D5688C00C39E22 /* libboost_filesystem.dylib */; };
+		D7124E0417D5688C00C39E22 /* libboost_log.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7124DFE17D5688C00C39E22 /* libboost_log.dylib */; };
+		D7124E0517D5688C00C39E22 /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7124DFF17D5688C00C39E22 /* libboost_program_options.dylib */; };
+		D7124E0617D5688C00C39E22 /* libboost_python.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7124E0017D5688C00C39E22 /* libboost_python.dylib */; };
+		D7124E0717D5688C00C39E22 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D7124E0117D5688C00C39E22 /* libboost_system.dylib */; };
+		D7124E0917D58B3300C39E22 /* libboost_log.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124DFE17D5688C00C39E22 /* libboost_log.dylib */; };
+		D7124E0A17D58B3300C39E22 /* libboost_program_options.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124DFF17D5688C00C39E22 /* libboost_program_options.dylib */; };
+		D7124E0B17D58B3300C39E22 /* libboost_python.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E0017D5688C00C39E22 /* libboost_python.dylib */; };
+		D7124E0C17D58B3300C39E22 /* libboost_system.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E0117D5688C00C39E22 /* libboost_system.dylib */; };
+		D7124E0D17D58B3300C39E22 /* libboost_date_time.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124DFC17D5688B00C39E22 /* libboost_date_time.dylib */; };
+		D7124E0E17D58B3300C39E22 /* libboost_filesystem.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124DFD17D5688C00C39E22 /* libboost_filesystem.dylib */; };
+		D7124E6617D59A3F00C39E22 /* helpers.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1117D58C8200C39E22 /* helpers.cl */; };
+		D7124E6717D59A3F00C39E22 /* Deterministic.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2917D58C8200C39E22 /* Deterministic.cl */; };
+		D7124E6817D59A3F00C39E22 /* Gillespie.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2A17D58C8200C39E22 /* Gillespie.cl */; };
+		D7124E6917D59A3F00C39E22 /* IndividualSolver.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2B17D58C8200C39E22 /* IndividualSolver.cl */; };
+		D7124E6A17D59A3F00C39E22 /* StochasticHomogeneousDiffusion.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2C17D58C8200C39E22 /* StochasticHomogeneousDiffusion.cl */; };
+		D7124E6B17D59A3F00C39E22 /* StochasticInhomogeneousDriftDiffusion.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2D17D58C8200C39E22 /* StochasticInhomogeneousDriftDiffusion.cl */; };
+		D7124E6D17D59A7600C39E22 /* helpers.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1117D58C8200C39E22 /* helpers.cl */; };
+		D7124E6F17D59AA600C39E22 /* aes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1317D58C8200C39E22 /* aes.h */; };
+		D7124E7017D59AA600C39E22 /* array.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1417D58C8200C39E22 /* array.h */; };
+		D7124E7117D59AA600C39E22 /* ars.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1517D58C8200C39E22 /* ars.h */; };
+		D7124E7217D59AA600C39E22 /* gsl_microrng.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2417D58C8200C39E22 /* gsl_microrng.h */; };
+		D7124E7317D59AA600C39E22 /* MicroURNG.hpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2517D58C8200C39E22 /* MicroURNG.hpp */; };
+		D7124E7417D59AA600C39E22 /* philox.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2617D58C8200C39E22 /* philox.h */; };
+		D7124E7517D59AA600C39E22 /* ReinterpretCtr.hpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2717D58C8200C39E22 /* ReinterpretCtr.hpp */; };
+		D7124E7617D59AA600C39E22 /* threefry.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2817D58C8200C39E22 /* threefry.h */; };
+		D7124E7817D59AC600C39E22 /* Engine.hpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1717D58C8200C39E22 /* Engine.hpp */; };
+		D7124E7917D59AC600C39E22 /* gsl_cbrng.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1817D58C8200C39E22 /* gsl_cbrng.h */; };
+		D7124E7B17D59AE100C39E22 /* compilerfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1A17D58C8200C39E22 /* compilerfeatures.h */; };
+		D7124E7C17D59AE100C39E22 /* gccfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1B17D58C8200C39E22 /* gccfeatures.h */; };
+		D7124E7D17D59AE100C39E22 /* iccfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1C17D58C8200C39E22 /* iccfeatures.h */; };
+		D7124E7E17D59AE100C39E22 /* llvmfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1D17D58C8200C39E22 /* llvmfeatures.h */; };
+		D7124E7F17D59AE100C39E22 /* msvcfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1E17D58C8200C39E22 /* msvcfeatures.h */; };
+		D7124E8017D59AE100C39E22 /* nvccfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1F17D58C8200C39E22 /* nvccfeatures.h */; };
+		D7124E8117D59AE100C39E22 /* open64features.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2017D58C8200C39E22 /* open64features.h */; };
+		D7124E8217D59AE100C39E22 /* openclfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2117D58C8200C39E22 /* openclfeatures.h */; };
+		D7124E8317D59AE100C39E22 /* sse.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2217D58C8200C39E22 /* sse.h */; };
+		D7124E8417D59AE100C39E22 /* sunprofeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2317D58C8200C39E22 /* sunprofeatures.h */; };
+		D7124E8517D5A98200C39E22 /* libboost_log.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = D7124DFE17D5688C00C39E22 /* libboost_log.dylib */; };
+		D7124E8617D5A98200C39E22 /* libboost_program_options.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = D7124DFF17D5688C00C39E22 /* libboost_program_options.dylib */; };
+		D7124E8717D5A98200C39E22 /* libboost_python.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = D7124E0017D5688C00C39E22 /* libboost_python.dylib */; };
+		D7124E8817D5A98200C39E22 /* libboost_system.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = D7124E0117D5688C00C39E22 /* libboost_system.dylib */; };
+		D7124E8917D5A98200C39E22 /* libboost_date_time.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = D7124DFC17D5688B00C39E22 /* libboost_date_time.dylib */; };
+		D7124E8A17D5A98200C39E22 /* libboost_filesystem.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = D7124DFD17D5688C00C39E22 /* libboost_filesystem.dylib */; };
+		D7124E8C17D5AA0900C39E22 /* Deterministic.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2917D58C8200C39E22 /* Deterministic.cl */; };
+		D7124E8D17D5AA0900C39E22 /* Gillespie.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2A17D58C8200C39E22 /* Gillespie.cl */; };
+		D7124E8E17D5AA0900C39E22 /* IndividualSolver.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2B17D58C8200C39E22 /* IndividualSolver.cl */; };
+		D7124E8F17D5AA0900C39E22 /* StochasticHomogeneousDiffusion.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2C17D58C8200C39E22 /* StochasticHomogeneousDiffusion.cl */; };
+		D7124E9017D5AA0900C39E22 /* StochasticInhomogeneousDriftDiffusion.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2D17D58C8200C39E22 /* StochasticInhomogeneousDriftDiffusion.cl */; };
+		D7124E9217D5AA2300C39E22 /* helpers.cl in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1117D58C8200C39E22 /* helpers.cl */; };
+		D7124E9417D5AA4500C39E22 /* aes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1317D58C8200C39E22 /* aes.h */; };
+		D7124E9517D5AA4500C39E22 /* array.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1417D58C8200C39E22 /* array.h */; };
+		D7124E9617D5AA4500C39E22 /* ars.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1517D58C8200C39E22 /* ars.h */; };
+		D7124E9717D5AA4500C39E22 /* gsl_microrng.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2417D58C8200C39E22 /* gsl_microrng.h */; };
+		D7124E9817D5AA4500C39E22 /* MicroURNG.hpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2517D58C8200C39E22 /* MicroURNG.hpp */; };
+		D7124E9917D5AA4500C39E22 /* philox.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2617D58C8200C39E22 /* philox.h */; };
+		D7124E9A17D5AA4500C39E22 /* ReinterpretCtr.hpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2717D58C8200C39E22 /* ReinterpretCtr.hpp */; };
+		D7124E9B17D5AA4500C39E22 /* threefry.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2817D58C8200C39E22 /* threefry.h */; };
+		D7124E9D17D5AA5A00C39E22 /* Engine.hpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1717D58C8200C39E22 /* Engine.hpp */; };
+		D7124E9E17D5AA5A00C39E22 /* gsl_cbrng.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1817D58C8200C39E22 /* gsl_cbrng.h */; };
+		D7124EA017D5AA7100C39E22 /* compilerfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1A17D58C8200C39E22 /* compilerfeatures.h */; };
+		D7124EA117D5AA7100C39E22 /* gccfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1B17D58C8200C39E22 /* gccfeatures.h */; };
+		D7124EA217D5AA7100C39E22 /* iccfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1C17D58C8200C39E22 /* iccfeatures.h */; };
+		D7124EA317D5AA7100C39E22 /* llvmfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1D17D58C8200C39E22 /* llvmfeatures.h */; };
+		D7124EA417D5AA7100C39E22 /* msvcfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1E17D58C8200C39E22 /* msvcfeatures.h */; };
+		D7124EA517D5AA7100C39E22 /* nvccfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E1F17D58C8200C39E22 /* nvccfeatures.h */; };
+		D7124EA617D5AA7100C39E22 /* open64features.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2017D58C8200C39E22 /* open64features.h */; };
+		D7124EA717D5AA7100C39E22 /* openclfeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2117D58C8200C39E22 /* openclfeatures.h */; };
+		D7124EA817D5AA7100C39E22 /* sse.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2217D58C8200C39E22 /* sse.h */; };
+		D7124EA917D5AA7100C39E22 /* sunprofeatures.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7124E2317D58C8200C39E22 /* sunprofeatures.h */; };
+		D7124EAA17D6AFA400C39E22 /* InchmanExec in Copy InchmanExec */ = {isa = PBXBuildFile; fileRef = DD5DE65514562775008B1509 /* InchmanExec */; };
+		DD2A290F153E98DD0007252C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2A290D153E98DD0007252C /* main.cpp */; };
+		DD2A294C153E9BBE0007252C /* InchmanDiffusionModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD2A294A153E9BBD0007252C /* InchmanDiffusionModel.cpp */; };
+		DD3DED1316AFAEC300591663 /* protocolhandler.py in Copy InchmanExec */ = {isa = PBXBuildFile; fileRef = DD3DED0D16AF871E00591663 /* protocolhandler.py */; };
+		DD44605C1458DAE0002002E1 /* libhdf5_cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4460561458DAE0002002E1 /* libhdf5_cpp.a */; };
+		DD44605D1458DAE1002002E1 /* libhdf5_hl_cpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4460571458DAE0002002E1 /* libhdf5_hl_cpp.a */; };
+		DD44605E1458DAE1002002E1 /* libhdf5_hl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4460581458DAE0002002E1 /* libhdf5_hl.a */; };
+		DD44605F1458DAE1002002E1 /* libhdf5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4460591458DAE0002002E1 /* libhdf5.a */; };
+		DD4460601458DAE1002002E1 /* libsz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD44605A1458DAE0002002E1 /* libsz.a */; };
+		DD4460611458DAE1002002E1 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD44605B1458DAE0002002E1 /* libz.a */; };
+		DD44607D1458ED28002002E1 /* libsbml.4.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD44607C1458ED28002002E1 /* libsbml.4.3.1.dylib */; };
+		DD44607E1458EE07002002E1 /* libsbml.4.3.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DD44607C1458ED28002002E1 /* libsbml.4.3.1.dylib */; };
+		DD44607F1458EE2E002002E1 /* Python.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DD5DE664145689D4008B1509 /* Python.framework */; };
+		DD44608F14590144002002E1 /* libsbml.4.3.1.dylib in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = DD44607C1458ED28002002E1 /* libsbml.4.3.1.dylib */; };
+		DD44609014590CE8002002E1 /* Python.framework in Copy InchmanExec Frameworks & Shared Libs */ = {isa = PBXBuildFile; fileRef = DD5DE664145689D4008B1509 /* Python.framework */; };
+		DD5DE665145689D4008B1509 /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD5DE664145689D4008B1509 /* Python.framework */; };
+		DD896B1E16C220C20023904E /* paramsweeper.py in Copy InchmanExec */ = {isa = PBXBuildFile; fileRef = DD896B1B16C209100023904E /* paramsweeper.py */; };
+		DDC94108143D24EF005D312B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDC94107143D24EF005D312B /* Cocoa.framework */; };
+		DDC94112143D24EF005D312B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DDC94110143D24EF005D312B /* InfoPlist.strings */; };
+		DDC94114143D24EF005D312B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC94113143D24EF005D312B /* main.m */; };
+		DDC9411B143D24EF005D312B /* InchmanAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC9411A143D24EF005D312B /* InchmanAppDelegate.m */; };
+		DDC9411E143D24EF005D312B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDC9411C143D24EF005D312B /* MainMenu.xib */; };
+		DDD1F36C144296780060DC92 /* Inchman.icns in Resources */ = {isa = PBXBuildFile; fileRef = DDD1F36B144296780060DC92 /* Inchman.icns */; };
+		DDF2479A147B20B500991389 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF24798147B20B500991389 /* OpenCL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		DD4460641458DC00002002E1 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.cu";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"${INPUT_FILE_BASE}.o",
+			);
+			script = "/usr/local/cuda/bin/nvcc -m64 --compiler-options -fno-strict-aliasing -I\"../../gpgmp_cl/src\" -I/usr/local/cuda/include -c ${SCRIPT_INPUT_FILE} -o ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}.o";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		DD44609B145917BA002002E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDC940FA143D24EF005D312B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDC94102143D24EF005D312B;
+			remoteInfo = Inchman;
+		};
+		DD8B2359147B2258006EACF1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DDC940FA143D24EF005D312B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD5DE65414562775008B1509;
+			remoteInfo = InchmanExec;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D7124E0F17D58C5600C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source;
+			dstSubfolderSpec = 16;
+			files = (
+				D7124E6617D59A3F00C39E22 /* helpers.cl in CopyFiles */,
+				D7124E6717D59A3F00C39E22 /* Deterministic.cl in CopyFiles */,
+				D7124E6817D59A3F00C39E22 /* Gillespie.cl in CopyFiles */,
+				D7124E6917D59A3F00C39E22 /* IndividualSolver.cl in CopyFiles */,
+				D7124E6A17D59A3F00C39E22 /* StochasticHomogeneousDiffusion.cl in CopyFiles */,
+				D7124E6B17D59A3F00C39E22 /* StochasticInhomogeneousDriftDiffusion.cl in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E6C17D59A4600C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include;
+			dstSubfolderSpec = 16;
+			files = (
+				D7124E6D17D59A7600C39E22 /* helpers.cl in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E6E17D59A7A00C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include/Random123;
+			dstSubfolderSpec = 16;
+			files = (
+				D7124E6F17D59AA600C39E22 /* aes.h in CopyFiles */,
+				D7124E7017D59AA600C39E22 /* array.h in CopyFiles */,
+				D7124E7117D59AA600C39E22 /* ars.h in CopyFiles */,
+				D7124E7217D59AA600C39E22 /* gsl_microrng.h in CopyFiles */,
+				D7124E7317D59AA600C39E22 /* MicroURNG.hpp in CopyFiles */,
+				D7124E7417D59AA600C39E22 /* philox.h in CopyFiles */,
+				D7124E7517D59AA600C39E22 /* ReinterpretCtr.hpp in CopyFiles */,
+				D7124E7617D59AA600C39E22 /* threefry.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E7717D59AAD00C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include/Random123/conventional;
+			dstSubfolderSpec = 16;
+			files = (
+				D7124E7817D59AC600C39E22 /* Engine.hpp in CopyFiles */,
+				D7124E7917D59AC600C39E22 /* gsl_cbrng.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E7A17D59AC900C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include/Random123/features;
+			dstSubfolderSpec = 16;
+			files = (
+				D7124E7B17D59AE100C39E22 /* compilerfeatures.h in CopyFiles */,
+				D7124E7C17D59AE100C39E22 /* gccfeatures.h in CopyFiles */,
+				D7124E7D17D59AE100C39E22 /* iccfeatures.h in CopyFiles */,
+				D7124E7E17D59AE100C39E22 /* llvmfeatures.h in CopyFiles */,
+				D7124E7F17D59AE100C39E22 /* msvcfeatures.h in CopyFiles */,
+				D7124E8017D59AE100C39E22 /* nvccfeatures.h in CopyFiles */,
+				D7124E8117D59AE100C39E22 /* open64features.h in CopyFiles */,
+				D7124E8217D59AE100C39E22 /* openclfeatures.h in CopyFiles */,
+				D7124E8317D59AE100C39E22 /* sse.h in CopyFiles */,
+				D7124E8417D59AE100C39E22 /* sunprofeatures.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E8B17D5A9D800C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source;
+			dstSubfolderSpec = 10;
+			files = (
+				D7124E8C17D5AA0900C39E22 /* Deterministic.cl in CopyFiles */,
+				D7124E8D17D5AA0900C39E22 /* Gillespie.cl in CopyFiles */,
+				D7124E8E17D5AA0900C39E22 /* IndividualSolver.cl in CopyFiles */,
+				D7124E8F17D5AA0900C39E22 /* StochasticHomogeneousDiffusion.cl in CopyFiles */,
+				D7124E9017D5AA0900C39E22 /* StochasticInhomogeneousDriftDiffusion.cl in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E9117D5AA0F00C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include;
+			dstSubfolderSpec = 10;
+			files = (
+				D7124E9217D5AA2300C39E22 /* helpers.cl in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E9317D5AA2700C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include/Random123;
+			dstSubfolderSpec = 10;
+			files = (
+				D7124E9417D5AA4500C39E22 /* aes.h in CopyFiles */,
+				D7124E9517D5AA4500C39E22 /* array.h in CopyFiles */,
+				D7124E9617D5AA4500C39E22 /* ars.h in CopyFiles */,
+				D7124E9717D5AA4500C39E22 /* gsl_microrng.h in CopyFiles */,
+				D7124E9817D5AA4500C39E22 /* MicroURNG.hpp in CopyFiles */,
+				D7124E9917D5AA4500C39E22 /* philox.h in CopyFiles */,
+				D7124E9A17D5AA4500C39E22 /* ReinterpretCtr.hpp in CopyFiles */,
+				D7124E9B17D5AA4500C39E22 /* threefry.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E9C17D5AA4900C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include/Random123/conventional;
+			dstSubfolderSpec = 10;
+			files = (
+				D7124E9D17D5AA5A00C39E22 /* Engine.hpp in CopyFiles */,
+				D7124E9E17D5AA5A00C39E22 /* gsl_cbrng.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7124E9F17D5AA5E00C39E22 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = cl_source/cl_include/Random123/features;
+			dstSubfolderSpec = 10;
+			files = (
+				D7124EA017D5AA7100C39E22 /* compilerfeatures.h in CopyFiles */,
+				D7124EA117D5AA7100C39E22 /* gccfeatures.h in CopyFiles */,
+				D7124EA217D5AA7100C39E22 /* iccfeatures.h in CopyFiles */,
+				D7124EA317D5AA7100C39E22 /* llvmfeatures.h in CopyFiles */,
+				D7124EA417D5AA7100C39E22 /* msvcfeatures.h in CopyFiles */,
+				D7124EA517D5AA7100C39E22 /* nvccfeatures.h in CopyFiles */,
+				D7124EA617D5AA7100C39E22 /* open64features.h in CopyFiles */,
+				D7124EA717D5AA7100C39E22 /* openclfeatures.h in CopyFiles */,
+				D7124EA817D5AA7100C39E22 /* sse.h in CopyFiles */,
+				D7124EA917D5AA7100C39E22 /* sunprofeatures.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD44608614590062002002E1 /* Copy InchmanExec */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				D7124EAA17D6AFA400C39E22 /* InchmanExec in Copy InchmanExec */,
+				DD896B1E16C220C20023904E /* paramsweeper.py in Copy InchmanExec */,
+				DD3DED1316AFAEC300591663 /* protocolhandler.py in Copy InchmanExec */,
+			);
+			name = "Copy InchmanExec";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD44608C14590112002002E1 /* Copy InchmanExec Frameworks & Shared Libs */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D7124E8517D5A98200C39E22 /* libboost_log.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				D7124E8617D5A98200C39E22 /* libboost_program_options.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				D7124E8717D5A98200C39E22 /* libboost_python.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				D7124E8817D5A98200C39E22 /* libboost_system.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				D7124E8917D5A98200C39E22 /* libboost_date_time.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				D7124E8A17D5A98200C39E22 /* libboost_filesystem.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				DD44608F14590144002002E1 /* libsbml.4.3.1.dylib in Copy InchmanExec Frameworks & Shared Libs */,
+				DD44609014590CE8002002E1 /* Python.framework in Copy InchmanExec Frameworks & Shared Libs */,
+			);
+			name = "Copy InchmanExec Frameworks & Shared Libs";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD5DE65314562775008B1509 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				D7124E0917D58B3300C39E22 /* libboost_log.dylib in CopyFiles */,
+				D7124E0A17D58B3300C39E22 /* libboost_program_options.dylib in CopyFiles */,
+				D7124E0B17D58B3300C39E22 /* libboost_python.dylib in CopyFiles */,
+				D7124E0C17D58B3300C39E22 /* libboost_system.dylib in CopyFiles */,
+				D7124E0D17D58B3300C39E22 /* libboost_date_time.dylib in CopyFiles */,
+				D7124E0E17D58B3300C39E22 /* libboost_filesystem.dylib in CopyFiles */,
+				DD44607E1458EE07002002E1 /* libsbml.4.3.1.dylib in CopyFiles */,
+				DD44607F1458EE2E002002E1 /* Python.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D7124DE717D561FD00C39E22 /* Base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Base.cpp; path = ../../exec/src/gpgmp/src/Base.cpp; sourceTree = "<group>"; };
+		D7124DE817D561FD00C39E22 /* cl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cl.hpp; path = ../../exec/src/gpgmp/src/cl.hpp; sourceTree = "<group>"; };
+		D7124DE917D561FD00C39E22 /* Compartment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compartment.cpp; path = ../../exec/src/gpgmp/src/Compartment.cpp; sourceTree = "<group>"; };
+		D7124DEA17D561FD00C39E22 /* DiffusionModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DiffusionModel.cpp; path = ../../exec/src/gpgmp/src/DiffusionModel.cpp; sourceTree = "<group>"; };
+		D7124DEB17D561FD00C39E22 /* HomogeneousSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HomogeneousSolver.cpp; path = ../../exec/src/gpgmp/src/HomogeneousSolver.cpp; sourceTree = "<group>"; };
+		D7124DEC17D561FD00C39E22 /* IndividualSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IndividualSolver.cpp; path = ../../exec/src/gpgmp/src/IndividualSolver.cpp; sourceTree = "<group>"; };
+		D7124DED17D561FD00C39E22 /* InhomogeneousSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InhomogeneousSolver.cpp; path = ../../exec/src/gpgmp/src/InhomogeneousSolver.cpp; sourceTree = "<group>"; };
+		D7124DEE17D561FD00C39E22 /* Kernel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Kernel.cpp; path = ../../exec/src/gpgmp/src/Kernel.cpp; sourceTree = "<group>"; };
+		D7124DEF17D561FD00C39E22 /* Reaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Reaction.cpp; path = ../../exec/src/gpgmp/src/Reaction.cpp; sourceTree = "<group>"; };
+		D7124DF017D561FD00C39E22 /* Solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Solver.cpp; path = ../../exec/src/gpgmp/src/Solver.cpp; sourceTree = "<group>"; };
+		D7124DF117D561FD00C39E22 /* Species.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Species.cpp; path = ../../exec/src/gpgmp/src/Species.cpp; sourceTree = "<group>"; };
+		D7124DFC17D5688B00C39E22 /* libboost_date_time.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_date_time.dylib; path = InchmanExec/boost/lib/libboost_date_time.dylib; sourceTree = "<group>"; };
+		D7124DFD17D5688C00C39E22 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = InchmanExec/boost/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		D7124DFE17D5688C00C39E22 /* libboost_log.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_log.dylib; path = InchmanExec/boost/lib/libboost_log.dylib; sourceTree = "<group>"; };
+		D7124DFF17D5688C00C39E22 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = InchmanExec/boost/lib/libboost_program_options.dylib; sourceTree = "<group>"; };
+		D7124E0017D5688C00C39E22 /* libboost_python.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_python.dylib; path = InchmanExec/boost/lib/libboost_python.dylib; sourceTree = "<group>"; };
+		D7124E0117D5688C00C39E22 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = InchmanExec/boost/lib/libboost_system.dylib; sourceTree = "<group>"; };
+		D7124E1117D58C8200C39E22 /* helpers.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; path = helpers.cl; sourceTree = "<group>"; };
+		D7124E1317D58C8200C39E22 /* aes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		D7124E1417D58C8200C39E22 /* array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = array.h; sourceTree = "<group>"; };
+		D7124E1517D58C8200C39E22 /* ars.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ars.h; sourceTree = "<group>"; };
+		D7124E1717D58C8200C39E22 /* Engine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Engine.hpp; sourceTree = "<group>"; };
+		D7124E1817D58C8200C39E22 /* gsl_cbrng.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gsl_cbrng.h; sourceTree = "<group>"; };
+		D7124E1A17D58C8200C39E22 /* compilerfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compilerfeatures.h; sourceTree = "<group>"; };
+		D7124E1B17D58C8200C39E22 /* gccfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gccfeatures.h; sourceTree = "<group>"; };
+		D7124E1C17D58C8200C39E22 /* iccfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iccfeatures.h; sourceTree = "<group>"; };
+		D7124E1D17D58C8200C39E22 /* llvmfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = llvmfeatures.h; sourceTree = "<group>"; };
+		D7124E1E17D58C8200C39E22 /* msvcfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = msvcfeatures.h; sourceTree = "<group>"; };
+		D7124E1F17D58C8200C39E22 /* nvccfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nvccfeatures.h; sourceTree = "<group>"; };
+		D7124E2017D58C8200C39E22 /* open64features.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = open64features.h; sourceTree = "<group>"; };
+		D7124E2117D58C8200C39E22 /* openclfeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = openclfeatures.h; sourceTree = "<group>"; };
+		D7124E2217D58C8200C39E22 /* sse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sse.h; sourceTree = "<group>"; };
+		D7124E2317D58C8200C39E22 /* sunprofeatures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sunprofeatures.h; sourceTree = "<group>"; };
+		D7124E2417D58C8200C39E22 /* gsl_microrng.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gsl_microrng.h; sourceTree = "<group>"; };
+		D7124E2517D58C8200C39E22 /* MicroURNG.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MicroURNG.hpp; sourceTree = "<group>"; };
+		D7124E2617D58C8200C39E22 /* philox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = philox.h; sourceTree = "<group>"; };
+		D7124E2717D58C8200C39E22 /* ReinterpretCtr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ReinterpretCtr.hpp; sourceTree = "<group>"; };
+		D7124E2817D58C8200C39E22 /* threefry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = threefry.h; sourceTree = "<group>"; };
+		D7124E2917D58C8200C39E22 /* Deterministic.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; name = Deterministic.cl; path = ../../exec/src/gpgmp/src/Deterministic.cl; sourceTree = "<group>"; };
+		D7124E2A17D58C8200C39E22 /* Gillespie.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; name = Gillespie.cl; path = ../../exec/src/gpgmp/src/Gillespie.cl; sourceTree = "<group>"; };
+		D7124E2B17D58C8200C39E22 /* IndividualSolver.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; name = IndividualSolver.cl; path = ../../exec/src/gpgmp/src/IndividualSolver.cl; sourceTree = "<group>"; };
+		D7124E2C17D58C8200C39E22 /* StochasticHomogeneousDiffusion.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; name = StochasticHomogeneousDiffusion.cl; path = ../../exec/src/gpgmp/src/StochasticHomogeneousDiffusion.cl; sourceTree = "<group>"; };
+		D7124E2D17D58C8200C39E22 /* StochasticInhomogeneousDriftDiffusion.cl */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.opencl; name = StochasticInhomogeneousDriftDiffusion.cl; path = ../../exec/src/gpgmp/src/StochasticInhomogeneousDriftDiffusion.cl; sourceTree = "<group>"; };
+		DD2A290D153E98DD0007252C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../exec/src/inchman/main.cpp; sourceTree = "<group>"; };
+		DD2A294A153E9BBD0007252C /* InchmanDiffusionModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InchmanDiffusionModel.cpp; path = ../../exec/src/inchman/InchmanDiffusionModel.cpp; sourceTree = "<group>"; };
+		DD2A294B153E9BBD0007252C /* InchmanDiffusionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InchmanDiffusionModel.h; path = ../../exec/src/inchman/InchmanDiffusionModel.h; sourceTree = "<group>"; };
+		DD3DED0D16AF871E00591663 /* protocolhandler.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = protocolhandler.py; sourceTree = "<group>"; };
+		DD4460561458DAE0002002E1 /* libhdf5_cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhdf5_cpp.a; path = "hdf5-1.8.7-mac-intel-x86_64-static/lib/libhdf5_cpp.a"; sourceTree = "<group>"; };
+		DD4460571458DAE0002002E1 /* libhdf5_hl_cpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhdf5_hl_cpp.a; path = "hdf5-1.8.7-mac-intel-x86_64-static/lib/libhdf5_hl_cpp.a"; sourceTree = "<group>"; };
+		DD4460581458DAE0002002E1 /* libhdf5_hl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhdf5_hl.a; path = "hdf5-1.8.7-mac-intel-x86_64-static/lib/libhdf5_hl.a"; sourceTree = "<group>"; };
+		DD4460591458DAE0002002E1 /* libhdf5.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhdf5.a; path = "hdf5-1.8.7-mac-intel-x86_64-static/lib/libhdf5.a"; sourceTree = "<group>"; };
+		DD44605A1458DAE0002002E1 /* libsz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsz.a; path = "hdf5-1.8.7-mac-intel-x86_64-static/lib/libsz.a"; sourceTree = "<group>"; };
+		DD44605B1458DAE0002002E1 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = "hdf5-1.8.7-mac-intel-x86_64-static/lib/libz.a"; sourceTree = "<group>"; };
+		DD44607C1458ED28002002E1 /* libsbml.4.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsbml.4.3.1.dylib; path = libsbml/lib/libsbml.4.3.1.dylib; sourceTree = "<group>"; };
+		DD5DE65514562775008B1509 /* InchmanExec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = InchmanExec; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD5DE664145689D4008B1509 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = InchmanExec/Python.framework; sourceTree = "<group>"; };
+		DD896B1B16C209100023904E /* paramsweeper.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = paramsweeper.py; sourceTree = "<group>"; };
+		DDC94103143D24EF005D312B /* Inchman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Inchman.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDC94107143D24EF005D312B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DDC9410A143D24EF005D312B /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DDC9410B143D24EF005D312B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DDC9410C143D24EF005D312B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DDC9410F143D24EF005D312B /* Inchman-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Inchman-Info.plist"; sourceTree = "<group>"; };
+		DDC94111143D24EF005D312B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DDC94113143D24EF005D312B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DDC94115143D24EF005D312B /* Inchman-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Inchman-Prefix.pch"; sourceTree = "<group>"; };
+		DDC94119143D24EF005D312B /* InchmanAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InchmanAppDelegate.h; sourceTree = "<group>"; };
+		DDC9411A143D24EF005D312B /* InchmanAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InchmanAppDelegate.m; sourceTree = "<group>"; };
+		DDC9411D143D24EF005D312B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DDD1F36B144296780060DC92 /* Inchman.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Inchman.icns; sourceTree = SOURCE_ROOT; };
+		DDF24798147B20B500991389 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = ../../../../../System/Library/Frameworks/OpenCL.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD5DE65214562775008B1509 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD5DE665145689D4008B1509 /* Python.framework in Frameworks */,
+				DD44605C1458DAE0002002E1 /* libhdf5_cpp.a in Frameworks */,
+				DD44605D1458DAE1002002E1 /* libhdf5_hl_cpp.a in Frameworks */,
+				DD44605E1458DAE1002002E1 /* libhdf5_hl.a in Frameworks */,
+				DD44605F1458DAE1002002E1 /* libhdf5.a in Frameworks */,
+				DD4460601458DAE1002002E1 /* libsz.a in Frameworks */,
+				DD4460611458DAE1002002E1 /* libz.a in Frameworks */,
+				DD44607D1458ED28002002E1 /* libsbml.4.3.1.dylib in Frameworks */,
+				DDF2479A147B20B500991389 /* OpenCL.framework in Frameworks */,
+				D7124E0217D5688C00C39E22 /* libboost_date_time.dylib in Frameworks */,
+				D7124E0317D5688C00C39E22 /* libboost_filesystem.dylib in Frameworks */,
+				D7124E0417D5688C00C39E22 /* libboost_log.dylib in Frameworks */,
+				D7124E0517D5688C00C39E22 /* libboost_program_options.dylib in Frameworks */,
+				D7124E0617D5688C00C39E22 /* libboost_python.dylib in Frameworks */,
+				D7124E0717D5688C00C39E22 /* libboost_system.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDC94100143D24EF005D312B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDC94108143D24EF005D312B /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D7124E0817D5689800C39E22 /* boost */ = {
+			isa = PBXGroup;
+			children = (
+				D7124DFE17D5688C00C39E22 /* libboost_log.dylib */,
+				D7124DFF17D5688C00C39E22 /* libboost_program_options.dylib */,
+				D7124E0017D5688C00C39E22 /* libboost_python.dylib */,
+				D7124E0117D5688C00C39E22 /* libboost_system.dylib */,
+				D7124DFC17D5688B00C39E22 /* libboost_date_time.dylib */,
+				D7124DFD17D5688C00C39E22 /* libboost_filesystem.dylib */,
+			);
+			name = boost;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		D7124E1017D58C8200C39E22 /* cl_include */ = {
+			isa = PBXGroup;
+			children = (
+				D7124E1117D58C8200C39E22 /* helpers.cl */,
+				D7124E1217D58C8200C39E22 /* Random123 */,
+			);
+			name = cl_include;
+			path = ../../exec/src/gpgmp/src/cl_include;
+			sourceTree = "<group>";
+		};
+		D7124E1217D58C8200C39E22 /* Random123 */ = {
+			isa = PBXGroup;
+			children = (
+				D7124E1317D58C8200C39E22 /* aes.h */,
+				D7124E1417D58C8200C39E22 /* array.h */,
+				D7124E1517D58C8200C39E22 /* ars.h */,
+				D7124E1617D58C8200C39E22 /* conventional */,
+				D7124E1917D58C8200C39E22 /* features */,
+				D7124E2417D58C8200C39E22 /* gsl_microrng.h */,
+				D7124E2517D58C8200C39E22 /* MicroURNG.hpp */,
+				D7124E2617D58C8200C39E22 /* philox.h */,
+				D7124E2717D58C8200C39E22 /* ReinterpretCtr.hpp */,
+				D7124E2817D58C8200C39E22 /* threefry.h */,
+			);
+			path = Random123;
+			sourceTree = "<group>";
+		};
+		D7124E1617D58C8200C39E22 /* conventional */ = {
+			isa = PBXGroup;
+			children = (
+				D7124E1717D58C8200C39E22 /* Engine.hpp */,
+				D7124E1817D58C8200C39E22 /* gsl_cbrng.h */,
+			);
+			path = conventional;
+			sourceTree = "<group>";
+		};
+		D7124E1917D58C8200C39E22 /* features */ = {
+			isa = PBXGroup;
+			children = (
+				D7124E1A17D58C8200C39E22 /* compilerfeatures.h */,
+				D7124E1B17D58C8200C39E22 /* gccfeatures.h */,
+				D7124E1C17D58C8200C39E22 /* iccfeatures.h */,
+				D7124E1D17D58C8200C39E22 /* llvmfeatures.h */,
+				D7124E1E17D58C8200C39E22 /* msvcfeatures.h */,
+				D7124E1F17D58C8200C39E22 /* nvccfeatures.h */,
+				D7124E2017D58C8200C39E22 /* open64features.h */,
+				D7124E2117D58C8200C39E22 /* openclfeatures.h */,
+				D7124E2217D58C8200C39E22 /* sse.h */,
+				D7124E2317D58C8200C39E22 /* sunprofeatures.h */,
+			);
+			path = features;
+			sourceTree = "<group>";
+		};
+		DD4460711458E818002002E1 /* hdf5 */ = {
+			isa = PBXGroup;
+			children = (
+				DD4460561458DAE0002002E1 /* libhdf5_cpp.a */,
+				DD4460571458DAE0002002E1 /* libhdf5_hl_cpp.a */,
+				DD4460581458DAE0002002E1 /* libhdf5_hl.a */,
+				DD4460591458DAE0002002E1 /* libhdf5.a */,
+				DD44605A1458DAE0002002E1 /* libsz.a */,
+				DD44605B1458DAE0002002E1 /* libz.a */,
+			);
+			name = hdf5;
+			sourceTree = "<group>";
+		};
+		DD4460731458E84F002002E1 /* gpgmp */ = {
+			isa = PBXGroup;
+			children = (
+				D7124DE717D561FD00C39E22 /* Base.cpp */,
+				D7124DE817D561FD00C39E22 /* cl.hpp */,
+				D7124DE917D561FD00C39E22 /* Compartment.cpp */,
+				D7124DEA17D561FD00C39E22 /* DiffusionModel.cpp */,
+				D7124DEB17D561FD00C39E22 /* HomogeneousSolver.cpp */,
+				D7124DEC17D561FD00C39E22 /* IndividualSolver.cpp */,
+				D7124DED17D561FD00C39E22 /* InhomogeneousSolver.cpp */,
+				D7124DEE17D561FD00C39E22 /* Kernel.cpp */,
+				D7124DEF17D561FD00C39E22 /* Reaction.cpp */,
+				D7124DF017D561FD00C39E22 /* Solver.cpp */,
+				D7124DF117D561FD00C39E22 /* Species.cpp */,
+			);
+			name = gpgmp;
+			sourceTree = "<group>";
+		};
+		DD4460791458EAF8002002E1 /* sbml */ = {
+			isa = PBXGroup;
+			children = (
+				DD44607C1458ED28002002E1 /* libsbml.4.3.1.dylib */,
+			);
+			name = sbml;
+			sourceTree = "<group>";
+		};
+		DD5DE65714562776008B1509 /* InchmanExec */ = {
+			isa = PBXGroup;
+			children = (
+				D7124E1017D58C8200C39E22 /* cl_include */,
+				D7124E2917D58C8200C39E22 /* Deterministic.cl */,
+				D7124E2A17D58C8200C39E22 /* Gillespie.cl */,
+				D7124E2B17D58C8200C39E22 /* IndividualSolver.cl */,
+				D7124E2C17D58C8200C39E22 /* StochasticHomogeneousDiffusion.cl */,
+				D7124E2D17D58C8200C39E22 /* StochasticInhomogeneousDriftDiffusion.cl */,
+				D7124E0817D5689800C39E22 /* boost */,
+				DD2A294A153E9BBD0007252C /* InchmanDiffusionModel.cpp */,
+				DD2A294B153E9BBD0007252C /* InchmanDiffusionModel.h */,
+				DD2A290D153E98DD0007252C /* main.cpp */,
+				DD4460731458E84F002002E1 /* gpgmp */,
+				DD4460711458E818002002E1 /* hdf5 */,
+				DD4460791458EAF8002002E1 /* sbml */,
+			);
+			path = InchmanExec;
+			sourceTree = "<group>";
+		};
+		DDC940F8143D24EF005D312B = {
+			isa = PBXGroup;
+			children = (
+				DDC9410D143D24EF005D312B /* Inchman */,
+				DD5DE65714562776008B1509 /* InchmanExec */,
+				DDC94106143D24EF005D312B /* Frameworks */,
+				DDC94104143D24EF005D312B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DDC94104143D24EF005D312B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DDC94103143D24EF005D312B /* Inchman.app */,
+				DD5DE65514562775008B1509 /* InchmanExec */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DDC94106143D24EF005D312B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DDF24798147B20B500991389 /* OpenCL.framework */,
+				DD5DE664145689D4008B1509 /* Python.framework */,
+				DDC94107143D24EF005D312B /* Cocoa.framework */,
+				DDC94109143D24EF005D312B /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DDC94109143D24EF005D312B /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DDC9410A143D24EF005D312B /* AppKit.framework */,
+				DDC9410B143D24EF005D312B /* CoreData.framework */,
+				DDC9410C143D24EF005D312B /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		DDC9410D143D24EF005D312B /* Inchman */ = {
+			isa = PBXGroup;
+			children = (
+				DDC94119143D24EF005D312B /* InchmanAppDelegate.h */,
+				DDC9411A143D24EF005D312B /* InchmanAppDelegate.m */,
+				DDC9411C143D24EF005D312B /* MainMenu.xib */,
+				DDC9410E143D24EF005D312B /* Supporting Files */,
+				DD3DED0D16AF871E00591663 /* protocolhandler.py */,
+				DD896B1B16C209100023904E /* paramsweeper.py */,
+			);
+			path = Inchman;
+			sourceTree = "<group>";
+		};
+		DDC9410E143D24EF005D312B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DDD1F36B144296780060DC92 /* Inchman.icns */,
+				DDC9410F143D24EF005D312B /* Inchman-Info.plist */,
+				DDC94110143D24EF005D312B /* InfoPlist.strings */,
+				DDC94113143D24EF005D312B /* main.m */,
+				DDC94115143D24EF005D312B /* Inchman-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DD5DE65414562775008B1509 /* InchmanExec */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD5DE65E14562776008B1509 /* Build configuration list for PBXNativeTarget "InchmanExec" */;
+			buildPhases = (
+				DD4460821458F449002002E1 /* Fix Library Install Names */,
+				DD5DE65114562775008B1509 /* Sources */,
+				DD5DE65214562775008B1509 /* Frameworks */,
+				DD5DE65314562775008B1509 /* CopyFiles */,
+				D7124E0F17D58C5600C39E22 /* CopyFiles */,
+				D7124E6C17D59A4600C39E22 /* CopyFiles */,
+				D7124E6E17D59A7A00C39E22 /* CopyFiles */,
+				D7124E7717D59AAD00C39E22 /* CopyFiles */,
+				D7124E7A17D59AC900C39E22 /* CopyFiles */,
+			);
+			buildRules = (
+				DD4460641458DC00002002E1 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = InchmanExec;
+			productName = InchmanExec;
+			productReference = DD5DE65514562775008B1509 /* InchmanExec */;
+			productType = "com.apple.product-type.tool";
+		};
+		DDC94102143D24EF005D312B /* Inchman */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDC94121143D24EF005D312B /* Build configuration list for PBXNativeTarget "Inchman" */;
+			buildPhases = (
+				DDC940FF143D24EF005D312B /* Sources */,
+				DDC94100143D24EF005D312B /* Frameworks */,
+				DDC94101143D24EF005D312B /* Resources */,
+				DD5DE66014567552008B1509 /* Run SVN Version Script */,
+				DD44608614590062002002E1 /* Copy InchmanExec */,
+				DD44608C14590112002002E1 /* Copy InchmanExec Frameworks & Shared Libs */,
+				D7124E8B17D5A9D800C39E22 /* CopyFiles */,
+				D7124E9117D5AA0F00C39E22 /* CopyFiles */,
+				D7124E9317D5AA2700C39E22 /* CopyFiles */,
+				D7124E9C17D5AA4900C39E22 /* CopyFiles */,
+				D7124E9F17D5AA5E00C39E22 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD8B235A147B2258006EACF1 /* PBXTargetDependency */,
+			);
+			name = Inchman;
+			productName = Inchman;
+			productReference = DDC94103143D24EF005D312B /* Inchman.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DDC940FA143D24EF005D312B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = DDC940FD143D24EF005D312B /* Build configuration list for PBXProject "Inchman" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DDC940F8143D24EF005D312B;
+			productRefGroup = DDC94104143D24EF005D312B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DDC94102143D24EF005D312B /* Inchman */,
+				DD5DE65414562775008B1509 /* InchmanExec */,
+				DD446097145917B2002002E1 /* InchmanDMG */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DDC94101143D24EF005D312B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDC94112143D24EF005D312B /* InfoPlist.strings in Resources */,
+				DDC9411E143D24EF005D312B /* MainMenu.xib in Resources */,
+				DDD1F36C144296780060DC92 /* Inchman.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DD4460821458F449002002E1 /* Fix Library Install Names */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Fix Library Install Names";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# IMPORTANT:\n# Change the id's BEFORE linking, so that the revised install names are picked up and used for InchmanExec.\n# Given that we don't store the expanded libs in the svn repository, a change here shouldn't matter.\ninstall_name_tool -id \"@rpath/libsbml.4.3.1.dylib\" \"${TARGET_NAME}/libsbml/lib/libsbml.4.3.1.dylib\"\ninstall_name_tool -id \"@rpath/Python.framework/Versions/2.7/Python\" \"${TARGET_NAME}/Python.framework/Versions/2.7/Python\"\ninstall_name_tool -id \"@rpath/libboost_log.dylib\" \"${TARGET_NAME}/boost/lib/libboost_log.dylib\"\ninstall_name_tool -id \"@rpath/libboost_program_options.dylib\" \"${TARGET_NAME}/boost/lib/libboost_program_options.dylib\"\ninstall_name_tool -id \"@rpath/libboost_python.dylib\" \"${TARGET_NAME}/boost/lib/libboost_python.dylib\"\ninstall_name_tool -id \"@rpath/libboost_system.dylib\" \"${TARGET_NAME}/boost/lib/libboost_system.dylib\"\ninstall_name_tool -id \"@rpath/libboost_date_time.dylib\" \"${TARGET_NAME}/boost/lib/libboost_date_time.dylib\"\ninstall_name_tool -id \"@rpath/libboost_filesystem.dylib\" \"${TARGET_NAME}/boost/lib/libboost_filesystem.dylib\"\n\n# for some reason (TODO: fix that..) the boost shared libs are linked against the system python framework so we need to change\n# that.\ninstall_name_tool -change /System/Library/Frameworks/Python.framework/Versions/2.7/Python @rpath/Python.framework/Versions/2.7/Python \"${TARGET_NAME}/boost/lib/libboost_python.dylib\"\n";
+		};
+		DD44609D145917CB002002E1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "volumetitle=${PROJECT_NAME}\n\nappbundle=\"${PROJECT_NAME}.app\"\nvolumefinaldmg=\"${CONFIGURATION_BUILD_DIR}/${volumetitle}.dmg\"\n\ntmpdir=\"${PROJECT_TEMP_DIR}/${volumetitle}\"\ntmpdmg=\"${PROJECT_TEMP_DIR}/${volumetitle}Temp.dmg\"\n\n# Create volume contents\nmkdir -p \"${tmpdir}/.background\"\ncp \"${TARGET_NAME}/MacDmgBackground.png\" \"${tmpdir}/.background/background.png\"\ncp \"${TARGET_NAME}/MacVolumeIcon.icns\" \"${tmpdir}/.VolumeIcon.icns\"\nrsync -rulp --delete \"${CONFIGURATION_BUILD_DIR}/${appbundle}\" \"${tmpdir}\"\n\n# Create DMG\nhdiutil create -ov -srcfolder \"${tmpdir}\" -volname \"${volumetitle}\" -fs HFS+ -fsargs \"-c c=64,a=16,e=16\" -format UDRW \"${tmpdmg}\"\n\n# Mount volume\nhdiutil attach -readwrite -noverify -noautoopen \"${tmpdmg}\"\n\n# Use AppleScript to set the visual styles\necho '\ntell application \"Finder\"\n  activate\n  set w to make Finder window to disk \"'${volumetitle}'\"\n  tell w\n    open\n    set current view of w to icon view\n    set toolbar visible of w to false\n    set statusbar visible of w to false\n    set the bounds of w to {400, 100, 900, 400}\n    set theViewOptions to the icon view options of w\n    set arrangement of theViewOptions to not arranged\n    set icon size of theViewOptions to 128\n    set background picture of theViewOptions to file \".background:'background.png'\"\n    make new alias file at w to POSIX file \"/Applications\" with properties {name:\"Applications\"}\n    set position of item \"'${appbundle}'\" of w to {120, 150}\n    set position of item \"Applications\" of w to {380, 150}\n  end tell\n  close w\n  eject \"'${volumetitle}'\"\nend tell\n' | osascript\n\n# Finialize the DMG by compressing and releasing it\nsync\nsync\nsleep 5\nrm -f \"${volumefinaldmg}\"\nhdiutil convert \"${tmpdmg}\" -format UDBZ -o \"${volumefinaldmg}\"\nrm -f ${tmpdmg}";
+		};
+		DD5DE66014567552008B1509 /* Run SVN Version Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run SVN Version Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "BASEVERNUM=`/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"${INFOPLIST_FILE}\" | sed 's/,/, /g'`\nREV=`/usr/bin/svnversion -nc ${PROJECT_DIR} | /usr/bin/sed -e 's/^[^:]*://;s/[A-Za-z]//'`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BASEVERNUM.$REV\" \"${TARGET_BUILD_DIR}\"/${INFOPLIST_PATH}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DD5DE65114562775008B1509 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD2A290F153E98DD0007252C /* main.cpp in Sources */,
+				DD2A294C153E9BBE0007252C /* InchmanDiffusionModel.cpp in Sources */,
+				D7124DF217D561FD00C39E22 /* Base.cpp in Sources */,
+				D7124DF317D561FD00C39E22 /* Compartment.cpp in Sources */,
+				D7124DF417D561FD00C39E22 /* DiffusionModel.cpp in Sources */,
+				D7124DF517D561FD00C39E22 /* HomogeneousSolver.cpp in Sources */,
+				D7124DF617D561FD00C39E22 /* IndividualSolver.cpp in Sources */,
+				D7124DF717D561FD00C39E22 /* InhomogeneousSolver.cpp in Sources */,
+				D7124DF817D561FD00C39E22 /* Kernel.cpp in Sources */,
+				D7124DF917D561FD00C39E22 /* Reaction.cpp in Sources */,
+				D7124DFA17D561FD00C39E22 /* Solver.cpp in Sources */,
+				D7124DFB17D561FD00C39E22 /* Species.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDC940FF143D24EF005D312B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDC94114143D24EF005D312B /* main.m in Sources */,
+				DDC9411B143D24EF005D312B /* InchmanAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD44609C145917BA002002E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDC94102143D24EF005D312B /* Inchman */;
+			targetProxy = DD44609B145917BA002002E1 /* PBXContainerItemProxy */;
+		};
+		DD8B235A147B2258006EACF1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD5DE65414562775008B1509 /* InchmanExec */;
+			targetProxy = DD8B2359147B2258006EACF1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DDC94110143D24EF005D312B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DDC94111143D24EF005D312B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DDC9411C143D24EF005D312B /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DDC9411D143D24EF005D312B /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DD446099145917B2002002E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DD44609A145917B2002002E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		DD5DE65C14562776008B1509 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/InchmanExec\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					BOOST_ALL_DYN_LINK,
+					BOOST_LOG_NO_THREADS,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(TARGET_NAME)/../../exec/src/**",
+					"$(TARGET_NAME)/boost/include",
+					"$(TARGET_NAME)/libsbml/include",
+					"$(TARGET_NAME)/hdf5-1.8.7-mac-intel-x86_64-static/include",
+					"$(TARGET_NAME)/Python.framework/**",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "\"@executable_path/\" @loader_path/Frameworks \"@executable_path/../Frameworks\"";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/InchmanExec/hdf5-1.8.7-mac-intel-x86_64-static/lib\"",
+					"\"$(SRCROOT)/InchmanExec/libsbml/lib\"",
+					"\"$(SRCROOT)/InchmanExec/boost/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DD5DE65D14562776008B1509 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/InchmanExec\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					BOOST_ALL_DYN_LINK,
+					BOOST_LOG_NO_THREADS,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(TARGET_NAME)/../../exec/src/**",
+					"$(TARGET_NAME)/boost/include",
+					"$(TARGET_NAME)/libsbml/include",
+					"$(TARGET_NAME)/hdf5-1.8.7-mac-intel-x86_64-static/include",
+					"$(TARGET_NAME)/Python.framework/**",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "\"@executable_path/\" @loader_path/Frameworks \"@executable_path/../Frameworks\"";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/InchmanExec/hdf5-1.8.7-mac-intel-x86_64-static/lib\"",
+					"\"$(SRCROOT)/InchmanExec/libsbml/lib\"",
+					"\"$(SRCROOT)/InchmanExec/boost/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		DDC9411F143D24EF005D312B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.7;
+			};
+			name = Debug;
+		};
+		DDC94120143D24EF005D312B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx10.7;
+			};
+			name = Release;
+		};
+		DDC94122143D24EF005D312B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Inchman/BWToolkit\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Inchman/Inchman-Prefix.pch";
+				INFOPLIST_FILE = "Inchman/Inchman-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DDC94123143D24EF005D312B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Inchman/BWToolkit\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Inchman/Inchman-Prefix.pch";
+				INFOPLIST_FILE = "Inchman/Inchman-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DD446098145917B2002002E1 /* Build configuration list for PBXAggregateTarget "InchmanDMG" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD446099145917B2002002E1 /* Debug */,
+				DD44609A145917B2002002E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD5DE65E14562776008B1509 /* Build configuration list for PBXNativeTarget "InchmanExec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD5DE65C14562776008B1509 /* Debug */,
+				DD5DE65D14562776008B1509 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDC940FD143D24EF005D312B /* Build configuration list for PBXProject "Inchman" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDC9411F143D24EF005D312B /* Debug */,
+				DDC94120143D24EF005D312B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDC94121143D24EF005D312B /* Build configuration list for PBXNativeTarget "Inchman" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDC94122143D24EF005D312B /* Debug */,
+				DDC94123143D24EF005D312B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DDC940FA143D24EF005D312B /* Project object */;
+}

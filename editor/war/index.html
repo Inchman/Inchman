@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Inchman Editor</title>
+    
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <!-- ** CSS ** - load CSS as soon as possible, so that rendering can begin as soon as possible -->
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/examples/ux/css/CheckHeader.css">
+    <link rel="stylesheet" type="text/css" href="editor/css/ButtonSegment.css">
+    <link rel="stylesheet" type="text/css" href="editor/css/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="editor/css/codemirror-theme-default.css">
+    <link rel="stylesheet" type="text/css" href="editor/css/editor.css">
+    
+    <!-- style type="text/css">
+    	#nav_section {
+			height:50px;
+			background:url("images/body_bg_dark.jpg") repeat scroll 0 0 transparent;
+			padding-left:10px;
+		}
+    </style -->
+
+</head>
+<body>
+    <div id="loading">
+          <span id="loading-message">Loading. Please wait...</span>
+    </div>
+    
+    <!-- ** Javascript - load JS a late as possible, so that the loading indicator can be rendered as soon as possible ** -->
+    
+    <!-- script type="text/javascript" src="js/BuildInfo.js"></script -->
+    
+    <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading (0%) ExtJS...';</script>
+    <script type="text/javascript" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+    
+    <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading (20%) MathJax...';</script>
+    <script type="text/x-mathjax-config"> 
+        MathJax.Hub.Config({ 
+            showProcessingMessages: false,
+            messageStyle: "none",
+            //skipStartupTypeset: true
+        });
+    </script>
+    <script type="text/javascript"
+	  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML">
+	</script>
+    
+    
+    <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading (40%) CodeMirror...';</script>
+    <!--
+    WARNING: don't use the compressed (UglifyJS) version of CodeMirror
+    (at least for version 2.16), as it caused a subtle issue:
+    When using two instances (init script and events script editors),
+    the one rendered last would misbehave- the text cursor could be
+    moved vertically but not horizontally!
+    The standard uncompressed script doesn't exhibit this issue. 
+     -->
+    <script type="text/javascript" src="editor/js/codemirror.js"></script>
+    <script type="text/javascript" src="editor/js/clike.js"></script>
+    <script type="text/javascript" src="editor/js/python.js"></script>
+    
+    
+    <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading (60%) Inchman...';</script>
+    <script type="text/javascript" src="editor/js/ButtonSegment.js"></script>
+    <script type="text/javascript" src="editor/js/InchmanUtils.js"></script>
+    <script type="text/javascript" src="editor/js/MMLEditor.js"></script>
+    <script type="text/javascript" src="editor/js/MathJaxUtils.js"></script>
+    <script type="text/javascript" src="editor/js/FileInfoForm.js"></script>
+    <script type="text/javascript" src="editor/js/OptionsForm.js"></script>
+    <script type="text/javascript" src="editor/js/Parameters.js"></script>
+    <script type="text/javascript" src="editor/js/Compartments.js"></script>
+    <script type="text/javascript" src="editor/js/Species.js"></script>
+    <script type="text/javascript" src="editor/js/Reactions.js"></script>
+    <script type="text/javascript" src="editor/js/Editor.js"></script>
+    
+    <script type="text/javascript">document.getElementById('loading-message').innerHTML = 'Loading (80%) Interface...';</script>
+    
+    <div id="nav_section">
+    	<!-- img src="images/logo.png" alt="Inchman" border="0" width=200 height=50/ -->
+    </div>
+</body>
+</html>

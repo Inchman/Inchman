@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_inhomogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>10</math:cn>
+</math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>5</math:cn></math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[
+# This python code snippet serves to initialize the species array
+import numpy
+import sys
+import traceback
+
+try:
+    sys.stdout.flush()
+
+    # extract some parameters we need
+    nx = runtimeInformation['nx']
+    ny = runtimeInformation['ny']
+    length = runtimeInformation['length']
+    nSpecies = runtimeInformation['nspecies']
+
+    # make a numpy array out of it
+    if (runtimeInformation['solver']=='stochastic_inhomogeneous') or (runtimeInformation['solver']=='stochastic_homogeneous'):
+        # we have a stochastic simulation going
+        #print "Detected stochastic simulation!"
+        numpy_state = numpy.array(state, copy=False)
+    else:
+        # this is for the deterministic simulation
+        #print "Detected deterministic simulation!"
+        numpy_state = numpy.array(deterministicState, copy=False)
+
+    # reshape the array
+    np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+    # extract diffusivity
+    diffFieldTx = numpy.array(parameters["diffFieldX"], copy=False)
+    diffFieldX = diffFieldTx.reshape(nx, ny)
+    diffFieldY = (numpy.array(parameters["diffFieldY"], copy=False)).reshape(nx,ny)
+    driftFieldX = (numpy.array(parameters["driftFieldX"], copy=False)).reshape(nx,ny)
+    driftFieldY = (numpy.array(parameters["driftFieldY"], copy=False)).reshape(nx,ny)
+
+    # and set it
+    diffFieldX[:,:] = 0.6
+    diffFieldY[:,:] = 0.8
+    driftFieldX[:,:] = 0.8
+    driftFieldY[:,:] = 0.4
+
+    # and set the trace field
+    traceField = (numpy.array(parameters["traceField"], copy=False)).reshape(nx,ny)
+    traceField[:,:] = 0.
+
+except:
+    (etype, value, traceback) = sys.exc_info()
+    print "Unexpected error:", etype
+    print traceback.print_tb(traceback)
+    raise
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="false" computeMoments="">
+    <im:method><![CDATA[All->DiffusivityX = diffFieldX;
+All->DiffusivityY = diffFieldY;
+All->DriftX = driftFieldX;
+All->DriftY = driftFieldY;]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[
+	traceField = A/dt;
+	]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="Homogeneous Drift Field">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>32</math:cn></math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>32</math:cn></math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>0</math:cn></math:math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>512</math:cn></math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+      <compartment id="Source" name="Source">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:x>
+  <im:y><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:y>
+  <im:width><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>1</cn></math></im:width>
+  <im:height><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>1</cn></math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="A" name="A" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="Source">
+      <im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>100000.0</math:cn></math:math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="traceField" value="1.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="diffFieldX" value="1.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="diffFieldY" value="1.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="driftFieldX" value="1.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="driftFieldY" value="1.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="1"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+  </model>
+</sbml>

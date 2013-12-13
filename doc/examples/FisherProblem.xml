@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_homogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1.0</math:cn></math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>5</math:cn></math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1</math:cn></math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[# This python code snippet serves to initialize the species array
+import numpy
+import sys
+import traceback
+
+try:
+    print("Interpreter used is {0:s}".format(sys.executable))
+    sys.stdout.flush()
+
+    # extract some parameters we need
+    nx = runtimeInformation['nx']
+    ny = runtimeInformation['ny']
+    length = runtimeInformation['length']
+    nSpecies = runtimeInformation['nspecies']
+
+    particles = parameters['particles']
+
+    #print "Parameter extraction successful!"
+
+    # make a numpy array out of it
+    if (runtimeInformation['solver']=='stochastic_inhomogeneous') or (runtimeInformation['solver']=='stochastic_homogeneous'):
+        # we have a stochastic simulation going
+        #print "Detected stochastic simulation!"
+        numpy_state = numpy.array(state, copy=False)
+    else:
+        # this is for the deterministic simulation
+        #print "Detected deterministic simulation!"
+        numpy_state = numpy.array(deterministicState, copy=False)
+
+    # reshape the array
+    np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+    # and set up the initial fisher solution
+    dx = length/float(nx)
+    xc = (numpy.mgrid[0:nx]+0.5)*dx-3.*length/4.
+    t = (1.+numpy.exp(-xc/numpy.sqrt(6.)))
+
+    # and duplicate rows
+    tcc = numpy.array([t]*nx)
+    np_state_new[0,:,:] = numpy.round(1./(tcc*tcc)*particles)
+
+except:
+    (etype, value, traceback) = sys.exc_info()
+    print "Unexpected error:", etype
+    print traceback.print_tb(traceback)
+    raise
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="true" computeMoments="false">
+    <im:method><![CDATA[]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="Fisher Problem">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>100</math:cn></math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>100</math:cn></math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>256</math:cn></math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="A" name="A" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:cn>1.0</math:cn></math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters>
+    <im:compartmentParameters compartment="World">
+      <im:initialAmount><math:math xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"><math:ci>0</math:ci></math:math></im:initialAmount>
+    </im:compartmentParameters>
+  </im:listOfCompartmentParameters>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="k1" value="1.32843E-5">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="1.32843e-5"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="particles" value="75277.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="75277"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="Annihilation" name="Annihilation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="A" stoichiometry="2.0" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="A" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<apply>
+<times/>
+<apply>
+<times/>
+<ci>k1</ci>
+<ci>A</ci>
+</apply>
+<apply>
+<minus/>
+<ci>A</ci>
+<cn>1</cn>
+</apply>
+</apply>
+</math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="Creation" name="Creation">
+<annotation>
+<im:reaction
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:listOfCompartmentParameters/>
+</im:reaction>
+</annotation>
+        <listOfReactants>
+          <speciesReference species="A" />
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="A" stoichiometry="2.0" />
+        </listOfProducts>
+        <kineticLaw>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<ci>A</ci>
+</math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

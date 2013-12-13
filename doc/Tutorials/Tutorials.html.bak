@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <link rel="stylesheet" type="text/css" href="Images/styles.css">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <title>Tutorials</title>
+  </head>
+  <body>
+    <h2>Tutorial 1: The <span dir="auto">Belousov&#8211;Zhabotinsky reaction<br>
+      </span></h2>
+    In this tutorial we will implement the <a href="http://www.scholarpedia.org/article/Oregonator">Oregonator</a>
+    model of the famous <a href="http://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction">Belousov-Zhabotinsky</a>
+    reaction, a nice example of a nonlinear reaction-diffusion system that
+    displays complex patterns. Details of the Inchman implementation of this
+    model, and the scientific background for it, can be found in our publication
+    <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0042508">Stochastic
+Simulations
+      of Pattern Formation in Excitable Media</a>. <br>
+    <br>
+    The Oregonator model consists of the reaction scheme<br>
+    <br>
+    $$<br>
+    \begin{eqnarray} Y &amp; \xrightarrow{k_1} &amp; X + R \\ X+Y &amp;
+    \xrightarrow{k_2/\Omega^3} &amp; 2 R \\ X &amp; \xrightarrow{k_3} &amp; 2 X
+    + 2 Z \\ 2 X &amp; \xrightarrow{k_4/\Omega^3} &amp; R \\ Z &amp;
+    \xrightarrow{k_5} &amp; Y^\ast + Y^{\ast\ast}\\ 2 Y^\ast &amp;
+    \xrightarrow{k_6} &amp; Y \\ 2 Y^{\ast\ast} &amp; \xrightarrow{k_7} &amp;
+    Y^\ast \\ \end{eqnarray} $$<br>
+    for the reactants \(X\), \(Y\), \(Z\), the helper species \(Y^\ast\) and
+    \(Y^{\ast\ast}\) and the remainder species \(R\). The helper species are
+    introduced to avoid fractional stoichiometries, which Inchman does not
+    support currently. The parameter \(\Omega\), which mimics the epxansion
+    parameter in the \(\Omega\)-expansion, will be used to scale the overall
+    species number and hence demonstrate the transition between a stochastic and
+    a pseudo-deterministic setting. Please refer to the original paper for more
+    details on the reaction system, our implementation, pattern formation and
+    the \(\Omega\) expansion.<br>
+    <br>
+    We start the project by pointing our browser to the Inchman editor, which is
+    located at <a href="http://inchman-editor.appspot.com/">inchman-editor.appspot.com</a>.
+    We call the model "Oregonator", set the grid width to 64 and the physical
+    length to \(0.54 \mu m\). We need the stochastic homogeneous solver. The
+    maximum run time is 5 seconds and we only perform one run.<br>
+    <br>
+    <img title="Oregonator Model - Options" alt="Oregonator Model - Options" src="Images/oregonator_options.png"><br>
+    The next step is to define the spatial compartments. We will set our initial
+    conditions to create a spiral wave using a Python script so, for now, we
+    only need the compulsory World compartment. We add it using the <img title="plus button"
+      alt="plus button" src="Images/plus_button.png"> button in the compartment
+    list.<br>
+    <img title="Oregonator Model - Compartments" alt="Oregonator Model - Compartments"
+      src="Images/oregonator_compartments.png"><br>
+    We now add the required species. Remember that we need six species in total:
+    \(X\), \(Y\), \(Z\), the helper species \(Y^\ast\) and \(Y^{\ast\ast}\) and
+    the remainder species \(R\). None of the species should be treated as
+    individuals so we uncheck this box. We set the diffusivity for species \(X\)
+    to a parameter \(D\) and the diffusivity for \(Z\) to \(0.6 D\). Remember
+    that you will need to enter the term "0.6 * D" in the diffusivity box to
+    achieve that (you can get to the diffusivity box by clicking on the
+    diffusivity in the species list):<br>
+    <img title="Oregonator Model - Enter diffusivity" alt="Oregonator Model - Enter diffusivity"
+      src="Images/oregonator_diffusivity_z.png"><br>
+    The final species list should look like this:<br>
+    <img title="Oregonator Model - Species list" alt="Oregonator Model - Species list"
+      src="Images/oregonator_species.png"><br>
+    It is now time to enter the reactions from above. By now, this procedure
+    should be straight-forward. Keep in mind, that reactions of the form \( 2
+    Y^\ast \rightarrow Y \) will have a kinetic law of \( k Y^\ast (Y^\ast-1)\).
+    This is how you enter a term containing the scale parameter \(\Omega\) into
+    the reaction field:<br>
+    <img title="Oregonator model - kinetic law" alt="Oregonator model - kinetic law"
+      src="Images/oregonator_reaction_kinetic_law.png"><br>
+    The final reaction tab should look similar to this one:<br>
+    <img title="Oregonator model - Reactions" alt="Oregonator model - Reactions"
+      src="Images/oregonator_reactions.png"><br>
+    We set the parameters to the values of Table 6 from the research paper:<br>
+    <img title="Oregonator model - Parameters" alt="Oregonator model - Parameters"
+      src="Images/oregonator_parameters.png"><br>
+    Finally, we need to trigger the formation of a spiral wave using the initial
+    conditions. This is done by initializing a wedge-shaped perturbation in the
+    field. Again, we ask you to consult the research paper for details on this.
+    This tutorial only focuses on how to implement it in Inchman. The initial
+    conditions are set in the "Initialization" tab of the editor. This tab
+    accepts a Python script which looks as follows:<br>
+    <code class="prettyprint"><br>
+      # This python code snippet serves to initialize the species array<br>
+      import numpy<br>
+      import sys<br>
+      import math<br>
+      <br>
+      # extract some parameters we need<br>
+      nx = runtimeInformation['nx']<br>
+      ny = runtimeInformation['ny']<br>
+      nSpecies = runtimeInformation['nspecies']<br>
+      <br>
+      scale = parameters['omega']<br>
+      k1 = parameters['k1']<br>
+      k2 = parameters['k2']/scale**3<br>
+      k3 = parameters['k3']<br>
+      k4 = parameters['k4']/scale**3<br>
+      k5 = parameters['k5']<br>
+      k6 = parameters['k6']<br>
+      <br>
+      # make a numpy array out of it<br>
+      if (runtimeInformation['solver']=='stochastic_homogeneous'):<br>
+      &nbsp;&nbsp;&nbsp; # we have a stochastic simulation going<br>
+      &nbsp;&nbsp;&nbsp; print "Detected stochastic simulation!"<br>
+      &nbsp;&nbsp;&nbsp; numpy_state = numpy.array(state, copy=False)<br>
+      else:<br>
+      &nbsp;&nbsp;&nbsp; # this is for the deterministic simulation<br>
+      &nbsp;&nbsp;&nbsp; print "Detected deterministic simulation!"<br>
+      &nbsp;&nbsp;&nbsp; numpy_state = numpy.array(deterministicState,
+      copy=False)<br>
+      <br>
+      # reshape the array<br>
+      np_state_new = numpy_state.reshape(nSpecies_, dx_, dy_)<br>
+      <br>
+      # zero the array<br>
+      np_state_new[:,:,:] = 0<br>
+      <br>
+      #Initialize the "wedge"<br>
+      <br>
+      # create coordinate system<br>
+      xc=range(-dx_/2, dy_/2)<br>
+      yc=range(-dx_/2, dy_/2)<br>
+      gxc=numpy.outer(xc, numpy.ones_like(xc))<br>
+      gyc=numpy.outer(numpy.ones_like(yc), yc)<br>
+      theta = numpy.arctan2(gyc, gxc) + numpy.pi<br>
+      <br>
+      # create float arrays (for stochastic sim)<br>
+      nsf = numpy.zeros(numpy.shape(np_state_new), dtype=float)<br>
+      <br>
+      # u = {0.8 (0&lt;theta&lt;0.5), uss (else)}<br>
+      q = 0.002;<br>
+      f = 1.5;<br>
+      uss = 0.5*(1.-(f+q)+numpy.sqrt((f+q-1.)**2+4.*q*(1.+f)))<br>
+      <br>
+      tindex = numpy.where(theta&lt;0.5)<br>
+      nsf[species['X'], :, : ] = uss<br>
+      nsf[species['X'], tindex[0], tindex[1] ] = 0.8<br>
+      <br>
+      # v = vss + theta/(8 pi f)<br>
+      nsf[species['Z'], :, : ] = uss + theta/(8.*numpy.pi*f)<br>
+      <br>
+      # and for Y we take the dynamic equilibrium value<br>
+      nsf[species['Y'], :, :] = f * nsf[species['Z'], :, : ]/(q +
+      nsf[species['X'], :, : ])<br>
+      <br>
+      # and convert all to dimensional values<br>
+      np_state_new[species['X'], :, : ] = nsf[species['X'], :, : ] / (2.*k4/k3)<br>
+      np_state_new[species['Y'], :, : ] = nsf[species['Y'], :, : ] * (k3/k2)<br>
+      np_state_new[species['Z'], :, : ] = nsf[species['Z'], :, : ] /
+      (k5*k4/k3**2)<br>
+    </code><br>
+    You can copy and paste this part into the initialization tab of the editor
+    window.<br>
+    <br>
+    We go through the code step by step. The first snippet loads some useful
+    modules and extracts the simulation parameters from the global namespace.
+    Note that simulation internal parameters (such as the grid parameters) are
+    specified in the dictionary <code>runtimeInformation</code> while the
+    user-defined parameters live in <code>parameters</code><br>
+    <br>
+    <code class="prettyprint linenums"># This python code snippet serves to
+      initialize the species array<br>
+      import numpy<br>
+      import sys<br>
+      import math<br>
+      <br>
+      # extract some parameters we need<br>
+      nx = runtimeInformation['nx']<br>
+      ny = runtimeInformation['ny']<br>
+      nSpecies = runtimeInformation['nspecies']<br>
+      <br>
+      scale = parameters['omega']<br>
+      k1 = parameters['k1']<br>
+      k2 = parameters['k2']/scale**3<br>
+      k3 = parameters['k3']<br>
+      k4 = parameters['k4']/scale**3<br>
+      k5 = parameters['k5']<br>
+      k6 = parameters['k6']</code><span class="prettyprint linenums"><span style="font-family: monospace;"><code><br>
+        </code></span></span><br>
+    The next part converts the general memory pointer to a numpy array (<a href="http://www.numpy.org/">Numpy</a>
+    is a Python library to deal with arrays). Note that we use a deprecated
+    syntax here: the parameters <code>dx_</code> and <code>dy_</code> should
+    not be used anymore. Instead use <code>nx</code> and <code>ny</code>.<br>
+    <br>
+    <code class="prettyprint"># make a numpy array out of it<br>
+      if (runtimeInformation['solver']=='stochastic_homogeneous'):<br>
+      &nbsp;&nbsp;&nbsp; # we have a stochastic simulation going<br>
+      &nbsp;&nbsp;&nbsp; print "Detected stochastic simulation!"<br>
+      &nbsp;&nbsp;&nbsp; numpy_state = numpy.array(state, copy=False)<br>
+      else:<br>
+      &nbsp;&nbsp;&nbsp; # this is for the deterministic simulation<br>
+      &nbsp;&nbsp;&nbsp; print "Detected deterministic simulation!"<br>
+      &nbsp;&nbsp;&nbsp; numpy_state = numpy.array(deterministicState,
+      copy=False)<br>
+      <br>
+      # reshape the array<br>
+      np_state_new = numpy_state.reshape(nSpecies_, dx_, dy_)<br>
+      <br>
+      # zero the array<br>
+      np_state_new[:,:,:] = 0</code><br>
+    <br>
+    The last bit initializes the wedge by setting the arrays for the species
+    individually. There is some Numpy magic going on here and we won't go into
+    the details of this. If you're interested, read up about Python and Numpy!
+    However, the general way to set a species array is exemplified here:<br>
+    <br>
+    <code class="prettyprint">np_state_new[species['X'], :, : ] = ...</code><br>
+    <br>
+    If your initial condition is fairly easy, you can use that as a template. To
+    set up a coordinate system, use this snippet:<br>
+    <code class="prettyprint"><br>
+      # create coordinate system<br>
+      xc=range(-dx_/2, dy_/2)<br>
+      yc=range(-dx_/2, dy_/2)<br>
+      gxc=numpy.outer(xc, numpy.ones_like(xc))<br>
+      gyc=numpy.outer(numpy.ones_like(yc), yc)</code><br>
+    <br>
+    The arrays <code>gxc</code> and <code>gyc</code> will now contain a
+    regular grid, which you can use to set up stuff.<br>
+    <br>
+    <br>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3/text-shadow";
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+
+
+$default-text-shadow-color: rgba(255,255,255,1.0);
+$default-text-shadow-h-offset: 0px;
+$default-text-shadow-v-offset: 1px;
+
+$default-border-radius: 6px;
+
+
+header, footer, aside, nav, article {  
+    display: block;  
+}
+
+body {
+    margin: 0 auto; 
+    width: 940px; 
+    font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    background: url('../images/body_bg_light.jpg');
+    @include text-shadow;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 22px;  
+    line-height: 38px;  
+    padding: 12px 0;
+}
+
+p {  
+    padding-bottom: 12px;  
+}
+
+footer {
+    font-size: 12px;
+    text-align: center;
+    padding: 22px;
+}
+
+
+dl {
+    margin-top: 6px;
+    margin-bottom: 22px;
+    padding: 12px 0;
+    background: rgba(100, 100, 100, 0.2);
+    @include border-radius;
+    
+}
+dl dt {
+    float: left;
+    margin-right: 10px;
+    padding: 5px;
+    width: 180px;
+    text-align: right;
+}
+dl dd {
+    padding: 5px 0;
+}
+
+a {
+    color: rgb(135, 160, 62);
+}
+
+.figure {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#confidential {
+    color: #FFC500;
+    text-transform: uppercase;
+}

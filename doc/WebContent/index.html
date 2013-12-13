@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Inchman Documentation</title>
+    
+    <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <link href="stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 8]>
+        <link href="stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+    <![endif]-->
+</head>
+<body>
+
+    <header>
+        <h1>Inchman Documentation</h1>
+    </header>
+    
+    <section>
+        <h2>System Overview</h2>
+        
+        <p>
+        Inchman is complete system that provides access to an implementation of a spatially-resolved stochastic simulation algorithm on general-purpose graphics processing units (GPGPUs).
+        </p>
+        
+        <img class="figure" src="images/InchmanOverview.png" alt="Inchman System Overview Diagram"/>
+    </section>
+	
+    <section>
+       <h2>Inchman Portal - Client</h2>
+       
+       <p>
+       The front end / user interface to the Inchman system.
+       The portal provides two core services: a model / experiment designer and data collection management.
+       Most of the code for the designer is client based, with only things such as file manipulation, experiment submission and MathML routines residing on the server.
+       Whereas the data collection management is virtually all server based - see "Inchman Portal - Server" for more details.
+       </p>
+
+       <dl>
+          <dt>Location:</dt>
+          <dd>Web browser</dd>
+          
+          <dt>Language:</dt>
+          <dd>HTML5 + JavaScript</dd>
+           
+          <dt>Dependencies Required:</dt>
+          <dd>HTML5 capable web browser</dd>
+       
+          <dt>Dependencies Included:</dt>
+          <dd><a href="http://www.sencha.com/products/extjs/">ExtJS 3.3.1</a> - Cross-Browser Rich Internet Application Framework</dd>
+          <dt/><dd><a href="http://www.mathjax.org/">MathJax</a> - JavaScript display engine for mathematics</dd>
+          <dt/><dd><a href="http://code.google.com/apis/webfonts/">Google Font API</a></dd>
+          
+          <dt>Development Tools:</dt>
+          <dd><a href="http://sass-lang.com/">Sass</a> - Syntactically Awesome Stylesheets</dd>
+          <dt/><dd><a href="http://compass-style.org/">Compass</a> - Stylesheet authoring framework</dd>
+       </dl>
+    </section>
+   
+    <section>
+        <h2>Inchman Portal - Server</h2>
+        
+        <p>
+        The back end of the Inchman portal.
+        Most of the server code is devoted to the data collection management.
+        This code was donated by the <a href="http://www.monash.edu.au/eresearch/">Monash e-Research Center (MeRC)</a> and written by Simon Yu.
+        </p>
+
+        <dl>
+           <dt>Location:</dt>
+           <dd>Web server</dd>
+           
+           <dt>Language:</dt>
+           <dd>Java 1.6</dd>
+            
+           <dt>Dependencies Required:</dt>
+           <dd><a href="http://www.java.com/">Java 1.6</a> - Java programming language</dd>
+           <dt/><dd><a href="http://tomcat.apache.org/">Apache Tomcat 7</a></dd>
+           <dt/><dd><a href="http://www.postgresql.org/">PostgreSQL 8.4</a></dd>
+        
+           <dt>Dependencies Included:</dt>
+           <dd><a href="http://www.springsource.org/">Spring Framework (Core)</a> - Layered Java/J2EE application platform</dd>
+           <dt/><dd><a href="http://struts.apache.org/">Struts2</a> - Web application framework</dd>
+           <dt/><dd><a href="http://code.google.com/p/directjngine/">DirectJNgine (DJN)</a> - Java  Ext Direct API for ExtJs</dd>
+           <dt/><dd><a href="http://www.jdom.org/">JDOM</a> - XML library</dd>
+           <dt/><dd><a href="http://jigcell.cs.vt.edu/jigcell/docs/SBML/index.html">Jigcell SBML Parser</a> - Java SBML Level 2 library</dd>
+           <dt/><dd><a href="http://sourceforge.net/projects/jmathml/">jMathML</a> - Content MathML version 2 manipulation library</dd>
+           <dt/><dd><a href="https://github.com/shikhar/sshj">SSHJ</a> - SSHv2 library</dd>
+           <dt/><dd><a href="http://java.ociweb.com/mark/programming/WAX.html">WAX</a> - Writing API for XML</dd>
+           
+           <dt>Development Tools:</dt>
+           <dd><a href="http://ant.apache.org/">Apache Ant</a> - Java Build Tool</dd>
+        </dl>
+    </section>
+
+	<section>
+		<h2>Inchman Nimrod</h2>
+		
+		<p>
+		Inchman Nimrod is called by the Inchman Portal in order to submit experiments to the grid.
+		The jobs are submitted via the Nimrod Java API to Nimrod/G.
+		Once all jobs for an experiment are completed, the Inchman Portal is contacted with the use of wget.
+		</p>
+		
+		<dl>
+            <dt>Location:</dt>
+            <dd>Nimrod head node</dd>
+            
+            <dt>Language:</dt>
+            <dd>Java 1.6</dd>
+        
+           <dt>Dependencies Required:</dt>
+           <dd><a href="http://www.java.com/">Java 1.6</a> - Java programming language</dd>
+           <dt/><dd><a href="http://www.gnu.org/software/wget/">wget</a> - Command line HTTP, HTTPS and FTP file retrieval</dd>
+           
+           <dt>Dependencies Included:</dt>
+           <dd><a href="http://messagelab.monash.edu.au/NimrodJavaAPI">Nimrod Java API</a> - Java access to all of the Nimrod tools</dd>
+           <dt/><dd><a href="http://one-jar.sourceforge.net/">One-JAR</a> - Packages application with dependency Jars as single Jar file</dd>
+           
+           <dt>Development Tools:</dt>
+           <dd><a href="http://ant.apache.org/">Apache Ant</a> - Java Build Tool</dd>
+           
+           <dt>Hardware Requirements:</dt>
+           <dd>Access to a grid to GPU enabled queue - see Inchman Exec before for details.</dd>
+        </dl>
+	</section>
+
+	<section>
+		<h2>Inchman Exec &amp; GPGMP</h2>
+		
+		<p>
+		The workhorse of the Inchman system.
+		It's an executable built upon the GPGMP library, as created by Matthias Vigelius and further developed in collaboration with Aidan Lane.
+		</p>
+		
+		<dl>
+           <dt>Location:</dt>
+           <dd>The grid nodes</dd>
+           
+           <dt>Language:</dt>
+           <dd>C++</dd>
+        
+           <dt>Dependencies Required:</dt>
+           <dd><a href="http://developer.nvidia.com/cuda-toolkit-sdk">Nvidia CUDA Toolkit &amp; SDK 3.2</a></dd>
+           
+           <dt>Dependencies Included:</dt>
+           <dd><a href="http://www.boost.org/">Boost</a> - C++ Libraries</dd>
+           <dt/><dd><a href="http://sbml.org/Software/libSBML">LibSBML</a> - SBML C++ Library</dd>
+           <dt/><dd><a href="http://www.gnu.org/software/gsl/">GSL</a> - GNU Scientific Library</dd>
+           <dt/><dd><a href="http://www.hdfgroup.org/HDF5/">HDF5</a> - Data model, library, and file format</dd>
+           <dt/><dd><a href="http://www.python.org/">Python</a> - Python programming language</dd>
+           
+           <dt>Development Tools:</dt>
+           <dd><a href="http://gcc.gnu.org/">G++ 4.2</a> - GCC C++ compiler</dd>
+           <dt/><dd><a href="http://www.cmake.org/">CMake 3.8.4</a> - Cross-platform build system</dd>
+                      
+           <dt>Hardware Requirements:</dt>
+           <dd>Nvida CUDA Capable video card</dd>
+        </dl>
+	</section>
+	
+	<footer>
+	   Copyright &copy; 2011, Monash University
+	</footer>
+
+</body>
+</html>

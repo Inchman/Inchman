@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:jigcell="http://www.sbml.org/2001/ns/jigcell" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbml="http://www.sbml.org/sbml/level2" xmlns:xlink="http://www.w3.org/1999/xlink" level="2" version="1">
+<annotation>
+<im:sbml
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:solver>stochastic_inhomogeneous</im:solver>
+  <im:runs><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>1</math:cn>
+</math:math></im:runs>
+  <im:time><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>172800</math:cn>
+</math:math></im:time>
+  <im:outputInterval><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>5000</math:cn>
+</math:math></im:outputInterval>
+  <im:init type="python">
+    <im:script><![CDATA[# This python code snippet serves to initialize the species array
+import numpy
+
+# extract some parameters we need
+nx = runtimeInformation['nx']
+ny = runtimeInformation['ny']
+length = runtimeInformation['length']
+nSpecies = runtimeInformation['nspecies']
+
+# make a numpy array out of it
+if (runtimeInformation['solver']=='stochastic_inhomogeneous') or (runtimeInformation['solver']=='stochastic_homogeneous'):
+    # we have a stochastic simulation going
+    numpy_state = numpy.array(state, copy=False)
+else:
+    # this is for the deterministic simulation
+    numpy_state = numpy.array(deterministicState, copy=False)
+
+# reshape the array
+np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+# set background
+ntemp = np_state_new[species['Cells'],:,:]
+ntemp[:,:] = 0
+    
+# concentration (from Cai)
+hcai = 5. # 5 mum is the cell size
+h = length/float(nx)
+u0 = 14./hcai**2
+    
+# compute coordinate system
+xc=numpy.mgrid[-nx/2:nx/2]/float(nx)*length
+yc=numpy.mgrid[-nx/2:nx/2]/float(nx)*length
+gxc=numpy.outer(numpy.ones_like(xc), xc)
+gyc=numpy.outer(yc, numpy.ones_like(yc))
+rs = gxc**2+gyc**2
+    
+# and set explant value in the middle
+r0 = 100.
+ntemp[numpy.where(rs<=r0**2)] = u0*h**2
+
+# finally we need to set the field variables
+lambd = parameters["lambda"]
+L = length/2.
+slitConcentration = (numpy.array(parameters["slitConcentration"], copy=False)).reshape(nx,ny)
+slitConcentration[:,:] = numpy.exp(-lambd*(L-gxc))
+slitConcentrationD = (numpy.array(parameters["slitConcentrationD"], copy=False)).reshape(nx,ny)
+slitConcentrationD[:,:] = lambd*numpy.exp(-lambd*(L-gxc))
+]]></im:script>
+  </im:init>
+  <im:events type="python">
+    <im:script><![CDATA[]]></im:script>
+    <im:listOfTimeStamps/>
+  </im:events>
+  <im:driftDiffusivity nonLinear="true" computeMoments="false">
+    <im:method><![CDATA[// Compute sub-volume size
+Real subVolume = PhysicalCellWidth*PhysicalCellHeight;
+
+// Compute parameters
+Real L  = PhysicalModelWidth/2.;
+Real a  = 0.02*subVolume;
+Real ta = 24.*3600.;
+Real xi = 1e4/3600.;
+
+// lambda, beta, and D are available from the interface
+
+// Is slit switched on already? We test against the variable
+// PhysicalSimTime which gives the current simulation time
+Real s0 = (PhysicalSimTime > ta) ? 1 : 0;
+
+// the slit concentration and its derivative is also
+// available as the field variables slitConcentration and slitConcentrationD
+// (we set them in the initialization method)
+
+// Compute a+u (where u is the current cell count in the subvolume)
+Real apu = a + Cells->State;
+Real a0 = a*D*exp(-beta*s0*slitConcentration);
+
+// We use the provided helper function to compute the central difference
+Real up = getCentralDifferenceX(Cells)/(2.*PhysicalCellWidth);
+Real sp = s0*slitConcentrationD;
+
+// set diffusivity/drift in X direction
+Cells->DriftX = -a0/(apu*apu) * (beta * apu * sp + up);
+Cells->DiffusivityX = a0/apu;
+
+// for the y-direction we don't use the slit field, only population pressure
+Real uprimey = getCentralDifferenceY(Cells)/(2.*PhysicalCellHeight);
+Cells->DriftY = -D*a*uprimey/(apu*apu);
+Cells->DiffusivityY = D*a/apu;
+]]></im:method>
+  </im:driftDiffusivity>
+  <im:setField>
+    <im:method><![CDATA[]]></im:method>
+  </im:setField>
+  <im:newIndividualsMethod>
+    <im:method><![CDATA[]]></im:method>
+  </im:newIndividualsMethod>
+</im:sbml>
+</annotation>
+  <model name="Slit">
+<annotation>
+<im:model
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:gridWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:gridWidth>
+  <im:gridHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:gridHeight>
+  <im:physicalWidth><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>600</math:cn>
+</math:math></im:physicalWidth>
+  <im:physicalHeight><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>600</math:cn>
+</math:math></im:physicalHeight>
+</im:model>
+</annotation>
+    <listOfCompartments>
+      <compartment id="World" name="World">
+<annotation>
+<im:compartment
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:x><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>0</cn></math></im:x>
+  <im:y><math xmlns="http://www.w3.org/1998/Math/MathML"><cn>0</cn></math></im:y>
+  <im:width><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:width>
+  <im:height><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:cn>256</math:cn>
+</math:math></im:height>
+</im:compartment>
+</annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="Cells" name="Cells" compartment="World">
+<annotation>
+<im:species
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman">
+  <im:diffusionConstant><math:math xmlns:math="http://www.w3.org/1998/Math/MathML">
+  <math:ci>D</math:ci>
+</math:math></im:diffusionConstant>
+  <im:listOfCompartmentParameters/>
+</im:species>
+</annotation>
+      </species>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="D" value="0.56">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.56"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="lambda" value="0.01">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="0.01"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="beta" value="40.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="single"
+  from="40"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="slitConcentration" value="0.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="0.0"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+      <parameter id="slitConcentrationD" value="0.0">
+<annotation>
+<im:parameter
+  xmlns:im="http://www.csse.monash.edu.au/~berndm/inchman"
+  type="float"
+  domain="field"
+  from="0.0"
+  to=""
+  step=""
+  points=""/>
+</annotation>
+      </parameter>
+    </listOfParameters>
+  </model>
+</sbml>

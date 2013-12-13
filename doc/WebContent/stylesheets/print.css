@@ -1,0 +1,151 @@
+/* Welcome to Compass. Use this file to define print styles.
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /> */
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* line 14, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+/* line 17, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+
+/* line 19, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 21, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+
+/* line 23, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 25, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: "" "";
+}
+/* line 96, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+}
+
+/* line 27, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 19, ../src/screen.scss */
+header, footer, aside, nav, article {
+  display: block;
+}
+
+/* line 23, ../src/screen.scss */
+body {
+  margin: 0 auto;
+  width: 940px;
+  font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  background: url("../images/body_bg_light.jpg");
+  text-shadow: white 0px 1px 1px;
+}
+
+/* line 32, ../src/screen.scss */
+h1 {
+  font-size: 40px;
+}
+
+/* line 36, ../src/screen.scss */
+h2 {
+  font-size: 22px;
+  line-height: 38px;
+  padding: 12px 0;
+}
+
+/* line 42, ../src/screen.scss */
+p {
+  padding-bottom: 12px;
+}
+
+/* line 46, ../src/screen.scss */
+footer {
+  font-size: 12px;
+  text-align: center;
+  padding: 22px;
+}
+
+/* line 53, ../src/screen.scss */
+dl {
+  margin-top: 6px;
+  margin-bottom: 22px;
+  padding: 12px 0;
+  background: rgba(100, 100, 100, 0.2);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+}
+
+/* line 61, ../src/screen.scss */
+dl dt {
+  float: left;
+  margin-right: 10px;
+  padding: 5px;
+  width: 180px;
+  text-align: right;
+}
+
+/* line 68, ../src/screen.scss */
+dl dd {
+  padding: 5px 0;
+}
+
+/* line 72, ../src/screen.scss */
+a {
+  color: #87a03e;
+}
+
+/* line 76, ../src/screen.scss */
+.figure {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 82, ../src/screen.scss */
+#confidential {
+  color: #FFC500;
+  text-transform: uppercase;
+}

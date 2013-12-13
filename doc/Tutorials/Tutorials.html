@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <title>Tutorials</title>
+  </head>
+  <body>
+    <h2>Tutorial 1: The <span dir="auto">Belousov&#8211;Zhabotinsky reaction<br>
+      </span></h2>
+    In this tutorial we will implement the <a href="http://www.scholarpedia.org/article/Oregonator">Oregonator</a>
+    model of the famous <a href="http://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction">Belousov-Zhabotinsky</a>
+    reaction, a nice example of a nonlinear reaction-diffusion system that
+    displays complex patterns. Details of the Inchman implementation of this
+    model, and the scientific background for it, can be found in our publication
+    <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0042508">Stochastic
+Simulations
+      of Pattern Formation in Excitable Media</a>. <br>
+    <br>
+    The Oregonator model consists of the reaction scheme<br>
+    <br>
+    $$<br>
+    \begin{eqnarray} Y &amp; \xrightarrow{k_1} &amp; X + R \\ X+Y &amp;
+    \xrightarrow{k_2/\Omega^3} &amp; 2 R \\ X &amp; \xrightarrow{k_3} &amp; 2 X
+    + 2 Z \\ 2 X &amp; \xrightarrow{k_4/\Omega^3} &amp; R \\ Z &amp;
+    \xrightarrow{k_5} &amp; Y^\ast + Y^{\ast\ast}\\ 2 Y^\ast &amp;
+    \xrightarrow{k_6} &amp; Y \\ 2 Y^{\ast\ast} &amp; \xrightarrow{k_7} &amp;
+    Y^\ast \\ \end{eqnarray} $$<br>
+    for the reactants \(X\), \(Y\), \(Z\), the helper species \(Y^\ast\) and
+    \(Y^{\ast\ast}\) and the remainder species \(R\). The helper species are
+    introduced to avoid fractional stoichiometries, which Inchman does not
+    support currently. The parameter \(\Omega\), which mimics the epxansion
+    parameter in the \(\Omega\)-expansion, will be used to scale the overall
+    species number and hence demonstrate the transition between a stochastic and
+    a pseudo-deterministic setting. Please refer to the original paper for more
+    details on the reaction system, our implementation, pattern formation and
+    the \(\Omega\) expansion.<br>
+    <br>
+    We start the project by pointing our browser to the Inchman editor, which is
+    located at <a href="http://inchman-editor.appspot.com/">inchman-editor.appspot.com</a>.
+    We call the model "Oregonator", set the grid width to 64 and the physical
+    length to \(0.54 \mu m\). We need the stochastic homogeneous solver. The
+    maximum run time is 5 seconds and we only perform one run.<br>
+    <br>
+    <div class="options">
+    <img class="options-crop" title="Oregonator Model - Options" alt="Oregonator Model - Options" src="Images/oregonator.png"><br>
+    </div>
+    The next step is to define the spatial compartments. We will set our initial
+    conditions to create a spiral wave using a Python script so, for now, we
+    only need the compulsory World compartment. We add it using the <img title="plus button"
+      alt="plus button" src="Images/plus_button.png"> button in the compartment
+    list.<br>
+    <div class="compartments">
+    <img class="compartments-crop" title="Oregonator Model - Compartments" alt="Oregonator Model - Compartments"
+      src="Images/oregonator.png">
+    </div>
+    <br>
+    We now add the required species. Remember that we need six species in total:
+    \(X\), \(Y\), \(Z\), the helper species \(Y^\ast\) and \(Y^{\ast\ast}\) and
+    the remainder species \(R\). None of the species should be treated as
+    individuals so we uncheck this box. We set the diffusivity for species \(X\)
+    to a parameter \(D\) and the diffusivity for \(Z\) to \(0.6 D\). Remember
+    that you will need to enter the term "0.6 * D" in the diffusivity box to
+    achieve that (you can get to the diffusivity box by clicking on the
+    diffusivity in the species list):<br>
+    <img title="Oregonator Model - Enter diffusivity" alt="Oregonator Model - Enter diffusivity"
+      src="Images/oregonator_diffusivity_z.png"><br>
+    The final species list should look like this:<br>
+    <div class="species">
+    <img class="species-crop" title="Oregonator Model - Species list" alt="Oregonator Model - Species list"
+      src="Images/oregonator.png">
+    </div>
+    <br>
+    
+    It is now time to enter the reactions from above. By now, this procedure
+    should be straight-forward. Keep in mind, that reactions of the form \( 2
+    Y^\ast \rightarrow Y \) will have a kinetic law of \( k Y^\ast (Y^\ast-1)\).
+    This is how you enter a term containing the scale parameter \(\Omega\) into
+    the reaction field:<br>
+    <img title="Oregonator model - kinetic law" alt="Oregonator model - kinetic law"
+      src="Images/oregonator_reaction_kinetic_law.png"><br>
+    The final reaction tab should look similar to this one:<br>
+    <div class="reactions">
+    <img class="reactions-crop" title="Oregonator model - Reactions" alt="Oregonator model - Reactions"
+      src="Images/oregonator.png">
+    </div>
+    <br>
+    
+    We set the parameters to the values of Table 6 from the research paper:<br>
+    <div class="parameters">
+    <img class="parameters-crop" title="Oregonator model - Parameters" alt="Oregonator model - Parameters"
+      src="Images/oregonator.png">
+    </div>
+    <br>
+    Finally, we need to trigger the formation of a spiral wave using the initial
+    conditions. This is done by initializing a wedge-shaped perturbation in the
+    field. Again, we ask you to consult the research paper for details on this.
+    This tutorial only focuses on how to implement it in Inchman. The initial
+    conditions are set in the "Initialization" tab of the editor. This tab
+    accepts a Python script which looks as follows:<br>
+    <pre class="prettyprint lang-py">
+import numpy
+import sys
+import math
+
+# extract some parameters we need
+nx = runtimeInformation['nx']
+ny = runtimeInformation['ny']
+nSpecies = runtimeInformation['nspecies']
+
+scale = parameters['Omega']
+k1 = parameters['k1']
+k2 = parameters['k2']/scale
+k3 = parameters['k3']
+k4 = parameters['k4']/scale
+k5 = parameters['k5']
+k6 = parameters['k6']
+
+# make a numpy array out of it
+if (runtimeInformation['solver']=='stochastic_homogeneous'):
+  # we have a stochastic simulation going
+  print "Detected stochastic simulation!"
+  numpy_state = numpy.array(state, copy=False)
+else:
+  # this is for the deterministic simulation
+  print "Detected deterministic simulation!"
+  numpy_state = numpy.array(deterministicState, copy=False)
+
+# reshape the array
+np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+# zero the array
+np_state_new[:,:,:] = 0
+
+#Initialize the "wedge"
+
+# create coordinate system
+xc=range(-nx/2, ny/2)
+yc=range(-nx/2, ny/2)
+gxc=numpy.outer(xc, numpy.ones_like(xc))
+gyc=numpy.outer(numpy.ones_like(yc), yc)
+theta = numpy.arctan2(gyc, gxc) + numpy.pi
+
+# create float arrays (for stochastic sim)
+nsf = numpy.zeros(numpy.shape(np_state_new), dtype=float)
+
+q = 0.002;
+f = 1.5;
+uss = 0.5*(1.-(f+q)+numpy.sqrt((f+q-1.)**2+4.*q*(1.+f)))
+
+tindex = numpy.where(theta<0.5)
+nsf[species['X'], :, : ] = uss
+nsf[species['X'], tindex[0], tindex[1] ] = 0.8
+
+# v = vss + theta/(8 pi f)
+nsf[species['Z'], :, : ] = uss + theta/(8.*numpy.pi*f)
+
+# and for Y we take the dynamic equilibrium value
+nsf[species['Y'], :, :] = f * nsf[species['Z'], :, : ]/(q + nsf[species['X'], :, : ])
+
+# and convert all to dimensional values
+np_state_new[species['X'], :, : ] = nsf[species['X'], :, : ] / (2.*k4/k3)
+np_state_new[species['Y'], :, : ] = nsf[species['Y'], :, : ] * (k3/k2)
+np_state_new[species['Z'], :, : ] = nsf[species['Z'], :, : ] / (k5*k4/k3**2)
+   </pre>
+
+    <br>
+    You can copy and paste this part into the initialization tab of the editor
+    window.<br>
+    <br>
+    We go through the code step by step. The first snippet loads some useful
+    modules and extracts the simulation parameters from the global namespace.
+    Note that simulation internal parameters (such as the grid parameters) are
+    specified in the dictionary <code>runtimeInformation</code> while the
+    user-defined parameters live in <code>parameters</code><br>
+    <br>
+    <pre class="prettyprint lang-py">
+import numpy
+import sys
+import math
+
+# extract some parameters we need
+nx = runtimeInformation['nx']
+ny = runtimeInformation['ny']
+nSpecies = runtimeInformation['nspecies']
+
+scale = parameters['Omega']
+k1 = parameters['k1']
+k2 = parameters['k2']/scale
+k3 = parameters['k3']
+k4 = parameters['k4']/scale
+k5 = parameters['k5']
+k6 = parameters['k6']
+</pre>
+    <br>
+    The next part converts the general memory pointer to a numpy array (<a href="http://www.numpy.org/">Numpy</a>
+    is a Python library to deal with arrays). The parameters <code>nSpecies</code>, <code>nx</code> and <code>ny</code> were
+    previously extracted from the <code>runtimeInformation</code> array.<br>
+    <br>
+    <pre class="prettyprint lang-py">
+# make a numpy array out of it
+if (runtimeInformation['solver']=='stochastic_homogeneous'):
+  # we have a stochastic simulation going
+  print "Detected stochastic simulation!"
+  numpy_state = numpy.array(state, copy=False)
+else:
+  # this is for the deterministic simulation
+  print "Detected deterministic simulation!"
+  numpy_state = numpy.array(deterministicState, copy=False)
+
+# reshape the array
+np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+# zero the array
+np_state_new[:,:,:] = 0
+</pre>
+
+To set up a regular-grid coordinate system which originates in the center cell you can use this snippet:
+    <br>
+    <pre class="prettyprint lang-py">
+# create coordinate system
+xc=range(-nx/2, ny/2)
+yc=range(-nx/2, ny/2)
+gxc=numpy.outer(xc, numpy.ones_like(xc))
+gyc=numpy.outer(numpy.ones_like(yc), yc)
+</pre>
+    <br>
+    The arrays <code>gxc</code> and <code>gyc</code> will now contain a
+    regular grid, which you can use to set up your initial conditions.<br>
+    <br>
+    The last bit initializes the wedge by setting the arrays for the species
+    individually. There is some Numpy magic going on here and we won't go into
+    the details of this. If you're interested, read up about Python and Numpy!
+    However, the general way to set a species array is exemplified here:<br>
+    <br>
+    <pre class="prettyprint lang-py">np_state_new[species['X'], :, : ] = ...</pre><br>
+    <br>
+    If your initial condition is fairly easy, you can use that as a template. 
+    <br>
+    You can now save the model to your harddrive or directly simulate it by
+    clicking on the simulate button! Depending on your hardware, this might take
+    some time, in particular if the scale parameter \(\Omega\) is high.<br>
+
+    Once the simulation is finished we can analyze the results. The simulation output is stored
+    in an <a href="http://www.hdfgroup.org/HDF5/">HDF5</a> file. HDF5 readers are available for
+    Matlab, Mathematica and various programming languages. For interactive sessions, we use
+    the Python modules which come with Inchman.<br>
+    After starting Python, we first load the Inchman input/output module along with Numpy and Matplotlib.
+<pre class="prettyprint lang-py">
+Python 2.7.5 (default, May 12 2013, 12:00:47) 
+[GCC 4.8.0 20130502 (prerelease)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import gpgmp.io
+>>> import matplotlib.pyplot as plt
+>>> import numpy
+</pre>
+The io module reads out the results from the HDF5 file and converts it into Numpy arrays.
+<pre class="prettyprint lang-py">
+>>> n, times, species, nspecies = gpgmp.io.read_gmp_hdf5('output')
+</pre>
+The output time stamps are stored lexically so we first need to sort them numerically:
+<pre class="prettyprint lang-py">
+>>> tind = numpy.argsort(times)
+>>> times[tind[-1]]
+50.0
+</pre>
+The species array tells us at which index a particular species is. We would like to plot species X:
+<pre class="prettyprint lang-py">
+>>> species
+array(['X', 'Y', 'Z', 'YS', 'YSS', 'R'], dtype=object)
+>>> plt.imshow(n[0,tind[-1],0,:,:])
+<matplotlib.image.AxesImage object at 0x208ded0>
+>>> plt.show()
+</pre>
+If everything went correctly, your output should show a nice spiral similar to this one:<br>
+<img src="Images/oregonator_spiral.png">
+<hr>
+    <h2>Tutorial 2: Cell migration of neurons in the brain</h2>
+    This tutorial is build around an application from mathematical biology. The question we are addressing here
+    is how a signalling molecule, Slit, affects migrating neurons in the brain. Details about the biological
+    background and the reasoning behind our implementation can be found in our <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0033384">research paper</a>.
+
+    The main ingredient of our model are the migrating cells which move according to the stochastic differential equation
+    $$
+  \mathrm{d} \mathbf{X}_t= - \mathbf{\nabla} d(\mathbf{X}_t) \, \mathrm{d}t +\left[2 d(\mathbf{X}_t)\right]^{1/2} \mathbf{I} \, \mathrm{d} \mathbf{W}_t,
+    $$
+    i.e. the drift and diffusivity can be derived from a single scalar function
+    $$
+    d(s,u) = d_\mathrm{cc}(u) d_\mathrm{cs}(s) = D_0 \frac{A}{A+u} \exp(-\beta s),
+    $$
+    which combines the cell-cell interaction \(d_\mathrm{cc}(u)\) and the cell-Slit interaction \(d_\mathrm{cs}(s)\). \(u\) denotes the local concentration of the cells while \(s\) refers to the Slit concentration. We assume that, in the experiment, the Slit concentration attained a steady state and can be described by
+    $$
+  s(x) = \left\{
+      \begin{array}{rl}
+        0, & 0 \le t < t_a, \\
+        s_0\ \mathrm{exp}(-\lambda |x-L|), & t \ge t_a,
+      \end{array}
+  \right.
+    $$
+    where \(t_a\) denotes the time when slit is applied to the experiment. <br>
+
+   We start by setting up the experiment parameters, the World compartment and the species (Slit):<br>
+		       <img src="Images/Slit.png">
+  Note that we have two field parameters here: <code>slitConcentration</code> and <code>slitConcentrationD</code> which describe the concentration of Slit and its derivative in the x-direction. Parameters can be marked as field parameters by selecting the according button in the domain window:<br>
+  <img src="Images/slit_field.png">
+  <br>
+  We initialize the species array by setting up a circular explant in the center of the domain:
+  <br>
+    <pre class="prettyprint lang-py linenums">
+# This python code snippet serves to initialize the species array
+import numpy
+
+# extract some parameters we need
+nx = runtimeInformation['nx']
+ny = runtimeInformation['ny']
+length = runtimeInformation['le ngth']
+nSpecies = runtimeInformation['nspecies']
+
+# make a numpy array out of it
+if (runtimeInformation['solver']=='stochastic_inhomogeneous') or (runtimeInformation['solver']=='stochastic_homogeneous'):
+    # we have a stochastic simulation going
+    numpy_state = numpy.array(state, copy=False)
+else:
+    # this is for the deterministic simulation
+    numpy_state = numpy.array(deterministicState, copy=False)
+
+# reshape the array
+np_state_new = numpy_state.reshape(nSpecies, nx, ny)
+
+# set background
+ntemp = np_state_new[species['Cells'],:,:]
+ntemp[:,:] = 0
+    
+# concentration (from Cai)
+hcai = 5. # 5 mum is the cell size
+h = length/float(nx)
+u0 = 14./hcai**2
+    
+# compute coordinate system
+xc=numpy.mgrid[-nx/2:nx/2]/float(nx)*length
+yc=numpy.mgrid[-nx/2:nx/2]/float(nx)*length
+gxc=numpy.outer(numpy.ones_like(xc), xc)
+gyc=numpy.outer(yc, numpy.ones_like(yc))
+rs = gxc**2+gyc**2
+
+# and set explant value in the middle
+r0 = 100.
+ntemp[numpy.where(rs<=r0**2)] = u0*h**2
+
+# finally we need to set the field variables
+lambd = parameters["lambda"]
+L = length/2.
+slitConcentration = (numpy.array(parameters["slitConcentration"], copy=False)).reshape(nx,ny)
+slitConcentration[:,:] = numpy.exp(-lambd*(L-gxc))
+slitConcentrationD = (numpy.array(parameters["slitConcentrationD"], copy=False)).reshape(nx,ny)
+slitConcentrationD[:,:] = lambd*numpy.exp(-lambd*(L-gxc))
+
+</pre>
+    The field variables are set in lines 41-47. They are extracted from the parameters array (note the <code>copy=False</code> keyword which prevents numpy from allocating new memory for the array) and reshaped according to the grid specifications.
+    <br>
+    The interesting part is now to compute the drift and diffusivity, as it involves taking the gradient of the interaction term \(d(s,u)\), which in turn depends on the Slit concentration and the Cell count. The code to achieve this needs to go into the Drift/Diffusivity-method tab and we go through it step by step. <br>
+    We first define some parameters that we will need later. Note that <code>lambda</code>, <code>beta</code> and <code>D</code> were defined in the interface already so they are available here.
+    <pre class="prettyprint lang-c linenums">
+// Compute sub-volume size
+Real subVolume = PhysicalCellWidth*PhysicalCellHeight;
+
+// Compute parameters
+Real L  = PhysicalModelWidth/2.;
+Real a  = 0.02*subVolume;
+Real ta = 24.*3600.;
+Real xi = 1e4/3600.;
+
+// lambda, beta, and D are available from the interface
+</pre>
+    <br>
+    We then test if Slit has been applied to the experiment already. We can do that by checking the current simulation time, which is given in <code>PhysicalSimTime</code> against the interface parameter <code>ta</code>:
+    <br>
+    <pre class="prettyprint lang-c linenums">
+// Is slit switched on already? We test against the variable
+// PhysicalSimTime which gives the current simulation time
+Real s0 = (PhysicalSimTime > ta) ? 1 : 0;
+    </pre>
+    <br>
+    We now compute the diffusivity and drift in the x direction. The drift is given by \(\partial_x d[u(x), s(x)]\) so we need to compute the local derivatives \(\partial_x u(x,t)\) and \(s'(x)\). The derivative of the Slit concentration is time-independent and we can use the pre-computed value found in the field variable <code>slitConcentrationD</code>. However, the local cell concentration obviously changes with time. In order to compute it, we use the built-in function <code>getCentralDifferenceX(&lt;species&gt;)</code>. Note that, in order to get the partial derivative, we still need to divide by twice the cell width (you can look at the <a href="http://en.wikipedia.org/wiki/Finite_difference#Relation_with_derivatives">wikipedia article about central differences</a> for an explanation).
+    <br>
+    <pre class="prettyprint lang-c linenums">
+// the slit concentration and its derivative is also
+// available as the field variables slitConcentration and slitConcentrationD
+// (we set them in the initialization method)
+ 
+// Compute a+u (where u is the current cell count in the subvolume)
+Real apu = a + Cells->State;
+Real a0 = a*D*exp(-beta*s0*slitConcentration);
+
+// We use the provided helper function to compute the central difference
+Real up = getCentralDifferenceX(Cells)/(2.*PhysicalCellWidth);
+Real sp = s0*slitConcentrationD;
+
+// set diffusivity/drift in X direction
+Cells->DriftX = -a0/(apu*apu) * (beta * apu * sp + up);
+Cells->DiffusivityX = a0/apu;
+    </pre>
+    <br>
+    Finally, we need to set it up for the y-direction. This is easier since there is no gradient of the Slit concentration in this direction and we only have to consider cell-cell interaction.
+    <br>
+    <pre class="prettyprint lang-c linenums">
+// for the y-direction we don't use the slit field, only population pressure
+Real uprimey = getCentralDifferenceY(Cells)/(2.*PhysicalCellHeight);
+Cells->DriftY = -D*a*uprimey/(apu*apu);
+Cells->DiffusivityY = D*a/apu;
+    </pre>
+    <br>
+    The model specification is now complete and we can go ahead and simulate it. Depending on your computer, it should not take too long for the simulation to finish.
+    <br>
+    We can then plot it as in the previous tutorials.
+    <pre class="prettyprint lang-py">
+    Python 3.3.2 (default, May 21 2013, 15:40:45) 
+[GCC 4.8.0 20130502 (prerelease)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+>>> import gpgmp.io
+>>> n, times, species, nspecies = gpgmp.io.read_gmp_hdf5('/home/matthias/xibalba/temp/results/output')
+>>> import numpy
+>>> import matplotlib.pyplot as plt
+>>> tind = numpy.argsort(times)
+>>> plt.imshow(n[0,tind[-1],0,:,:])
+<matplotlib.image.AxesImage object at 0x7f89d49d1190>
+>>> plt.show()
+>>> 
+    </pre>
+    <br>You should get a picture similar to Figure six in the research paper:<br>
+    <img src="Images/slit_results.png">
+  </body>
+</html>
