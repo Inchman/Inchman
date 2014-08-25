@@ -9,7 +9,7 @@
 #define __gpgmp_Base_h__
 
 
-#include <Globals.h>
+#include "Globals.h"
 
 #include <string>
 

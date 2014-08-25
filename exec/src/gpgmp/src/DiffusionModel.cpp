@@ -69,6 +69,12 @@ DiffusionModel::DiffusionModel(const std::string &id, bool managePythonInstance,
     init();
 }
 
+DiffusionModel::DiffusionModel(Real length, int dx, int dy)
+	: DiffusionModel()
+{
+
+}
+
 // logs the model
 void DiffusionModel::logModel()
 {
@@ -179,7 +185,9 @@ INIT_RETURN_VALUE DiffusionModel::init()
     // set random seed if none is given
     m_randomSeed = (unsigned int)time(0);
 
+#ifdef HAS_INIT_RETURN_VALUE
     return 0;
+#endif
 }
 
 // Destructor
@@ -903,11 +911,13 @@ void DiffusionModel::callInitScript(std::vector<int> &states,
         pyMainNamespace["deterministicState"] = my_arrayReal;
     }
     
-    BOOST_LOG_TRIVIAL(debug) << "Calling init script." << std::flush;
+    BOOST_LOG_TRIVIAL(debug) << "Calling init script.. " << std::flush;
     
     // and execute the script
     boost::python::object ignored
             = boost::python::exec(m_initScriptContents.c_str(), pyMainNamespace);
+
+	BOOST_LOG_TRIVIAL(debug) << "done. " << std::flush;
 
     // debug .. check if the species individual property array was set properly
     BOOST_FOREACH(Species *s, m_species)

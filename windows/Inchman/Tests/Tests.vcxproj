@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{276D1B27-D35E-4EC2-9594-DCB5715E15C6}</ProjectGuid>
+    <RootNamespace>Tests</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Matthias\Anaconda\include;C:\Users\Matthias\Documents\Projects\boost_1_55_0;C:\Program Files\HDF_Group\HDF5\1.8.13\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.0\include;C:\Users\Matthias\Documents\Projects\Inchman\exec\src\gpgmp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GPGMP_EXPORTS;MS_NO_COREDLL;BOOST_PYTHON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Matthias\Anaconda\libs;C:\Users\Matthias\Documents\Projects\boost_1_55_0\stage\lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.0\lib\x64;C:\Program Files\HDF_Group\HDF5\1.8.13\lib;C:\Users\Matthias\Documents\Projects\Inchman\windows\Inchman\x64\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenCL.lib;Gpgmp.lib;hdf5.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Matthias\Anaconda\include;C:\Users\Matthias\Documents\Projects\boost_1_55_0;C:\Program Files\HDF_Group\HDF5\1.8.13\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.0\include;C:\Users\Matthias\Documents\Projects\Inchman\exec\src\gpgmp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BOOST_PYTHON_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Users\Matthias\Anaconda\libs;C:\Users\Matthias\Documents\Projects\boost_1_55_0\stage\lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.0\lib\x64;C:\Program Files\HDF_Group\HDF5\1.8.13\lib;C:\Users\Matthias\Documents\Projects\Inchman\windows\Inchman\x64\Release</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>OpenCL.lib;Gpgmp.lib;hdf5.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\exec\src\tests\AnnihilationProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\CalciumModel.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\DiffusionProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\FisherProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\GrayScottModel.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\IndividualReactionProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\LocalizedAnnihilationProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\main.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\MajorityFPEProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\MajorityVoteProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\MultiplicativeNoiseProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\NonlinearProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\OregonatorModel.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\OrnsteinUhlenbeckProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\RandomDriftProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\ReactionProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\SemiInfiniteSlabProblem.cpp" />
+    <ClCompile Include="..\..\..\exec\src\tests\SlitModel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\exec\src\tests\AnnihilationProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\CalciumModel.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\DiffusionProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\FisherProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\GrayScottModel.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\IndividualReactionProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\LocalizedAnnihilationProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\MajorityFPEProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\MajorityVoteProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\MultiplicativeNoiseProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\NonlinearProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\OregonatorModel.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\OrnsteinUhlenbeckProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\RandomDriftProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\ReactionProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\SemiInfiniteSlabProblem.h" />
+    <ClInclude Include="..\..\..\exec\src\tests\SlitModel.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

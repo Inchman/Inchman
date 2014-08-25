@@ -11,7 +11,7 @@
 #define __gpgmp_Compartment_h__
 
 
-#include <Base.h>
+#include "Base.h"
 
 #include <hdf5.h>
 #include <map>

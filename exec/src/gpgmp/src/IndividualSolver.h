@@ -11,6 +11,7 @@
 #include "Globals.h"
 #include "DiffusionModel.h"
 #include "Kernel.h"
+#include "Globals.h"
 
 #include <map>
 #include <vector>

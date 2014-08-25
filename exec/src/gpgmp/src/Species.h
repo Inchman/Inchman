@@ -9,7 +9,7 @@
 #define __gpgmp_Species_h__
 
 
-#include <Base.h>
+#include "Base.h"
 #include <map>
 #include <vector>
 #include <ostream>
@@ -44,7 +44,7 @@ public:
 
     /**
      * Sets the diffusivity of this species to \param diffusionConstant.
-     */*
+     */
     void setDiffusionConstant(Real diffusionConstant);
 
 

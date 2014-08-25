@@ -3,6 +3,8 @@
 
 #define NOMINMAX /* force Visual C++ to not generate min and max macros, so that we can use the cross-platform std::min and std::max */
 
+typedef unsigned int uint;
+
 #define __CL_ENABLE_EXCEPTIONS
 #define CL_USE_DEPRECATED_OPENCL_1_1_APIS /** Need these to use cl.hpp (which is not yet 1.2).. TODO: Move to our own CL classes! */
 //#include "CL/cl.hpp"

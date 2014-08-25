@@ -1,0 +1,37 @@
+/*
+ * OregonatorProblem.h
+ *
+ *  Created on: 24/03/2011
+ *      Author: matthias
+ */
+
+#ifndef COREGONATORPROBLEM_H_
+#define COREGONATORPROBLEM_H_
+
+#include "DiffusionModel.h"
+
+namespace gpgmp {
+/**
+ * Sets up the Oregonator model.
+ */
+class OregonatorProblem: public gpgmp::DiffusionModel {
+public:
+	OregonatorProblem(Real length, int dx, int dy,
+			Real scale=1., int f=1, Real diffx=0, Real diffz=0);
+
+	virtual ~OregonatorProblem();
+
+private:
+    /**
+     * Initializes the state array. This method overrides
+     * DiffusionModel::setInitialValues().
+     */
+    virtual void generateInitialStates(std::vector<int> &states) const;
+
+    int numMolecules_;
+    Real scale_;
+};
+
+} // namespace gpgmp
+
+#endif /* COREGONATORPROBLEM_H_ */

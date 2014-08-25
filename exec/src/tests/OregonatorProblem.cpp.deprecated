@@ -1,0 +1,411 @@
+/*
+ * OregonatorProblem.cpp
+ *
+ *  Created on: 24/03/2011
+ *      Author: matthias
+ */
+
+#include "OregonatorProblem.h"
+
+#include <boost/foreach.hpp>
+#include <boost/math/special_functions/round.hpp>
+
+#include <cmath>
+#include <iostream>
+
+#include "Compartment.h"
+#include "Reaction.h"
+#include "Species.h"
+
+
+namespace gpgmp {
+OregonatorProblem::OregonatorProblem(Real length, int dx, int dy, Real scale, int f, Real diffx, Real diffz)
+:   DiffusionModel(length, dx, dy) , scale_(scale){
+
+    // this should be unneccesary
+    setGridDims(dx, dy);
+    setPhysicalLength(length);
+
+	// set up species
+	//Species *dummy = addSpecies("Dummy", 0); // unused species just for comparison with inchman!
+    Species *r = addSpecies("R", 0.);
+    Species *x = addSpecies("X", diffx);
+    Species *y = addSpecies("Y", 0.);
+    Species *ys = addSpecies("YS", 0.);
+    Species *z = addSpecies("Z", diffz);
+
+	// Initial concentrations for species
+    Real cA = 0.01;
+    Real cB = 1.;
+    Real cZ = 0.00025;
+
+	// these are the #particles per subvolume - will need them for the reaction rates
+	long nA = boost::math::lround(cA*Avogadro*subvolumeSize()*pow(scale,3));
+	long nB = boost::math::lround(cB*Avogadro*subvolumeSize()*pow(scale,3));
+	long nZ = boost::math::lround(cZ*Avogadro*subvolumeSize()*dx*dy*pow(scale,3));
+
+	std::cout <<"Debug: "<<cA <<" "<<Avogadro<<" "<<subvolumeSize()<<" "<<scale<<"\n";
+	std::cout <<"nParticles: "<<nA<<" "<<nB<<" "<<nZ<<" \n";
+
+	// Reaction rates
+	Real k1 = 0.005 *nA /pow(scale,3);
+	Real k2 = 1./pow(scale,3);
+	Real k3 = 1.*nA/pow(scale,3);
+	Real k4 = 1./pow(scale,3);
+	Real k5 = 0.0004*nB/pow(scale,3);
+	Real k6 = 100./pow(scale,3);
+
+	// inject the parameters into the script
+    setParameter("scale", scale);
+    setParameter("k1", k1);
+    setParameter("k2", k2);
+    setParameter("k3", k3);
+    setParameter("k4", k4);
+    setParameter("k5", k5);
+    setParameter("k6", k6);
+
+//	// these are the values from the oscillations, waves, chaos book
+//	// Initial concentrations for species
+//	Real cA = 0.06;
+//	Real cB = 0.02;
+//	Real cX = 0.0001;
+//	Real cZ = 0.0001;
+
+	// these are the #particles per subvolume - will need them for the reaction rates
+//	int nA = lround(cA*avogadro_*subvolumeSize()*pow(scale,3));
+//	int nB = lround(cB*avogadro_*subvolumeSize()*pow(scale,3));
+
+	// Reaction rates
+//	Real k1 = 1.28 * nA /pow(scale,3);
+//	Real k2 = 2.4e6/pow(scale,3);
+//	Real k3 = 33.6*nA/pow(scale,3);
+//	Real k4 = 3e3/pow(scale,3);
+//	Real k5 = 1*nB/pow(scale,3);
+//	Real k6 = 1e15/pow(scale,3);
+
+//	// set 3
+//	Real k1 = 1.28 * nA /pow(scale,3);
+//	Real k2 = 2.4e6/pow(scale,3);
+//	Real k3 = 3.36*nA/pow(scale,3);
+//	Real k4 = 3e3/pow(scale,3);
+//	Real k5 = 0.1*nB/pow(scale,3);
+//	Real k6 = 1e15/pow(scale,3);
+
+
+	std::cout <<"Rates are "<<k1<<" "<<k2<<" "<<k3<<" "<<k4<<" "<<k5<<" "<<k6<<"\n";
+
+	// number of particles
+	// (we can't use the CDiffusion method cause it'll round to zero
+
+
+	// create World and add molecules
+//		Compartment *source1 = addCompartment("Source1", 0,0, dx/2, dy/2);
+//		source1->setInitialAmount(z, nZ, gpgmp::RandomDistribution);
+
+	// correct for smaller compartment size (in z-dir)
+//	int nmol = nZ * (gridWidth()/32);
+//	numMolecules_ = nZ;
+
+
+//	Compartment *source1 = addCompartment("Source1",
+//			dx/4, dy/4, dy/4+1, dy/4);
+//	Compartment *source2 = addCompartment("Source2",
+//			dx*3/4, dy*3/4, dy*3/4+1, dy*3/4);
+//	source1->setInitialAmount(z, nmol);
+//	source2->setInitialAmount(z, nmol);
+
+	//Compartment *world = addCompartment("world", 0, 0, dx-1, dy-1);
+	//world->setInitialAmount(z, nmol, gpgmp::HomogeneousDistribution);
+
+//	world->setInitialAmount(x, 100*dx_*dy_);
+//	world->setInitialAmount(y, 1370*dx_*dy_);
+//	world->setInitialAmount(ys, 38*dx_*dy_);
+//	world->setInitialAmount(z, 5018*dx_*dy_);
+
+//	std::cout<<"Scale is "<<scale<<".\n";
+//	std::cout << "Will distribute "<<nmol
+//			<<" number of particles in compartment.\n";
+//	std::cout << "Subvolume size is "<< subvolumeSize() <<"\n";
+//	std::cout << "nA = "<<nA<<", nB = "<<nB<<"\n";
+
+	// add reaction Y -> X + R
+    Reaction *reaction1 = addReaction("reaction 1", secondOrderReactionRate(k1), y);
+    reaction1->setProductStoichiometry(x, 1);
+    reaction1->setProductStoichiometry(r, 1);
+
+    // add reaction X + Y -> 2 R
+    Reaction *reaction2 = addReaction("reaction 2", secondOrderReactionRate(k2), x, y);
+    reaction2->setProductStoichiometry(r, 2);
+
+    // add reaction X -> 2 X + 2 Z
+    Reaction *reaction3 = addReaction("reaction 3", secondOrderReactionRate(k3), x);
+    reaction3->setProductStoichiometry(x, 2);
+    reaction3->setProductStoichiometry(z, 2);
+
+	// add reaction 2 X -> R
+	Reaction *reaction4 = addReaction("reaction 4", secondOrderReactionRate(k4), x, x);
+	reaction4->setProductStoichiometry(r, 1);
+
+	// add reaction Z -> int(f/2) Y + (f mod 2) YS
+	Reaction *reaction5 = addReaction("reaction 5", secondOrderReactionRate(k5), z);
+	if (f==1) {
+		std::cout <<"Stoichiometric factor is f=1.\n";
+		reaction5->setProductStoichiometry(ys, 1);
+	} else {
+		std::cout <<"Stoichiometric factor is f="<<f<<".\n";
+		int fd = f/2;
+		int mod = f % 2;
+		std::cout <<"Reaction is B + Z -> "<<fd<<" Y + "<<mod<<" YS\n";
+		reaction5->setProductStoichiometry(y, fd);
+		reaction5->setProductStoichiometry(ys, mod);
+	}
+
+	// add reaction 2 YS -> Y
+	Reaction *reaction6 = addReaction("reaction 6", secondOrderReactionRate(k6), ys, ys);
+	reaction6->setProductStoichiometry(y, 1);
+
+
+}
+
+void OregonatorProblem::generateInitialStates(std::vector<int> &states) const {
+//    const int dxy = gridWidth() * gridHeight();
+
+    std::cout <<"Calling base class init function for oregonator problem.. \n";
+    DiffusionModel::generateInitialStates(states);
+
+//	std::cout <<"Custom build state array for oregonator problem.. \n";
+//
+//	// Build States and speciesNumParticles
+//    states = std::vector<int>(species().size() * dxy, 0); // resize and zero-out
+//
+//    // Find the right species index
+//    int speciesIndex = -1;
+//
+//    // indices for the different species
+//    int siX, siY, siZ, siYS;
+//
+//    BOOST_FOREACH(Species *s, species())
+//    {
+//        ++speciesIndex; // increment now (we start at -1), as we may "continue" at anytime...
+//
+//        if (s->id()=="X") {
+//        	siX = speciesIndex;
+//			std::cout <<"Species index for X is "<<siX<<"\n";
+//        }
+//        if (s->id()=="Y") {
+//        	siY = speciesIndex;
+//			std::cout <<"Species index for Y is "<<siY<<"\n";
+//        }
+//        if (s->id()=="YS") {
+//        	siYS = speciesIndex;
+//			std::cout <<"Species index for YS is "<<siYS<<"\n";
+//        }
+//        if (s->id()=="Z") {
+//        	siZ = speciesIndex;
+//			std::cout <<"Species index for Z is "<<siZ<<"\n";
+//        }
+//    }
+
+//	// initialize with equilibrium solution first
+//	Real scalet3 = pow(scale_,3);
+//
+//	for (int x=0; x<dx_; x++) {
+//		for (int y=0; y<dy_; y++) {
+//			states[siX * dxy + y*dx_ + x] = 2.26364e11*scalet3;
+//			states[siY * dxy + y*dx_ + x] = 4.57189e13*scalet3;
+//			states[siYS* dxy + y*dx_ + x] = 2.28039e11*scalet3;
+//			states[siZ * dxy + y*dx_ + x] = 1.13182e13*scalet3;
+//		}
+//	}
+//
+//	// and trigger a plane-parallel wave
+//	for (int x=0; x<2; x++) {
+//		for (int y=0; y<dy_; y++) {
+//			states[siZ * dxy + y*dx_ + x] = numMolecules_;
+//		}
+//	}
+
+    //
+//    // Initialize a spiral wave
+//    // x(t) = at cos(t), y(t) = at sin(t)
+//    Real a = 10.;
+//    Real pi = 3.14159;
+//    int npoints = 800;
+//
+//    for (int t=0.; t<npoints; t++) {
+//    	Real angle = float(t)/float(npoints-1)*6.*pi;
+//
+//    	int cx = round(a*angle*cos(angle) + dx_/2);
+//    	int cy = round(a*angle*sin(angle) + dy_/2);
+//
+//    	if (cx>=0 && cx<dx_ && cy>=0 && cy<dy_) {
+//    		states[siZ * dxy + cy*dx_ + cx] = numMolecules_;
+//    	}
+//    }
+
+    //
+//    // initialize with equilibrium solution first
+//    Real scalet3 = pow(scale_,3);
+//
+//	for (int x=0; x<dx_; x++) {
+//		for (int y=0; y<dy_; y++) {
+//			states[siX * dxy + y*dx_ + x] = 1.56799e12*scalet3;
+//			states[siY * dxy + y*dx_ + x] = 2.14047e13*scalet3;
+//			states[siYS* dxy + y*dx_ + x] = 6.00175e11*scalet3;
+//			states[siZ * dxy + y*dx_ + x] = 7.83997e13*scalet3;
+//		}
+//	}
+//
+
+//
+//	// and initialize the domain with it
+//	for (int x=0; x<64; x++) {
+//		for (int y=0; y<64; y++) {
+//			states[siX * dxy + (y+dy_/2)*dx_ + x+(dx_/2)]
+//						 = waveX[x][y];
+//			states[siY * dxy + (y+dy_/2)*dx_ + x+(dx_/2)]
+//						 = waveY[x][y];
+//			states[siYS * dxy + (y+dy_/2)*dx_ + x+(dx_/2)]
+//						 = waveYS[x][y];
+//			states[siZ * dxy + (y+dy_/2)*dx_ + x+(dx_/2)]
+//						 = waveZ[x][y];
+//		}
+//	}
+//
+//    //            // this is an initial half ring configuration
+////            int init_ring[35][15]=
+////            {{   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,  788,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 799,    0, 1137, 1778,  896,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {1705, 1189, 1638,  717, 1732, 1090,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 864,  727, 1014,  567,  961,  395,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 478,  560, 1120,  313,  930, 1704,  937,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 251,  204,  134,  217,  324,  638, 1808,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 111,  148,  119,  200,  212,  237, 1457, 1293, 1451,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 101,   99,  132,  135,  180,  281,  478,  803, 1281, 1546,    0,
+////                       0,    0,    0,    0},
+////                   {  84,  100,   66,   76,  151,  271,  335,  589,  932, 1599,  934,
+////                       0,    0,    0,    0},
+////                   { 231,   51,   97,  136,  115,  144,  187,  315, 1114, 1942, 1417,
+////                       0,    0,    0,    0},
+////                   {1031,  631,   91,  132,  102,  146,  153,  360, 1727, 1356,    0,
+////                       0,    0,    0,    0},
+////                   { 226,  280,  146,  172,  154,  343,  304,  430,  969,   99,    0,
+////                       0,    0,    0,    0},
+////                   { 103,   94,  133,   82,  108,  261,  593, 1003, 1831, 1185,    0,
+////                       0,    0,    0,    0},
+////                   {  88, 1204,  107,  229,  110,  191,  325,  605, 1101, 1623,  715,
+////                       0,    0,    0,    0},
+////                   { 101,  290,   78,  104,  113,  159,  193,  343,  610,  943, 1819,
+////                       0,    0,    0,    0},
+////                   { 153,  147,   96,  131,   95,  209,  455,  454,  803, 1318,    0,
+////                       0,    0,    0,    0},
+////                   { 128,  110,   61,   81,  221,  345,  551, 1121, 1798, 1280,    0,
+////                       0,    0,    0,    0},
+////                   { 107,  129,   94,   93,  161,  203,  300,  765, 1061, 1802,    0,
+////                       0,    0,    0,    0},
+////                   {  80,   96,  111,  149,  225,  292,  460, 1295, 1725, 1610,    0,
+////                       0,    0,    0,    0},
+////                   {  91,  124,  357,  230,  291,  562, 1098, 1373, 1343,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 115,  142,  223,  274,  587,  809, 1486, 1317,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 134,  223,  315,  535, 1342, 1264,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 213,  266,  507,  976, 1569, 1139,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   { 326, 1135,  963, 1839, 1235,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {1729, 1239, 1457, 1042,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {1169,    0, 1053,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0},
+////                   {   0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+////                       0,    0,    0,    0}};
+////
+//////            int nMol = round(numMolecules_/float(dx_*dy_));
+//////            int x0 = dx_/2;
+//////            int y0 = dy_/2;
+////
+////            std::cout <<dx_<<", "<<dy_<<", "<<dxy<<"\n";
+////
+////            for (int y=0; y<dy_; y++) {
+////            	for (int x=0; x<dx_; x++) {
+//////            		float theta;
+//////            		if (x-x0 ==0 && y>=y0) {
+//////            			theta = 3.14159/2.;
+//////            		} else if (x-x0 ==0 && y>y0) {
+//////            			theta = 3./2.*3.14159;
+//////            		} else {
+//////            			theta = atan2(float(y-y0),float(x-x0))+3.14159;
+//////            		}
+//////            		species_init[y*dx_ + x]=round(theta/(8.*3.14159)*nMol);
+//////            		species_init[y*dx_ + x]=nMol;
+//////            		std::cout <<species_init[y*dx_ + x]<<" ";
+////            	}
+//////            	std::cout <<"\n";
+////            }
+////
+////
+//////            int width = dx_/64;
+//////            int height = dy_/64;
+//////
+//////            std::cout <<"Initializing with width="<<width<<", height="<<height<<"\n";
+//////            for (int i=0; i<width; i++) {
+//////            	for (int j=0; j<height; j++) {
+//////                    int x0 = dx_*1/2;
+//////                    int y0 = dy_*1/2;
+//////                    species_init[(y0+j)*dx_ + x0 + i]=0.5*numMolecules_;
+//////
+//////                    x0 = dx_*3/4;
+//////                    y0 = dy_*3/4;
+//////                    species_init[(y0+j)*dx_ + x0 + i]=0.5*numMolecules_;
+//////            	}
+//////            }
+////////
+//////            // make a half circle
+//////            int x0 = dx_*1/2;
+//////            int y0 = dy_*1/2;
+//////            Real radius = 20.;
+//////            int nmax=300;
+//////
+//////            for (int n=0; n<nmax; n++) {
+//////            	Real phi = Real(n)*3.14159/Real(nmax-1);
+//////
+//////            	int cx = (int) round(radius*sin(phi))+x0;
+//////            	int cy = (int) round(radius*cos(phi))+y0;
+//////
+//////            	species_init[cy*dx_ + cx]=numMolecules_;
+//////            }
+////
+////        }
+////    }
+}
+
+OregonatorProblem::~OregonatorProblem() {
+	// TODO Auto-generated destructor stub
+}
+
+} // namespace gpgmp

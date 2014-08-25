@@ -127,6 +127,11 @@ public:
      */
     DiffusionModel(const std::string &id = "Model", bool managePythonInstance = true, unsigned int randomSeed = 0);
 
+	/*
+	 * Compability constructor. THis is decrapated.
+	 */
+	DiffusionModel(Real length, int dx, int dy);
+
     /**
      * Destructor.
      */
@@ -897,6 +902,7 @@ private:
     // weird.
 #if PY_VERSION_HEX >= 0x03000000
 #define INIT_RETURN_VALUE int
+#define HAS_INIT_RETURN_VALUE
 #else
 #define INIT_RETURN_VALUE void
 #endif
